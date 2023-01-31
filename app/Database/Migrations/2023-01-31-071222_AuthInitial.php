@@ -8,26 +8,20 @@ class AuthInitial extends Migration
 {
     public function up()
     {
-        // Karyawan
+
+        // Groups Table
         $fields = [
-            'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama_lengkap'     => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
-            'alamat'           => ['type' => 'varchar', 'constraint' => 250, 'null' => true],
-            'jenis_kelamin'    => ['type' => 'enum', 'constraint' => ['LAKI-LAKI', 'PEREMPUAN'], 'default' => 'LAKI-LAKI'],
-            'tempat_lahir'     => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
-            'tanggal_lahir'    => ['type' => 'date', 'null' => true],
-            'agama'            => ['type' => 'enum', 'constraint' => ['ISLAM', 'KATOLIK', 'KRISTEN', 'HINDU', 'BUDHA', 'KHONGHUCU'], 'default' => 'ISLAM'],
-            'pendidikan'       => ['type' => 'enum', 'constraint' => ['SD', 'SMP', 'SMA/SMK', 'D I', 'D II', 'D III', 'D IV / S I'], 'default' => 'SD'],
-            'no_telp'          => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
-            'email'            => ['type' => 'varchar', 'constraint' => 255],
-            'created_at'       => ['type' => 'datetime', 'null' => true],
-            'updated_at'       => ['type' => 'datetime', 'null' => true],
-            'deleted_at'       => ['type' => 'datetime', 'null' => true],
+            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'name'        => ['type' => 'varchar', 'constraint' => 255],
+            'description' => ['type' => 'varchar', 'constraint' => 255],
         ];
 
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('karyawan', true);
+        $this->forge->createTable('auth_groups', true);
+
+
+
 
 
         // Divisi
@@ -43,10 +37,43 @@ class AuthInitial extends Migration
 
 
 
+
+
+        // Karyawan
+        $fields = [
+            'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'id_grup'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
+            'id_divisi'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
+            'nik'              => ['type' => 'varchar', 'constraint' => 10, 'null' => true],
+            'jabatan'          => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
+            'nama_lengkap'     => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
+            'alamat'           => ['type' => 'varchar', 'constraint' => 250, 'null' => true],
+            'jenis_kelamin'    => ['type' => 'enum', 'constraint' => ['LAKI-LAKI', 'PEREMPUAN'], 'default' => 'LAKI-LAKI'],
+            'tempat_lahir'     => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
+            'tanggal_lahir'    => ['type' => 'date', 'null' => true],
+            'agama'            => ['type' => 'enum', 'constraint' => ['ISLAM', 'KATOLIK', 'KRISTEN', 'HINDU', 'BUDHA', 'KHONGHUCU'], 'default' => 'ISLAM'],
+            'pendidikan'       => ['type' => 'enum', 'constraint' => ['SD', 'SMP', 'SMA / SMK', 'D I', 'D II', 'D III', 'D IV / S I'], 'default' => 'SD'],
+            'no_telp'          => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
+            'email'            => ['type' => 'varchar', 'constraint' => 255],
+            'created_at'       => ['type' => 'datetime', 'null' => true],
+            'updated_at'       => ['type' => 'datetime', 'null' => true],
+            'deleted_at'       => ['type' => 'datetime', 'null' => true],
+        ];
+
+        $this->forge->addField($fields);
+        $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('id_grup', 'auth_groups', 'id', '', 'CASCADE');
+        $this->forge->addForeignKey('id_divisi', 'divisi', 'id', '', 'CASCADE');
+        $this->forge->createTable('karyawan', true);
+
+
+
+
+
         // Users
         $this->forge->addField([
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'id_karyawan'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
+            'id_karyawan'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'name'             => ['type' => 'varchar', 'constraint' => 50, 'null' => true],
             'email'            => ['type' => 'varchar', 'constraint' => 255],
             'username'         => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
@@ -72,6 +99,8 @@ class AuthInitial extends Migration
 
 
 
+
+
         // Auth Login Attempts
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
@@ -86,6 +115,10 @@ class AuthInitial extends Migration
         $this->forge->addKey('user_id');
         // NOTE: Do NOT delete the user_id or email when the user is deleted for security audits
         $this->forge->createTable('auth_logins', true);
+
+
+
+
 
         /*
          * Auth Tokens
@@ -103,6 +136,10 @@ class AuthInitial extends Migration
         $this->forge->addForeignKey('user_id', 'users', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_tokens', true);
 
+
+
+
+
         // Password Reset Table
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
@@ -115,6 +152,10 @@ class AuthInitial extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_reset_attempts', true);
 
+
+
+
+
         // Activation Attempts Table
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
@@ -126,18 +167,9 @@ class AuthInitial extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_activation_attempts', true);
 
-        // Groups Table
-        $fields = [
-            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'id_divisi'   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
-            'name'        => ['type' => 'varchar', 'constraint' => 255],
-            'description' => ['type' => 'varchar', 'constraint' => 255],
-        ];
 
-        $this->forge->addField($fields);
-        $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('id_divisi', 'divisi', 'id', '', 'CASCADE');
-        $this->forge->createTable('auth_groups', true);
+
+
 
         // Permissions Table
         $fields = [
@@ -149,6 +181,10 @@ class AuthInitial extends Migration
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_permissions', true);
+
+
+
+
 
         // Groups/Permissions Table
         $fields = [
@@ -162,6 +198,10 @@ class AuthInitial extends Migration
         $this->forge->addForeignKey('permission_id', 'auth_permissions', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_groups_permissions', true);
 
+
+
+
+
         // Users/Groups Table
         $fields = [
             'group_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
@@ -173,6 +213,10 @@ class AuthInitial extends Migration
         $this->forge->addForeignKey('group_id', 'auth_groups', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('user_id', 'users', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_groups_users', true);
+
+
+
+
 
         // Users/Permissions Table
         $fields = [
@@ -187,14 +231,21 @@ class AuthInitial extends Migration
         $this->forge->createTable('auth_users_permissions', true);
     }
 
+
+
+
     //--------------------------------------------------------------------
+
+
+
 
     public function down()
     {
         // drop constraints first to prevent errors
         if ($this->db->DBDriver !== 'SQLite3') { // @phpstan-ignore-line
+            $this->forge->dropForeignKey('karyawan', 'karyawan_id_grup_foreign');
+            $this->forge->dropForeignKey('karyawan', 'karyawan_id_divisi_foreign');
             $this->forge->dropForeignKey('users', 'users_id_karyawan_foreign');
-            $this->forge->dropForeignKey('auth_groups', 'auth_groups_id_divisi_foreign');
             $this->forge->dropForeignKey('auth_tokens', 'auth_tokens_user_id_foreign');
             $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_group_id_foreign');
             $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_permission_id_foreign');

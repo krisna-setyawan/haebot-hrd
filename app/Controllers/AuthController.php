@@ -49,7 +49,7 @@ class AuthController extends Controller
             $redirectURL = session('redirect_url') ?? site_url('/');
             unset($_SESSION['redirect_url']);
 
-            return redirect()->to('/beranda');
+            return redirect()->to('/dashboard');
         }
 
         // Set a return URL if none is specified

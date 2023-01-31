@@ -15,12 +15,12 @@ class KaryawanModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nama_lengkap', 'alamat', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama',
+        'id_grup', 'id_divisi', 'nik', 'jabatan', 'nama_lengkap', 'alamat', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama',
         'pendidikan', 'no_telp', 'email', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

@@ -16,7 +16,7 @@ class GroupSeeder extends Seeder
 
 
         $groups->insert([
-            'name' => 'Super admin',
+            'name' => 'Grup Super admin',
             'description' => 'Administrator'
         ]);
 
@@ -25,41 +25,71 @@ class GroupSeeder extends Seeder
         // dapat mengakses semua module
 
         // proses ambil semua module atau permision
-        $module_super_admin = $permissions->findAll();
-        foreach ($module_super_admin as $mod_super) {
+        $module_all = $permissions->findAll();
+        foreach ($module_all as $mod_super) {
             // groups adalah model group buatan myth auth untuk menambahkan group kedalam permision
             // method addPermissionToGroup menerima 2 parameter bisa di cek di modelnya
             $groups->addPermissionToGroup($mod_super->id, $groups->getInsertID());
         }
 
-
+        $groups->insert([
+            'name' => 'Grup Owner',
+            'description' => 'Pemilik Perusahaan'
+        ]);
+        foreach ($module_all as $mod_super) {
+            $groups->addPermissionToGroup($mod_super->id, $groups->getInsertID());
+        }
 
         $groups->insert([
-            'name' => 'User',
-            'description' => 'General user'
+            'name' => 'Grup SDM',
+            'description' => 'Pengelola SDM dan User Aplikasi'
         ]);
-
-        // proses ambil module atau permision yang hanya untuk users
-        // user hanya dapat mengakses module 'Profil' dan 'Pengaturan' makanya digunakan where
-        $where = "name='Profil' OR name='Pengaturan'";
-        $module_user = $permissions->where($where)->findAll();
-        foreach ($module_user as $mod_user) {
-            $groups->addPermissionToGroup($mod_user->id, $groups->getInsertID());
+        foreach ($module_all as $mod_super) {
+            $groups->addPermissionToGroup($mod_super->id, $groups->getInsertID());
         }
 
 
 
-        $groups->insert([
-            'name' => 'Limit User',
-            'description' => 'Limited user'
-        ]);
 
-        // proses ambil module atau permision yang hanya untuk users
-        // user hanya dapat mengakses module 'Profil' makanya digunakan where
-        $where = "name='Profil'";
-        $module_user = $permissions->where($where)->findAll();
-        foreach ($module_user as $mod_user) {
-            $groups->addPermissionToGroup($mod_user->id, $groups->getInsertID());
+
+        $groups->insert([
+            'name' => 'Grup Kepala Divisi',
+            'description' => 'Kepala setiap Divisi'
+        ]);
+        $where = "name!='Akuntansi' AND name!='SDM'";
+        $module_kadiv = $permissions->where($where)->findAll();
+        foreach ($module_kadiv as $mod_kadiv) {
+            $groups->addPermissionToGroup($mod_kadiv->id, $groups->getInsertID());
+        }
+
+        $groups->insert([
+            'name' => 'Grup RND',
+            'description' => 'Research & Development'
+        ]);
+        $where = "name='Dashboard' OR name='Data Master' OR name='Produksi' OR name='Gudang' OR name='Inventaris' OR name='Laporan'";
+        $module_rnd = $permissions->where($where)->findAll();
+        foreach ($module_rnd as $mod_rnd) {
+            $groups->addPermissionToGroup($mod_rnd->id, $groups->getInsertID());
+        }
+
+        $groups->insert([
+            'name' => 'Grup Karyawan Penjualan',
+            'description' => 'Admin Penjualan dan CS Penjualan'
+        ]);
+        $where = "name='Dashboard' OR name='Penjualan' OR name='Gudang'";
+        $module_penjualan = $permissions->where($where)->findAll();
+        foreach ($module_penjualan as $mod_penjualan) {
+            $groups->addPermissionToGroup($mod_penjualan->id, $groups->getInsertID());
+        }
+
+        $groups->insert([
+            'name' => 'Grup Karyawan Pembelian',
+            'description' => 'Admin Pembelian dan CS Pembelian'
+        ]);
+        $where = "name='Dashboard' OR name='Pembelian' OR name='Gudang'";
+        $module_pembelian = $permissions->where($where)->findAll();
+        foreach ($module_pembelian as $mod_pembelian) {
+            $groups->addPermissionToGroup($mod_pembelian->id, $groups->getInsertID());
         }
     }
 }

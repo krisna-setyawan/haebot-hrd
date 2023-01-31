@@ -4,7 +4,7 @@
 
 
 <main class="p-md-3 p-2">
-    <h3 style="color: #566573;">Beranda</h3>
+    <h3 style="color: #566573;">Dashboard</h3>
 
 </main>
 

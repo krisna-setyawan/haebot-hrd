@@ -24,6 +24,16 @@ class Menu extends BaseController
         return view('menu_penjualan');
     }
 
+    public function Gudang()
+    {
+        return view('menu_gudang');
+    }
+
+    public function Inventaris()
+    {
+        return view('menu_inventaris');
+    }
+
     public function Akuntansi()
     {
         return view('menu_akuntansi');
