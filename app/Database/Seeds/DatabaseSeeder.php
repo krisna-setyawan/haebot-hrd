@@ -12,5 +12,6 @@ class DatabaseSeeder extends Seeder
         $this->call('PermissionSeeder');
         $this->call('GroupSeeder');
         $this->call('UserSeeder');
+        $this->call('SupplierSeeder');
     }
 }

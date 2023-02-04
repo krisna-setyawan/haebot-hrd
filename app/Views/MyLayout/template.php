@@ -9,7 +9,6 @@
     <meta name="author" content="" />
     <title>Haebot</title>
 
-    <link href="<?= base_url() ?>/template/css/datatable-style.css" rel="stylesheet" />
     <link href="<?= base_url() ?>/template/css/styles.css" rel="stylesheet" />
 
     <script src="<?= base_url() ?>/template/js/font-awesome-all.js" crossorigin="anonymous"></script>
@@ -83,8 +82,6 @@
 
     <script src="<?= base_url() ?>/template/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="<?= base_url() ?>/template/js/scripts.js"></script>
-    <script src="<?= base_url() ?>/template/assets/demo/simple-datatables@latest.js" crossorigin="anonymous"></script>
-    <script src="<?= base_url() ?>/template/js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

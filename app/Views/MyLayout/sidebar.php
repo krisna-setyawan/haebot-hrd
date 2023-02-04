@@ -17,7 +17,7 @@
                     </a>
                 <?php endif; ?>
                 <?php if (has_permission('Data Master')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/master">
+                    <a class="nav-link" href="<?= base_url() ?>/master">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-regular fa-folder-open"></i>
                         </div>
@@ -32,7 +32,7 @@
                 <?php endif; ?>
 
                 <?php if (has_permission('Pembelian')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/pembelian">
+                    <a class="nav-link" href="<?= base_url() ?>/pembelian">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-circle-down"></i>
                         </div>
@@ -40,7 +40,7 @@
                     </a>
                 <?php endif; ?>
                 <?php if (has_permission('Penjualan')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/penjualan">
+                    <a class="nav-link" href="<?= base_url() ?>/penjualan">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-circle-up"></i>
                         </div>
@@ -48,7 +48,7 @@
                     </a>
                 <?php endif; ?>
                 <?php if (has_permission('Produksi')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/produksi">
+                    <a class="nav-link" href="<?= base_url() ?>/produksi">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-list-check"></i>
                         </div>
@@ -63,7 +63,7 @@
                 <?php endif; ?>
 
                 <?php if (has_permission('Gudang')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/gudang">
+                    <a class="nav-link" href="<?= base_url() ?>/gudang">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-warehouse"></i>
                         </div>
@@ -71,7 +71,7 @@
                     </a>
                 <?php endif; ?>
                 <?php if (has_permission('Inventaris')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/inventaris">
+                    <a class="nav-link" href="<?= base_url() ?>/inventaris">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-table-list"></i>
                         </div>
@@ -86,7 +86,7 @@
                 <?php endif; ?>
 
                 <?php if (has_permission('Akuntansi')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/akuntansi">
+                    <a class="nav-link" href="<?= base_url() ?>/akuntansi">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-calculator"></i>
                         </div>
@@ -94,7 +94,7 @@
                     </a>
                 <?php endif; ?>
                 <?php if (has_permission('SDM')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/sdm">
+                    <a class="nav-link" href="<?= base_url() ?>/sdm">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-user-group"></i>
                         </div>
@@ -102,7 +102,7 @@
                     </a>
                 <?php endif; ?>
                 <?php if (has_permission('Laporan')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/menu/laporan">
+                    <a class="nav-link" href="<?= base_url() ?>/laporan">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-chart-simple"></i>
                         </div>

@@ -19,7 +19,7 @@ $routes->set404Override();
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-$routes->setAutoRoute(false);
+// $routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -35,17 +35,20 @@ $routes->get('/', 'AuthController::login');
 $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->get('/dashboard', 'Dashboard::index', ['filter' => 'permission:Dashboard']);
 
-    $routes->get('/menu/master', 'Menu::Data_master', ['filter' => 'permission:Data Master']);
-    $routes->get('/menu/pembelian', 'Menu::Pembelian', ['filter' => 'permission:Pembelian']);
-    $routes->get('/menu/penjualan', 'Menu::Penjualan', ['filter' => 'permission:Penjualan']);
-    $routes->get('/menu/produksi', 'Menu::Produksi', ['filter' => 'permission:Produksi']);
-    $routes->get('/menu/gudang', 'Menu::Gudang', ['filter' => 'permission:Gudang']);
-    $routes->get('/menu/inventaris', 'Menu::Inventaris', ['filter' => 'permission:Inventaris']);
-    $routes->get('/menu/akuntansi', 'Menu::Akuntansi', ['filter' => 'permission:Akuntansi']);
-    $routes->get('/menu/sdm', 'Menu::SDM', ['filter' => 'permission:SDM']);
-    $routes->get('/menu/laporan', 'Menu::Laporan', ['filter' => 'permission:Laporan']);
+    $routes->get('master', 'Menu::Data_master', ['filter' => 'permission:Data Master']);
+    $routes->get('pembelian', 'Menu::Pembelian', ['filter' => 'permission:Pembelian']);
+    $routes->get('penjualan', 'Menu::Penjualan', ['filter' => 'permission:Penjualan']);
+    $routes->get('produksi', 'Menu::Produksi', ['filter' => 'permission:Produksi']);
+    $routes->get('gudang', 'Menu::Gudang', ['filter' => 'permission:Gudang']);
+    $routes->get('inventaris', 'Menu::Inventaris', ['filter' => 'permission:Inventaris']);
+    $routes->get('akuntansi', 'Menu::Akuntansi', ['filter' => 'permission:Akuntansi']);
+    $routes->get('sdm', 'Menu::SDM', ['filter' => 'permission:SDM']);
+    $routes->get('laporan', 'Menu::Laporan', ['filter' => 'permission:Laporan']);
 
-    // $routes->resource('group', ['filter' => 'permission:Master Group']);
+    $routes->resource('supplier', ['filter' => 'permission:Data Master']);
+    $routes->resource('customer', ['filter' => 'permission:Data Master']);
+    $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
+    $routes->resource('jasa', ['filter' => 'permission:Data Master']);
 });
 
 /*
