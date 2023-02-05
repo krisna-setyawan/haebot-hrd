@@ -23,6 +23,7 @@ class Supplier extends Migration
 
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
+        $this->forge->addUniqueKey('nama');
         $this->forge->createTable('supplier', true);
     }
 

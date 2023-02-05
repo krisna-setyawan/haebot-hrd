@@ -11,7 +11,7 @@ class SupplierSeeder extends Seeder
     {
         $supplier = new SupplierModel();
 
-        $supplier->table('suplier')->insert(
+        $supplier->save(
             [
                 'nama' => 'Suplier 1',
                 'slug' => url_title('Suplier 1', '-', true),
@@ -20,7 +20,7 @@ class SupplierSeeder extends Seeder
                 'no_telp' => '08554651232',
             ]
         );
-        $supplier->table('suplier')->insert(
+        $supplier->save(
             [
                 'nama' => 'Suplier 2',
                 'slug' => url_title('Suplier 2', '-', true),

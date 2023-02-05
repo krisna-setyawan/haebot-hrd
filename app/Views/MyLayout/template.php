@@ -9,24 +9,7 @@
     <meta name="author" content="" />
     <title>Haebot</title>
 
-    <link href="<?= base_url() ?>/template/css/styles.css" rel="stylesheet" />
-
-    <script src="<?= base_url() ?>/template/js/font-awesome-all.js" crossorigin="anonymous"></script>
-
-    <style>
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .div-menu::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .div-menu {
-            -ms-overflow-style: none;
-            /* IE and Edge */
-            scrollbar-width: none;
-            /* Firefox */
-        }
-    </style>
+    <?= $this->include('MyLayout/css') ?>
 </head>
 
 <body class="sb-nav-fixed">
@@ -79,9 +62,6 @@
         <!-- CONTENT -->
     </div>
 
-
-    <script src="<?= base_url() ?>/template/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 </body>
 
 </html>

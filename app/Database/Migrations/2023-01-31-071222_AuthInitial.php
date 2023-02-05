@@ -26,9 +26,12 @@ class AuthInitial extends Migration
 
         // Divisi
         $fields = [
-            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'        => ['type' => 'varchar', 'constraint' => 255],
-            'deskripsi'   => ['type' => 'varchar', 'constraint' => 255],
+            'id'                => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'nama'              => ['type' => 'varchar', 'constraint' => 255],
+            'deskripsi'         => ['type' => 'varchar', 'constraint' => 255],
+            'created_at'        => ['type' => 'datetime', 'null' => true],
+            'updated_at'        => ['type' => 'datetime', 'null' => true],
+            'deleted_at'        => ['type' => 'datetime', 'null' => true],
         ];
 
         $this->forge->addField($fields);

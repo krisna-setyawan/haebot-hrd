@@ -2,6 +2,7 @@
 
 namespace App\Database\Seeds;
 
+use App\Models\DivisiModel;
 use CodeIgniter\Database\Seeder;
 
 class DivisiSeeder extends Seeder
@@ -18,8 +19,10 @@ class DivisiSeeder extends Seeder
             'Marketing',
         ];
 
+        $divisi = new DivisiModel();
+
         foreach ($data as $key => $value) {
-            $this->db->table('divisi')->insert(['nama' => $value, 'deskripsi' => '-']);
+            $divisi->save(['nama' => $value, 'deskripsi' => '-']);
         }
     }
 }

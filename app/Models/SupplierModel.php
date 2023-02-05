@@ -12,7 +12,7 @@ class SupplierModel extends Model
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
         'nama', 'slug', 'pemilik', 'alamat', 'no_telp', 'created_at', 'updated_at', 'deleted_at',

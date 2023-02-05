@@ -7,6 +7,7 @@ use CodeIgniter\RESTful\ResourcePresenter;
 
 class Supplier extends ResourcePresenter
 {
+    protected $helpers = ['form'];
     /**
      * Present a view of resource objects
      *
@@ -43,7 +44,8 @@ class Supplier extends ResourcePresenter
      */
     public function new()
     {
-        //
+        $data = ['validation' => \Config\Services::validation()];
+        return view('data_master/supplier/add', $data);
     }
 
     /**
@@ -54,7 +56,54 @@ class Supplier extends ResourcePresenter
      */
     public function create()
     {
-        //
+        $validasi = [
+            'nama' => [
+                'rules' => 'required|is_unique[supplier.nama]',
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                    'is_unique' => 'nama supplier sudah ada dalam database.'
+                ]
+            ],
+            'pemilik' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No telepon supplier harus diisi.',
+                ]
+            ],
+        ];
+
+        if (!$this->validate($validasi)) {
+            return redirect()->to('/supplier/new')->withInput();
+        }
+
+        $modelSupplier = new SupplierModel();
+
+        $slug = url_title($this->request->getPost('nama'), '-', true);
+
+        $data = [
+            'nama' => $this->request->getPost('nama'),
+            'slug' => $slug,
+            'pemilik' => $this->request->getPost('pemilik'),
+            'alamat' => $this->request->getPost('alamat'),
+            'no_telp' => $this->request->getPost('no_telp'),
+        ];
+        $modelSupplier->save($data);
+
+        session()->setFlashdata('pesan', 'Data berhasil ditambahkan.');
+
+        return redirect()->to('/supplier');
     }
 
     /**
@@ -66,7 +115,14 @@ class Supplier extends ResourcePresenter
      */
     public function edit($id = null)
     {
-        //
+        $modelSupplier = new SupplierModel();
+
+        $data = [
+            'validation' => \Config\Services::validation(),
+            'supplier' => $modelSupplier->where(['slug' => $id])->first()
+        ];
+
+        return view('data_master/supplier/edit', $data);
     }
 
     /**
@@ -79,7 +135,62 @@ class Supplier extends ResourcePresenter
      */
     public function update($id = null)
     {
-        //
+        $modelSupplier = new SupplierModel();
+        $old_supplier = $modelSupplier->find($id);
+
+        if ($old_supplier['nama'] == $this->request->getPost('nama')) {
+            $rule_nama = 'required';
+        } else {
+            $rule_nama = 'required|is_unique[supplier.nama]';
+        }
+
+        $validasi = [
+            'nama' => [
+                'rules' => $rule_nama,
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                    'is_unique' => 'nama supplier sudah ada dalam database.'
+                ]
+            ],
+            'pemilik' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No telepon supplier harus diisi.',
+                ]
+            ],
+        ];
+
+        if (!$this->validate($validasi)) {
+            return redirect()->to('/supplier/' . $old_supplier["slug"] . '/edit')->withInput();
+        }
+
+        $slug = url_title($this->request->getPost('nama'), '-', true);
+
+        $data = [
+            'id'        => $id,
+            'nama'      => $this->request->getPost('nama'),
+            'slug'      => $slug,
+            'pemilik'   => $this->request->getPost('pemilik'),
+            'alamat'    => $this->request->getPost('alamat'),
+            'no_telp'   => $this->request->getPost('no_telp'),
+        ];
+        $modelSupplier->save($data);
+
+        session()->setFlashdata('pesan', 'Data berhasil diedit.');
+
+        return redirect()->to('/supplier');
     }
 
     /**
@@ -103,6 +214,11 @@ class Supplier extends ResourcePresenter
      */
     public function delete($id = null)
     {
-        //
+        $modelSupplier = new SupplierModel();
+
+        $modelSupplier->delete($id);
+
+        session()->setFlashdata('pesan', 'Data berhasil dihapus.');
+        return redirect()->to('/supplier');
     }
 }
