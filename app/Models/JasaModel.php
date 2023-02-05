@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class JasaModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'jasas';
+    protected $table            = 'jasa';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;

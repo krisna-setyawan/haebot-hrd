@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class CustomerModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'customers';
+    protected $table            = 'customer';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;

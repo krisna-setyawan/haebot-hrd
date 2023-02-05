@@ -7,12 +7,12 @@
 
     <div class="d-flex mb-0">
         <div class="me-auto">
-            <h3 style="color: #566573;">Data Supplier</h3>
+            <h3 style="color: #566573;">Data Jasa</h3>
         </div>
         <div>
-            <a href="<?= site_url() ?>supplier/new">
+            <a href="<?= site_url() ?>jasa/new">
                 <button class="btn btn-sm btn-secondary mb-3">
-                    Tambah Supplier <i class="fa-fw fa-solid fa-plus"></i>
+                    Tambah Jasa <i class="fa-fw fa-solid fa-plus"></i>
                 </button>
             </a>
         </div>
@@ -20,31 +20,28 @@
 
     <hr class="mt-0 mb-4">
 
-
     <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered" id="tabel">
             <thead>
                 <tr>
                     <th class="text-center" width="5%">No</th>
-                    <th class="text-center" width="20%">Nama</th>
-                    <th class="text-center" width="15%">Pemilik</th>
-                    <th class="text-center" width="30%">Alamat</th>
-                    <th class="text-center" width="15%">Telp</th>
+                    <th class="text-center" width="25%">Nama</th>
+                    <th class="text-center" width="40%">Deskripsi</th>
+                    <th class="text-center" width="15%">Biaya</th>
                     <th class="text-center" width="15%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $no = 1 ?>
-                <?php foreach ($supplier as $sp) : ?>
+                <?php foreach ($jasa as $sp) : ?>
                     <tr>
                         <td><?= $no++ ?></td>
                         <td><?= $sp['nama'] ?></td>
-                        <td><?= $sp['pemilik'] ?></td>
-                        <td><?= $sp['alamat'] ?></td>
-                        <td><?= $sp['no_telp'] ?></td>
+                        <td><?= $sp['deskripsi'] ?></td>
+                        <td>Rp. <?= number_format($sp['biaya'], 0, ',', '.') ?></td>
                         <td class="text-center">
                             <!-- <button title="Detail" class="btn btn-sm btn-secondary"><i class="fa-fw fa-solid fa-magnifying-glass"></i></button> -->
-                            <a href="<?= site_url() ?>supplier/<?= $sp['slug'] ?>/edit">
+                            <a href="<?= site_url() ?>jasa/<?= $sp['slug'] ?>/edit">
                                 <button title="Edit" class="btn btn-sm btn-primary"><i class="fa-fw fa-solid fa-pen"></i></button>
                             </a>
 
@@ -107,7 +104,7 @@
             confirmButtonText: 'Ya, hapus!'
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#form_delete').attr('action', '<?= site_url() ?>supplier/' + id);
+                $('#form_delete').attr('action', '<?= site_url() ?>jasa/' + id);
                 $('#form_delete').submit();
             }
         })

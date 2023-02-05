@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class EkspedisiModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'ekspedisis';
+    protected $table            = 'ekspedisi';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
