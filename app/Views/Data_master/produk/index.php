@@ -25,10 +25,11 @@
             <thead>
                 <tr>
                     <th class="text-center" width="5%">No</th>
-                    <th class="text-center" width="35%">Nama</th>
-                    <th class="text-center" width="15%">Jenis</th>
+                    <th class="text-center" width="30%">Nama</th>
+                    <th class="text-center" width="10%">Jenis</th>
                     <th class="text-center" width="15%">Harga Beli</th>
                     <th class="text-center" width="15%">Harga Jual</th>
+                    <th class="text-center" width="10%">Stok</th>
                     <th class="text-center" width="15%">Aksi</th>
                 </tr>
             </thead>
@@ -41,6 +42,7 @@
                         <td><?= $sp['jenis'] ?></td>
                         <td>Rp. <?= number_format($sp['harga_beli'], 0, ',', '.') ?></td>
                         <td>Rp. <?= number_format($sp['harga_jual'], 0, ',', '.') ?></td>
+                        <td><?= $sp['stok'] ?></td>
                         <td class="text-center">
                             <a href="<?= site_url() ?>produk/<?= $sp['id'] ?>">
                                 <button title="Stok Virtual" class="btn btn-sm btn-info"><i class="fa-fw fa-solid fa-magnifying-glass"></i></button>

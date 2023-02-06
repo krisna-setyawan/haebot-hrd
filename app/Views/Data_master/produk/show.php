@@ -48,6 +48,12 @@
                         </div>
                         <div class="fw-bold"><?= ($jenis_produk == 'SET' || $jenis_produk == 'SINGLE') ? $bisa_membuat : $bisa_dipecah ?></div>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Stok Total</div>
+                        </div>
+                        <div class="fw-bold"><?= ($jenis_produk == 'SET' || $jenis_produk == 'SINGLE') ? ($bisa_membuat + $produk['stok']) : ($bisa_dipecah + $produk['stok']) ?></div>
+                    </li>
                 </ol>
             </div>
 
@@ -66,8 +72,8 @@
                             <tr class="text-center">
                                 <th width="10%" width="10%">No</th>
                                 <th width="30%">Produk</th>
-                                <th width="20%">Butuh</th>
                                 <th width="20%">Stok</th>
+                                <th width="20%">Butuh</th>
                                 <th width="20%">Bisa membuat</th>
                             </tr>
                         </thead>
@@ -77,8 +83,8 @@
                                 <tr>
                                     <td class="text-center"><?= $no++ ?></td>
                                     <td><?= $vs['nama_produk'] ?></td>
-                                    <td class="text-center"><?= $vs['qty_bahan'] ?></td>
                                     <td class="text-center"><?= $vs['stok_bahan'] ?></td>
+                                    <td class="text-center"><?= $vs['qty_bahan'] ?></td>
                                     <td class="text-center"><?= $vs['bisa_membuat'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -101,8 +107,8 @@
                             <tr class="text-center">
                                 <th width="10%" width="10%">No</th>
                                 <th width="30%">Produk</th>
-                                <th width="20%">Pecahan</th>
                                 <th width="20%">Stok</th>
+                                <th width="20%">Pecahan</th>
                                 <th width="20%">Bisa dipecah</th>
                             </tr>
                         </thead>
@@ -112,8 +118,8 @@
                                 <tr>
                                     <td class="text-center"><?= $no++ ?></td>
                                     <td><?= $vs['nama_produk'] ?></td>
-                                    <td class="text-center"><?= $vs['qty_bahan'] ?></td>
                                     <td class="text-center"><?= $vs['stok_jadi'] ?></td>
+                                    <td class="text-center"><?= $vs['qty_bahan'] ?></td>
                                     <td class="text-center"><?= $vs['bisa_dipecah'] ?></td>
                                 </tr>
                             <?php endforeach; ?>

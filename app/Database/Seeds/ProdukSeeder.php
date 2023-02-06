@@ -12,7 +12,7 @@ class ProdukSeeder extends Seeder
     {
         $modelProduk = new ProdukModel();
 
-        $modelProduk->save([
+        $modelProduk->save([                // 1
             'nama'          => 'komputer',
             'slug'          => 'komputer',
             'jenis'         => 'SET',
@@ -20,7 +20,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '1500000',
             'stok'          => '3',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 2
             'nama'          => 'motor',
             'slug'          => 'motor',
             'jenis'         => 'SET',
@@ -28,7 +28,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '7500000',
             'stok'          => '5',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 3
             'nama'          => 'roda',
             'slug'          => 'roda',
             'jenis'         => 'SINGLE',
@@ -36,7 +36,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '600000',
             'stok'          => '10',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 4
             'nama'          => 'ssd',
             'slug'          => 'ssd',
             'jenis'         => 'SINGLE',
@@ -44,7 +44,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '400000',
             'stok'          => '2',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 5
             'nama'          => 'prosesor',
             'slug'          => 'prosesor',
             'jenis'         => 'SINGLE',
@@ -52,7 +52,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '20000',
             'stok'          => '4',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 6
             'nama'          => 'rangka motor',
             'slug'          => 'rangka-motor',
             'jenis'         => 'SINGLE',
@@ -60,7 +60,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '200000',
             'stok'          => '1',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 7
             'nama'          => 'ram',
             'slug'          => 'ram',
             'jenis'         => 'SINGLE',
@@ -68,7 +68,7 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '250000',
             'stok'          => '6',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 8
             'nama'          => 'baut set',
             'slug'          => 'baut-set',
             'jenis'         => 'SINGLE',
@@ -76,13 +76,37 @@ class ProdukSeeder extends Seeder
             'harga_jual'    => '75000',
             'stok'          => '6',
         ]);
-        $modelProduk->save([
+        $modelProduk->save([                // 9
             'nama'          => 'baut',
             'slug'          => 'baut',
             'jenis'         => 'ECER',
             'harga_beli'    => '2000',
             'harga_jual'    => '3000',
             'stok'          => '6',
+        ]);
+        $modelProduk->save([                // 10
+            'nama'          => 'besi single',
+            'slug'          => 'besi-single',
+            'jenis'         => 'SINGLE',
+            'harga_beli'    => '40000',
+            'harga_jual'    => '70000',
+            'stok'          => '2',
+        ]);
+        $modelProduk->save([                // 11
+            'nama'          => 'eceran besi',
+            'slug'          => 'eceran-besi',
+            'jenis'         => 'ECER',
+            'harga_beli'    => '10000',
+            'harga_jual'    => '15000',
+            'stok'          => '3',
+        ]);
+        $modelProduk->save([                // 12
+            'nama'          => 'besi single panjang',
+            'slug'          => 'besi-single-panjang',
+            'jenis'         => 'SINGLE',
+            'harga_beli'    => '100000',
+            'harga_jual'    => '150000',
+            'stok'          => '2',
         ]);
 
 
@@ -127,13 +151,30 @@ class ProdukSeeder extends Seeder
         ]);
         $modelProdukPlan->save([
             'id_produk_jadi'    => 2,  // motor
-            'id_produk_bahan'   => 8,  // ram
+            'id_produk_bahan'   => 8,  // baut set
             'qty_bahan'         => 1,
         ]);
         $modelProdukPlan->save([
             'id_produk_jadi'    => 2,  // motor
-            'id_produk_bahan'   => 9,  // baut set
-            'qty_bahan'         => 4,
+            'id_produk_bahan'   => 10,  // besi single
+            'qty_bahan'         => 2,
+        ]);
+
+
+
+
+        // Besi single
+        $modelProdukPlan->save([
+            'id_produk_jadi'    => 10,  // besi single
+            'id_produk_bahan'   => 11,  // besi ecer
+            'qty_bahan'         => 3,
+        ]);
+
+        // Besi single panjang
+        $modelProdukPlan->save([
+            'id_produk_jadi'    => 12,  // besi single
+            'id_produk_bahan'   => 11,  // besi ecer
+            'qty_bahan'         => 5,
         ]);
     }
 }

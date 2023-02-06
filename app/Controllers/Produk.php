@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ProdukModel;
+use App\Models\ProdukPlanModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
 class Produk extends ResourcePresenter
@@ -35,13 +36,15 @@ class Produk extends ResourcePresenter
     public function show($id = null)
     {
         $modelProduk = new ProdukModel();
+        $modelProdukPlan = new ProdukPlanModel();
+
         $produk = $modelProduk->find($id);
 
         if ($produk['jenis'] == 'SET' || $produk['jenis'] == 'SINGLE') {
-            $virtual_stok = hitung_virtual_stok_dari_bahan($id);
-            $bisa_membuat = min(array_column($virtual_stok, 'bisa_membuat'));
-
-            if ($virtual_stok['result'] == 'ok') {
+            $produkPlan = $modelProdukPlan->where(['id_produk_jadi' => $id])->findAll();
+            if ($produkPlan) {
+                $virtual_stok = hitung_virtual_stok_dari_bahan($id);
+                $bisa_membuat = min(array_column($virtual_stok, 'bisa_membuat'));
                 $data = [
                     'jenis_produk'  => $produk['jenis'],
                     'produk'        => $produk,
@@ -61,13 +64,13 @@ class Produk extends ResourcePresenter
                 ];
             }
         } else {
-            $virtual_stok = hitung_virtual_stok_dari_set($id);
-            $bisa_dipecah = 0;
-            foreach ($virtual_stok as $stok) {
-                $bisa_dipecah += $stok['bisa_dipecah'];
-            }
-
-            if ($virtual_stok['result'] == 'ok') {
+            $produkPlan = $modelProdukPlan->where(['id_produk_bahan' => $id])->findAll();
+            if ($produkPlan) {
+                $virtual_stok = hitung_virtual_stok_dari_set($id);
+                $bisa_dipecah = 0;
+                foreach ($virtual_stok as $stok) {
+                    $bisa_dipecah += $stok['bisa_dipecah'];
+                }
                 $data = [
                     'jenis_produk'  => $produk['jenis'],
                     'produk'        => $produk,
@@ -87,6 +90,7 @@ class Produk extends ResourcePresenter
                 ];
             }
         }
+
 
 
 
