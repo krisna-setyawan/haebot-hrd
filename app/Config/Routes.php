@@ -49,6 +49,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->resource('customer', ['filter' => 'permission:Data Master']);
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
+    $routes->resource('produk', ['filter' => 'permission:Data Master']);
 });
 
 /*
