@@ -41,48 +41,81 @@ class Produk extends ResourcePresenter
         $produk = $modelProduk->find($id);
 
         if ($produk['jenis'] == 'SET' || $produk['jenis'] == 'SINGLE') {
+
             $produkPlan = $modelProdukPlan->where(['id_produk_jadi' => $id])->findAll();
             if ($produkPlan) {
+
+                $list_plan = array_column($produkPlan, 'id_produk_bahan');
+                array_push($list_plan, $id);
+
+                $builder = $modelProduk->builder();
+                $builder->select('*');
+                $builder->whereNotIn('id', $list_plan);
+                $builder->orderBy('jenis', 'asc');
+                $all_plan = $builder->get()->getResultArray();
+
                 $virtual_stok = hitung_virtual_stok_dari_bahan($id);
+
                 $bisa_membuat = min(array_column($virtual_stok, 'bisa_membuat'));
+
                 $data = [
                     'jenis_produk'  => $produk['jenis'],
                     'produk'        => $produk,
+                    'all_plan'      => $all_plan,
                     'virtual_stok'  => $virtual_stok,
                     'bisa_membuat'  => $bisa_membuat,
                     'bisa_dipecah'  => 0,
                     'result'        => 'ok',
                 ];
             } else {
+                $all_plan = $modelProduk->findAll();
                 $data = [
                     'jenis_produk'  => $produk['jenis'],
                     'produk'        => $produk,
+                    'all_plan'      => $all_plan,
                     'virtual_stok'  => '',
                     'bisa_membuat'  => 0,
                     'bisa_dipecah'  => 0,
-                    'result'        => 'tidak memiliki bahan.',
+                    'result'        => 'tidak memiliki komponen.',
                 ];
             }
         } else {
+
             $produkPlan = $modelProdukPlan->where(['id_produk_bahan' => $id])->findAll();
+
             if ($produkPlan) {
+
+                $list_plan = array_column($produkPlan, 'id_produk_jadi');
+                array_push($list_plan, $id);
+
+                $builder = $modelProduk->builder();
+                $builder->select('*');
+                $builder->whereNotIn('id', $list_plan);
+                $builder->orderBy('jenis', 'asc');
+                $all_plan = $builder->get()->getResultArray();
+
                 $virtual_stok = hitung_virtual_stok_dari_set($id);
+
                 $bisa_dipecah = 0;
+
                 foreach ($virtual_stok as $stok) {
                     $bisa_dipecah += $stok['bisa_dipecah'];
                 }
                 $data = [
                     'jenis_produk'  => $produk['jenis'],
                     'produk'        => $produk,
+                    'all_plan'      => $all_plan,
                     'virtual_stok'  => $virtual_stok,
                     'bisa_membuat'  => 0,
                     'bisa_dipecah'  => $bisa_dipecah,
                     'result'        => 'ok',
                 ];
             } else {
+                $all_plan = $modelProduk->findAll();
                 $data = [
                     'jenis_produk'  => $produk['jenis'],
                     'produk'        => $produk,
+                    'all_plan'      => $all_plan,
                     'virtual_stok'  => '',
                     'bisa_membuat'  => 0,
                     'bisa_dipecah'  => 0,
@@ -90,9 +123,6 @@ class Produk extends ResourcePresenter
                 ];
             }
         }
-
-
-
 
         return view('data_master/produk/show', $data);
     }

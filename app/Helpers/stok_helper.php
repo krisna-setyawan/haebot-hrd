@@ -15,7 +15,7 @@ function hitung_virtual_stok_dari_bahan($id)
     $list_bahan = $db->query($q)->getResultArray();
 
     foreach ($list_bahan as $index => $bahan) {
-        $produk_bahan = $modelProduk->find($bahan['id']);
+        $produk_bahan = $modelProduk->find($bahan['id_produk_bahan']);
 
         $list_bahan[$index]['stok_bahan'] = $produk_bahan['stok'];
 

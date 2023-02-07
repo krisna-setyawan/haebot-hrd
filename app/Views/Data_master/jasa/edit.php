@@ -27,8 +27,8 @@
                     <div class="input-group">
                         <span class="input-group-text">Rp.</span>
                         <input type="text" class="form-control <?= (validation_show_error('biaya')) ? 'is-invalid' : ''; ?>" id="biaya" name="biaya" value="<?= old('biaya', $jasa['biaya']); ?>">
+                        <div class="invalid-feedback"><?= validation_show_error('biaya'); ?></div>
                     </div>
-                    <div class="invalid-feedback"><?= validation_show_error('biaya'); ?></div>
                 </div>
             </div>
             <div class="row mb-3">

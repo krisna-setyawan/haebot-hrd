@@ -50,6 +50,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
     $routes->resource('produk', ['filter' => 'permission:Data Master']);
+    $routes->post('produkplan', 'ProdukPlan::create', ['filter' => 'permission:Data Master']);
 });
 
 /*
