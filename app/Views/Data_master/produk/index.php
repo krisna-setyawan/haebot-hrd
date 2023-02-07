@@ -6,14 +6,17 @@
 <main class="p-md-3 p-2">
 
     <div class="d-flex mb-0">
-        <div class="me-auto">
+        <div class="me-auto mb-1">
             <h3 style="color: #566573;">Data Produk</h3>
         </div>
-        <div>
-            <a href="<?= site_url() ?>produk/new">
-                <button class="btn btn-sm btn-secondary mb-3">
-                    Tambah Produk <i class="fa-fw fa-solid fa-plus"></i>
-                </button>
+        <div class="me-2 mb-1">
+            <a class="btn btn-sm btn-outline-dark" href="<?= site_url() ?>master">
+                <i class="fa-fw fa-solid fa-arrow-left"></i> Kembali
+            </a>
+        </div>
+        <div class="mb-1">
+            <a class="btn btn-sm btn-outline-secondary mb-3" href="<?= site_url() ?>produk/new">
+                <i class="fa-fw fa-solid fa-plus"></i> Tambah Produk
             </a>
         </div>
     </div>
@@ -44,19 +47,19 @@
                         <td>Rp. <?= number_format($sp['harga_jual'], 0, ',', '.') ?></td>
                         <td><?= $sp['stok'] ?></td>
                         <td class="text-center">
-                            <a href="<?= site_url() ?>produk/<?= $sp['id'] ?>">
-                                <button title="Stok Virtual" class="btn btn-sm btn-info"><i class="fa-fw fa-solid fa-magnifying-glass"></i></button>
+                            <a title="Stok Virtual" class="px-2 py-0 btn btn-sm btn-outline-dark" href="<?= site_url() ?>produk/<?= $sp['id'] ?>">
+                                <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
 
-                            <a href="<?= site_url() ?>produk/<?= $sp['slug'] ?>/edit">
-                                <button title="Edit" class="btn btn-sm btn-warning"><i class="fa-fw fa-solid fa-pen"></i></button>
+                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>produk/<?= $sp['slug'] ?>/edit">
+                                <i class="fa-fw fa-solid fa-pen"></i>
                             </a>
 
                             <form id="form_delete" method="POST" class="d-inline">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="_method" value="DELETE">
                             </form>
-                            <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="btn btn-sm btn-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                            <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

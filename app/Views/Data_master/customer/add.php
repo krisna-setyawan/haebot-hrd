@@ -3,8 +3,9 @@
 <?= $this->section('content') ?>
 
 <main class="p-md-3 p-2">
-    <h3 class="mb-4" style="color: #566573;">Tambah Customer</h3>
+    <h3 class="mb-3" style="color: #566573;">Tambah Customer</h3>
 
+    <hr class="mt-0 mb-4">
 
     <div class="col-md-10 mt-4">
 
@@ -35,10 +36,10 @@
             </div>
 
             <div class="col-md-9 offset-3">
-                <a href="<?= site_url() ?>customer">
-                    <button class="btn px-5 btn-danger" type="button">Batal <i class="fa-fw fa-solid fa-xmark"></i></button>
+                <a class="btn px-5 btn-outline-danger" href="<?= site_url() ?>customer">
+                    Batal <i class="fa-fw fa-solid fa-xmark"></i>
                 </a>
-                <button class="btn px-5 btn-primary" type="submit">Simpan <i class="fa-fw fa-solid fa-check"></i></button>
+                <button class="btn px-5 btn-outline-primary" type="submit">Simpan <i class="fa-fw fa-solid fa-check"></i></button>
             </div>
         </form>
 

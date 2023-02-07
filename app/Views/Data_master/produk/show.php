@@ -3,7 +3,8 @@
 <?= $this->section('content') ?>
 
 <main class="p-md-3 p-2">
-    <h3 style="color: #566573;">Detail Produk dan Stok</h3>
+    <h3 class="mb-3" style="color: #566573;">Detail Produk dan Stok</h3>
+
     <hr class="mt-0 mb-4">
 
     <div class="row justify-content-between">

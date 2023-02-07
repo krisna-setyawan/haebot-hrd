@@ -6,14 +6,17 @@
 <main class="p-md-3 p-2">
 
     <div class="d-flex mb-0">
-        <div class="me-auto">
+        <div class="me-auto mb-1">
             <h3 style="color: #566573;">Data Customer</h3>
         </div>
-        <div>
-            <a href="<?= site_url() ?>customer/new">
-                <button class="btn btn-sm btn-secondary mb-3">
-                    Tambah Customer <i class="fa-fw fa-solid fa-plus"></i>
-                </button>
+        <div class="me-2 mb-1">
+            <a class="btn btn-sm btn-outline-dark" href="<?= site_url() ?>master">
+                <i class="fa-fw fa-solid fa-arrow-left"></i> Kembali
+            </a>
+        </div>
+        <div class="mb-1">
+            <a class="btn btn-sm btn-outline-secondary" href="<?= site_url() ?>customer/new">
+                <i class="fa-fw fa-solid fa-plus"></i> Tambah Customer
             </a>
         </div>
     </div>
@@ -40,16 +43,15 @@
                         <td><?= $sp['alamat'] ?></td>
                         <td><?= $sp['no_telp'] ?></td>
                         <td class="text-center">
-                            <!-- <button title="Detail" class="btn btn-sm btn-secondary"><i class="fa-fw fa-solid fa-magnifying-glass"></i></button> -->
-                            <a href="<?= site_url() ?>customer/<?= $sp['slug'] ?>/edit">
-                                <button title="Edit" class="btn btn-sm btn-primary"><i class="fa-fw fa-solid fa-pen"></i></button>
+                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>customer/<?= $sp['slug'] ?>/edit">
+                                <i class="fa-fw fa-solid fa-pen"></i>
                             </a>
 
                             <form id="form_delete" method="POST" class="d-inline">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="_method" value="DELETE">
                             </form>
-                            <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="btn btn-sm btn-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                            <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
