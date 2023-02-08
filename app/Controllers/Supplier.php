@@ -119,7 +119,7 @@ class Supplier extends ResourcePresenter
 
         $data = [
             'validation' => \Config\Services::validation(),
-            'supplier' => $modelSupplier->where(['slug' => $id])->first()
+            'supplier' => $modelSupplier->where(['id' => $id])->first()
         ];
 
         return view('data_master/supplier/edit', $data);
@@ -173,7 +173,7 @@ class Supplier extends ResourcePresenter
         ];
 
         if (!$this->validate($validasi)) {
-            return redirect()->to('/supplier/' . $old_supplier["slug"] . '/edit')->withInput();
+            return redirect()->to('/supplier/' . $old_supplier["id"] . '/edit')->withInput();
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);

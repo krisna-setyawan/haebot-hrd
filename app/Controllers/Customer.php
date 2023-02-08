@@ -112,7 +112,7 @@ class Customer extends ResourcePresenter
 
         $data = [
             'validation' => \Config\Services::validation(),
-            'customer' => $modelCustomer->where(['slug' => $id])->first()
+            'customer' => $modelCustomer->where(['id' => $id])->first()
         ];
 
         return view('data_master/customer/edit', $data);
@@ -160,7 +160,7 @@ class Customer extends ResourcePresenter
         ];
 
         if (!$this->validate($validasi)) {
-            return redirect()->to('/customer/' . $old_customer["slug"] . '/edit')->withInput();
+            return redirect()->to('/customer/' . $old_customer["id"] . '/edit')->withInput();
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);

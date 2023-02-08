@@ -114,7 +114,7 @@ class Jasa extends ResourcePresenter
 
         $data = [
             'validation' => \Config\Services::validation(),
-            'jasa' => $modelJasa->where(['slug' => $id])->first()
+            'jasa' => $modelJasa->where(['id' => $id])->first()
         ];
 
         return view('data_master/jasa/edit', $data);
@@ -162,7 +162,7 @@ class Jasa extends ResourcePresenter
         ];
 
         if (!$this->validate($validasi)) {
-            return redirect()->to('/jasa/' . $old_jasa["slug"] . '/edit')->withInput();
+            return redirect()->to('/jasa/' . $old_jasa["id"] . '/edit')->withInput();
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);

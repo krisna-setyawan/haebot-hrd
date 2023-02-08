@@ -40,8 +40,10 @@ class Autoload extends AutoloadConfig
      * @phpstan-var array<string, string|list<string>>
      */
     public $psr4 = [
-        APP_NAMESPACE => APPPATH, // For custom app namespace
-        'Config'      => APPPATH . 'Config',
+        APP_NAMESPACE           => APPPATH, // For custom app namespace
+        'Config'                => APPPATH . 'Config',
+        'PHPSQLParser'          => APPPATH . 'ThirdParty/php-sql-parser/src/PHPSQLParser', // <-- namespace for php-sql-parser
+        'Hermawan\DataTables'   => APPPATH . 'ThirdParty/codeigniter4-datatables/src', // <-- namespace for this library
     ];
 
     /**

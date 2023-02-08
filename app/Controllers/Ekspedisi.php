@@ -105,7 +105,7 @@ class Ekspedisi extends ResourcePresenter
 
         $data = [
             'validation' => \Config\Services::validation(),
-            'ekspedisi' => $modelEkspedisi->where(['slug' => $id])->first()
+            'ekspedisi' => $modelEkspedisi->where(['id' => $id])->first()
         ];
 
         return view('data_master/ekspedisi/edit', $data);
@@ -147,7 +147,7 @@ class Ekspedisi extends ResourcePresenter
         ];
 
         if (!$this->validate($validasi)) {
-            return redirect()->to('/ekspedisi/' . $old_ekspedisi["slug"] . '/edit')->withInput();
+            return redirect()->to('/ekspedisi/' . $old_ekspedisi["id"] . '/edit')->withInput();
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);

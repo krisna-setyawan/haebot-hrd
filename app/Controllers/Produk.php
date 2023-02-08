@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ProdukModel;
 use App\Models\ProdukPlanModel;
 use CodeIgniter\RESTful\ResourcePresenter;
+use \Hermawan\DataTables\DataTable;
 
 class Produk extends ResourcePresenter
 {
@@ -16,15 +17,41 @@ class Produk extends ResourcePresenter
      */
     public function index()
     {
-        $modelProduk = new ProdukModel();
-        $produk = $modelProduk->findAll();
-
-        $data = [
-            'produk' => $produk
-        ];
-
-        return view('data_master/produk/index', $data);
+        return view('data_master/produk/index');
     }
+
+    public function getDataProduk()
+    {
+        if ($this->request->isAJAX()) {
+
+            $modelProduk = new ProdukModel();
+            $data = $modelProduk->where(['deleted_at' => null])->select('id, nama, jenis, harga_beli, harga_jual, stok');
+
+            return DataTable::of($data)
+                ->addNumbering('no')
+                ->add('aksi', function ($row) {
+                    return '
+                    <a title="Stok Virtual" class="px-2 py-0 btn btn-sm btn-outline-dark" href="' . site_url() . 'produk/' . $row->id . '">
+                        <i class="fa-fw fa-solid fa-magnifying-glass"></i>
+                    </a>
+
+                    <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" onclick="showModalEdit(' . $row->id . ')">
+                        <i class="fa-fw fa-solid fa-pen"></i>
+                    </a>
+
+                    <form id="form_delete" method="POST" class="d-inline">
+                        ' . csrf_field() . '
+                        <input type="hidden" name="_method" value="DELETE">
+                    </form>
+                    <button onclick="confirm_delete(' . $row->id . ')" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                    ';
+                }, 'last')
+                ->toJson(true);
+        } else {
+            return "Tidak bisa load data.";
+        }
+    }
+
 
     /**
      * Present a view to present a specific resource object
@@ -134,8 +161,15 @@ class Produk extends ResourcePresenter
      */
     public function new()
     {
-        $data = ['validation' => \Config\Services::validation()];
-        return view('data_master/produk/add', $data);
+        if ($this->request->isAJAX()) {
+            $json = [
+                'data' => view('data_master/produk/add'),
+            ];
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
+        }
     }
 
     /**
@@ -146,64 +180,81 @@ class Produk extends ResourcePresenter
      */
     public function create()
     {
-        $validasi = [
-            'nama' => [
-                'rules' => 'required|is_unique[produk.nama]',
-                'errors' => [
-                    'required' => '{field} produk harus diisi.',
-                    'is_unique' => 'nama produk sudah ada dalam database.'
-                ]
-            ],
-            'jenis' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} produk harus dipilih.',
-                ]
-            ],
-            'harga_beli' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Harga beli produk harus diisi.',
-                ]
-            ],
-            'harga_jual' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Harga beli produk harus diisi.',
-                ]
-            ],
-            'stok' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Stok produk awal harus diisi.',
-                ]
-            ],
-        ];
+        if ($this->request->isAJAX()) {
+            $validasi = [
+                'nama' => [
+                    'rules' => 'required|is_unique[produk.nama]',
+                    'errors' => [
+                        'required' => '{field} produk harus diisi.',
+                        'is_unique' => 'nama produk sudah ada dalam database.'
+                    ]
+                ],
+                'jenis' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} produk harus dipilih.',
+                    ]
+                ],
+                'harga_beli' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Harga beli produk harus diisi.',
+                    ]
+                ],
+                'harga_jual' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Harga beli produk harus diisi.',
+                    ]
+                ],
+                'stok' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Stok produk awal harus diisi.',
+                    ]
+                ],
+            ];
 
-        if (!$this->validate($validasi)) {
-            return redirect()->to('/produk/new')->withInput();
+            if (!$this->validate($validasi)) {
+                $validation = \Config\Services::validation();
+
+                $error = [
+                    'error_nama' => $validation->getError('nama'),
+                    'error_jenis' => $validation->getError('jenis'),
+                    'error_harga_beli' => $validation->getError('harga_beli'),
+                    'error_harga_jual' => $validation->getError('harga_jual'),
+                    'error_stok' => $validation->getError('stok'),
+                ];
+
+                $json = [
+                    'error' => $error
+                ];
+            } else {
+                $modelProduk = new ProdukModel();
+                $slug = url_title($this->request->getPost('nama'), '-', true);
+
+                $harga_beli = str_replace(".", "", $this->request->getPost('harga_beli'));
+                $harga_jual = str_replace(".", "", $this->request->getPost('harga_jual'));
+
+                $data = [
+                    'nama' => $this->request->getPost('nama'),
+                    'slug' => $slug,
+                    'jenis' => $this->request->getPost('jenis'),
+                    'harga_beli' => $harga_beli,
+                    'harga_jual' => $harga_jual,
+                    'stok' => $this->request->getPost('stok'),
+                ];
+                $modelProduk->save($data);
+
+                $json = [
+                    'success' => 'Berhasil menambah data produk'
+                ];
+            }
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
         }
-
-        $modelProduk = new ProdukModel();
-
-        $slug = url_title($this->request->getPost('nama'), '-', true);
-
-        $harga_beli = str_replace(".", "", $this->request->getPost('harga_beli'));
-        $harga_jual = str_replace(".", "", $this->request->getPost('harga_jual'));
-
-        $data = [
-            'nama' => $this->request->getPost('nama'),
-            'slug' => $slug,
-            'jenis' => $this->request->getPost('jenis'),
-            'harga_beli' => $harga_beli,
-            'harga_jual' => $harga_jual,
-            'stok' => $this->request->getPost('stok'),
-        ];
-        $modelProduk->save($data);
-
-        session()->setFlashdata('pesan', 'Data berhasil ditambahkan.');
-
-        return redirect()->to('/produk');
     }
 
     /**
@@ -215,14 +266,22 @@ class Produk extends ResourcePresenter
      */
     public function edit($id = null)
     {
-        $modelProduk = new ProdukModel();
+        if ($this->request->isAJAX()) {
+            $modelProduk = new ProdukModel();
+            $produk = $modelProduk->find($id);
 
-        $data = [
-            'validation' => \Config\Services::validation(),
-            'produk' => $modelProduk->where(['slug' => $id])->first()
-        ];
+            $data = [
+                'produk' => $produk,
+            ];
 
-        return view('data_master/produk/edit', $data);
+            $json = [
+                'data' => view('data_master/produk/edit', $data),
+            ];
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
+        }
     }
 
     /**
@@ -235,65 +294,82 @@ class Produk extends ResourcePresenter
      */
     public function update($id = null)
     {
-        $modelProduk = new ProdukModel();
-        $old_produk = $modelProduk->find($id);
+        if ($this->request->isAJAX()) {
+            $modelProduk = new ProdukModel();
+            $old_produk = $modelProduk->find($id);
 
-        if ($old_produk['nama'] == $this->request->getPost('nama')) {
-            $rule_nama = 'required';
+            if ($old_produk['nama'] == $this->request->getPost('nama')) {
+                $rule_nama = 'required';
+            } else {
+                $rule_nama = 'required|is_unique[produk.nama]';
+            }
+
+            $validasi = [
+                'nama' => [
+                    'rules' => $rule_nama,
+                    'errors' => [
+                        'required' => '{field} produk harus diisi.',
+                        'is_unique' => 'nama produk sudah ada dalam database.'
+                    ]
+                ],
+                'jenis' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} produk harus dipilih.',
+                    ]
+                ],
+                'harga_beli' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Harga beli produk harus diisi.',
+                    ]
+                ],
+                'harga_jual' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Harga beli produk harus diisi.',
+                    ]
+                ],
+            ];
+
+            if (!$this->validate($validasi)) {
+                $validation = \Config\Services::validation();
+
+                $error = [
+                    'error_nama' => $validation->getError('nama'),
+                    'error_jenis' => $validation->getError('jenis'),
+                    'error_harga_beli' => $validation->getError('harga_beli'),
+                    'error_harga_jual' => $validation->getError('harga_jual'),
+                    'error_stok' => $validation->getError('stok'),
+                ];
+
+                $json = [
+                    'error' => $error
+                ];
+            } else {
+                $slug = url_title($this->request->getPost('nama'), '-', true);
+
+                $harga_beli = str_replace(".", "", $this->request->getPost('harga_beli'));
+                $harga_jual = str_replace(".", "", $this->request->getPost('harga_jual'));
+
+                $data = [
+                    'id'            => $id,
+                    'nama'          => $this->request->getPost('nama'),
+                    'slug'          => $slug,
+                    'jenis'         => $this->request->getPost('jenis'),
+                    'harga_beli'    => $harga_beli,
+                    'harga_jual'    => $harga_jual,
+                ];
+                $modelProduk->save($data);
+
+                $json = [
+                    'success' => 'Berhasil mengedit data produk'
+                ];
+            }
+            echo json_encode($json);
         } else {
-            $rule_nama = 'required|is_unique[produk.nama]';
+            return 'Tidak bisa load';
         }
-
-        $validasi = [
-            'nama' => [
-                'rules' => $rule_nama,
-                'errors' => [
-                    'required' => '{field} produk harus diisi.',
-                    'is_unique' => 'nama produk sudah ada dalam database.'
-                ]
-            ],
-            'jenis' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} produk harus dipilih.',
-                ]
-            ],
-            'harga_beli' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Harga beli produk harus diisi.',
-                ]
-            ],
-            'harga_jual' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Harga beli produk harus diisi.',
-                ]
-            ],
-        ];
-
-        if (!$this->validate($validasi)) {
-            return redirect()->to('/produk/' . $old_produk["slug"] . '/edit')->withInput();
-        }
-
-        $slug = url_title($this->request->getPost('nama'), '-', true);
-
-        $harga_beli = str_replace(".", "", $this->request->getPost('harga_beli'));
-        $harga_jual = str_replace(".", "", $this->request->getPost('harga_jual'));
-
-        $data = [
-            'id'            => $id,
-            'nama'          => $this->request->getPost('nama'),
-            'slug'          => $slug,
-            'jenis'         => $this->request->getPost('jenis'),
-            'harga_beli'    => $harga_beli,
-            'harga_jual'    => $harga_jual,
-        ];
-        $modelProduk->save($data);
-
-        session()->setFlashdata('pesan', 'Data berhasil diedit.');
-
-        return redirect()->to('/produk');
     }
 
     /**

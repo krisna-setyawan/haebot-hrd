@@ -43,7 +43,7 @@
                         <td><?= $sp['alamat'] ?></td>
                         <td><?= $sp['no_telp'] ?></td>
                         <td class="text-center">
-                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>customer/<?= $sp['slug'] ?>/edit">
+                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>customer/<?= $sp['id'] ?>/edit">
                                 <i class="fa-fw fa-solid fa-pen"></i>
                             </a>
 

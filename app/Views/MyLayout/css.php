@@ -16,4 +16,8 @@
         scrollbar-width: none;
         /* Firefox */
     }
+
+    body.modal-open {
+        overflow: hidden;
+    }
 </style>

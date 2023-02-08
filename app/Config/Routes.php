@@ -49,7 +49,10 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->resource('customer', ['filter' => 'permission:Data Master']);
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
+
     $routes->resource('produk', ['filter' => 'permission:Data Master']);
+    $routes->get('getdataproduk', 'Produk::getDataProduk', ['filter' => 'permission:Data Master']);
+
     $routes->post('produkplan', 'ProdukPlan::create', ['filter' => 'permission:Data Master']);
 });
 

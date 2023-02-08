@@ -1,79 +1,145 @@
-<?= $this->extend('MyLayout/template') ?>
+<form autocomplete="off" class="row g-3 mt-2" action="<?= site_url() ?>produk" method="POST" id="form">
 
-<?= $this->section('content') ?>
+    <?= csrf_field() ?>
 
-<main class="p-md-3 p-2">
-    <h3 class="mb-3" style="color: #566573;">Tambah Produk</h3>
-
-    <hr class="mt-0 mb-4">
-
-    <div class="col-md-10 mt-4">
-
-        <form autocomplete="off" class="row g-3 mt-3" action="<?= site_url() ?>produk" method="POST">
-
-            <?= csrf_field() ?>
-
-            <div class="row mb-3">
-                <label for="nama" class="col-sm-3 col-form-label">Nama Produk</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control <?= (validation_show_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" name="nama" value="<?= old('nama'); ?>">
-                    <div class="invalid-feedback"> <?= validation_show_error('nama'); ?></div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="jenis" class="col-sm-3 col-form-label">jenis</label>
-                <div class="col-sm-9">
-                    <select class="form-control <?= (validation_show_error('jenis')) ? 'is-invalid' : ''; ?>" name="jenis" id="jenis">
-                        <option <?= (old('jenis') == 'UNKNOWN') ? 'selected' : ''; ?> value="UNKNOWN"></option>
-                        <option <?= (old('jenis') == 'SET') ? 'selected' : ''; ?> value="SET">SET</option>
-                        <option <?= (old('jenis') == 'SINGLE') ? 'selected' : ''; ?> value="SINGLE">SINGLE</option>
-                        <option <?= (old('jenis') == 'ECER') ? 'selected' : ''; ?> value="ECER">ECER</option>
-                    </select>
-                    <div class="invalid-feedback"><?= validation_show_error('jenis'); ?></div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="harga_beli" class="col-sm-3 col-form-label">Harga Beli</label>
-                <div class="col-sm-9">
-                    <div class="input-group">
-                        <span class="input-group-text">Rp.</span>
-                        <input type="text" class="form-control <?= (validation_show_error('harga_beli')) ? 'is-invalid' : ''; ?>" id="harga_beli" name="harga_beli" value="<?= old('harga_beli'); ?>">
-                    </div>
-                    <div class="invalid-feedback"><?= validation_show_error('harga_beli'); ?></div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="harga_jual" class="col-sm-3 col-form-label">Harga Jual</label>
-                <div class="col-sm-9">
-                    <div class="input-group">
-                        <span class="input-group-text">Rp.</span>
-                        <input type="text" class="form-control <?= (validation_show_error('harga_jual')) ? 'is-invalid' : ''; ?>" id="harga_jual" name="harga_jual" value="<?= old('harga_jual'); ?>">
-                    </div>
-                    <div class="invalid-feedback"><?= validation_show_error('harga_jual'); ?></div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="stok" class="col-sm-3 col-form-label">Stok Awal</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control <?= (validation_show_error('stok')) ? 'is-invalid' : ''; ?>" id="stok" name="stok" value="<?= old('stok'); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('stok'); ?></div>
-                </div>
-            </div>
-
-            <div class="col-md-9 offset-3">
-                <a class="btn px-5 btn-danger" href="<?= site_url() ?>produk">
-                    Batal <i class="fa-fw fa-solid fa-xmark"></i>
-                </a>
-                <button class="btn px-5 btn-primary" type="submit">Simpan <i class="fa-fw fa-solid fa-check"></i></button>
-            </div>
-        </form>
-
+    <div class="row mb-3">
+        <label for="nama" class="col-sm-3 col-form-label">Nama Produk</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="nama" name="nama" autofocus>
+            <div class="invalid-feedback error-nama"></div>
+        </div>
     </div>
-</main>
+    <div class="row mb-3">
+        <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="jenis" id="jenis">
+                <option value=""></option>
+                <option value="SET">SET</option>
+                <option value="SINGLE">SINGLE</option>
+                <option value="ECER">ECER</option>
+            </select>
+            <div class="invalid-feedback error-jenis"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="harga_beli" class="col-sm-3 col-form-label">Harga Beli</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-text">Rp.</span>
+                <input type="text" class="form-control" id="harga_beli" name="harga_beli">
+                <div class="invalid-feedback error-harga_beli"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="harga_jual" class="col-sm-3 col-form-label">Harga Jual</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-text">Rp.</span>
+                <input type="text" class="form-control" id="harga_jual" name="harga_jual">
+                <div class="invalid-feedback error-harga_jual"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="stok" class="col-sm-3 col-form-label">Stok Awal</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="stok" name="stok">
+            <div class="invalid-feedback error-stok"></div>
+        </div>
+    </div>
 
-<?= $this->include('MyLayout/js') ?>
+    <div class="col-md-9 offset-3 mb-3">
+        <button id="tombolSimpan" class="btn px-5 btn-outline-primary" type="submit">Simpan <i class="fa-fw fa-solid fa-check"></i></button>
+    </div>
+</form>
+
+
 
 <script>
+    $('#form').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: "post",
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: "json",
+            beforeSend: function() {
+                $('#tombolSimpan').html('Tunggu <i class="fa-solid fa-spin fa-spinner"></i>');
+                $('#tombolSimpan').prop('disabled', true);
+            },
+            complete: function() {
+                $('#tombolSimpan').html('Simpan <i class="fa-fw fa-solid fa-check"></i>');
+                $('#tombolSimpan').prop('disabled', false);
+            },
+            success: function(response) {
+                if (response.error) {
+                    let err = response.error;
+
+                    if (err.error_nama) {
+                        $('.error-nama').html(err.error_nama);
+                        $('#nama').addClass('is-invalid');
+                    } else {
+                        $('.error-nama').html('');
+                        $('#nama').removeClass('is-invalid');
+                        $('#nama').addClass('is-valid');
+                    }
+                    if (err.error_jenis) {
+                        $('.error-jenis').html(err.error_jenis);
+                        $('#jenis').addClass('is-invalid');
+                    } else {
+                        $('.error-jenis').html('');
+                        $('#jenis').removeClass('is-invalid');
+                        $('#jenis').addClass('is-valid');
+                    }
+                    if (err.error_harga_beli) {
+                        $('.error-harga_beli').html(err.error_harga_beli);
+                        $('#harga_beli').addClass('is-invalid');
+                    } else {
+                        $('.error-harga_beli').html('');
+                        $('#harga_beli').removeClass('is-invalid');
+                        $('#harga_beli').addClass('is-valid');
+                    }
+                    if (err.error_harga_jual) {
+                        $('.error-harga_jual').html(err.error_harga_jual);
+                        $('#harga_jual').addClass('is-invalid');
+                    } else {
+                        $('.error-harga_jual').html('');
+                        $('#harga_jual').removeClass('is-invalid');
+                        $('#harga_jual').addClass('is-valid');
+                    }
+                    if (err.error_stok) {
+                        $('.error-stok').html(err.error_stok);
+                        $('#stok').addClass('is-invalid');
+                    } else {
+                        $('.error-stok').html('');
+                        $('#stok').removeClass('is-invalid');
+                        $('#stok').addClass('is-valid');
+                    }
+                }
+                if (response.success) {
+                    $('#my-modal').modal('hide')
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: response.success,
+                    }).then((value) => {
+                        $('#tabel').DataTable().ajax.reload();
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.success
+                        })
+                    })
+                }
+            },
+            error: function(e) {
+                alert('Error \n' + e.responseText);
+            }
+        });
+        return false
+    })
+
     $(document).ready(function() {
         $('#harga_beli').mask('000.000.000', {
             reverse: true
@@ -83,5 +149,3 @@
         });
     })
 </script>
-
-<?= $this->endSection() ?>
