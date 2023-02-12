@@ -11,11 +11,15 @@ class Supplier extends Migration
         // Supplier
         $fields = [
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'origin'           => ['type' => 'varchar', 'constraint' => 80],
             'nama'             => ['type' => 'varchar', 'constraint' => 80],
             'slug'             => ['type' => 'varchar', 'constraint' => 255],
             'pemilik'          => ['type' => 'varchar', 'constraint' => 50],
             'alamat'           => ['type' => 'varchar', 'constraint' => 255],
             'no_telp'          => ['type' => 'varchar', 'constraint' => 20],
+            'saldo'            => ['type' => 'decimal', 'constraint' => 10, 2],
+            'status'           => ['type' => 'enum', 'constraint' => ['Active', 'Inactive'], 'default' => 'Active'],
+            'note'             => ['type' => 'varchar', 'constraint' => 255],
             'created_at'       => ['type' => 'datetime', 'null' => true],
             'updated_at'       => ['type' => 'datetime', 'null' => true],
             'deleted_at'       => ['type' => 'datetime', 'null' => true],

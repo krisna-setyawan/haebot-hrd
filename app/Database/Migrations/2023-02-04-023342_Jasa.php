@@ -11,6 +11,7 @@ class Jasa extends Migration
         // Jasa
         $fields = [
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'id_kategori'           => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'nama'             => ['type' => 'varchar', 'constraint' => 80],
             'slug'             => ['type' => 'varchar', 'constraint' => 255],
             'biaya'            => ['type' => 'int', 'unsigned' => true],
@@ -22,6 +23,8 @@ class Jasa extends Migration
 
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
+        $this->forge->addUniqueKey('nama');
+        $this->forge->addForeignKey('id_kategori', 'kategori_jasa', 'id', '', 'CASCADE');
         $this->forge->createTable('jasa', true);
     }
 
