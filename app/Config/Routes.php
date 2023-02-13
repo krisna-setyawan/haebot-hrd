@@ -33,8 +33,14 @@ $routes->set404Override();
 $routes->get('/', 'AuthController::login');
 
 $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
-    $routes->get('/dashboard', 'Dashboard::index', ['filter' => 'permission:Dashboard']);
 
+    // GetData
+    $routes->get('/wilayah/kota_by_provinsi', 'GetWilayah::KotaByProvinsi');
+    $routes->get('/wilayah/kecamatan_by_kota', 'GetWilayah::KecamatanByKota');
+    $routes->get('/wilayah/kelurahan_by_kecamatan', 'GetWilayah::KelurahanByKecamatan');
+
+    // Menu
+    $routes->get('/dashboard', 'Dashboard::index', ['filter' => 'permission:Dashboard']);
     $routes->get('master', 'Menu::Data_master', ['filter' => 'permission:Data Master']);
     $routes->get('pembelian', 'Menu::Pembelian', ['filter' => 'permission:Pembelian']);
     $routes->get('penjualan', 'Menu::Penjualan', ['filter' => 'permission:Penjualan']);
@@ -45,15 +51,19 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->get('sdm', 'Menu::SDM', ['filter' => 'permission:SDM']);
     $routes->get('laporan', 'Menu::Laporan', ['filter' => 'permission:Laporan']);
 
+    // Supplier
     $routes->resource('supplier', ['filter' => 'permission:Data Master']);
+    $routes->resource('supplieralamat', ['filter' => 'permission:Data Master']);
+    $routes->resource('supplierlink', ['filter' => 'permission:Data Master']);
+
+    // Produk
+    $routes->resource('produk', ['filter' => 'permission:Data Master']);
+    $routes->get('getdataproduk', 'Produk::getDataProduk', ['filter' => 'permission:Data Master']);
+    $routes->post('produkplan', 'ProdukPlan::create', ['filter' => 'permission:Data Master']);
+
     $routes->resource('customer', ['filter' => 'permission:Data Master']);
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
-
-    $routes->resource('produk', ['filter' => 'permission:Data Master']);
-    $routes->get('getdataproduk', 'Produk::getDataProduk', ['filter' => 'permission:Data Master']);
-
-    $routes->post('produkplan', 'ProdukPlan::create', ['filter' => 'permission:Data Master']);
 });
 
 /*

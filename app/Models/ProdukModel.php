@@ -14,7 +14,11 @@ class ProdukModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama', 'slug', 'jenis', 'harga_beli', 'harga_jual', 'stok', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = [
+        'id_kategori', 'id_gudang', 'sku', 'hs_code', 'nama', 'slug', 'satuan', 'jenis', 'jenis_produk',
+        'hg_produk_penyusun', 'harga_beli', 'harga_jual', 'stok', 'berat', 'panjang', 'lebar', 'tinggi',
+        'status_marketing', 'note', 'created_at', 'updated_at', 'deleted_at'
+    ];
 
     // Dates
     protected $useTimestamps = true;

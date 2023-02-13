@@ -15,7 +15,6 @@ class Supplier extends Migration
             'nama'             => ['type' => 'varchar', 'constraint' => 80],
             'slug'             => ['type' => 'varchar', 'constraint' => 255],
             'pemilik'          => ['type' => 'varchar', 'constraint' => 50],
-            'alamat'           => ['type' => 'varchar', 'constraint' => 255],
             'no_telp'          => ['type' => 'varchar', 'constraint' => 20],
             'saldo'            => ['type' => 'decimal', 'constraint' => 10, 2],
             'status'           => ['type' => 'enum', 'constraint' => ['Active', 'Inactive'], 'default' => 'Active'],

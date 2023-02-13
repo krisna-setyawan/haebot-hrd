@@ -4,23 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SupplierModel extends Model
+class ProvinsiModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'supplier';
+    protected $table            = 'provinsi';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = [
-        'origin', 'nama', 'slug', 'pemilik', 'no_telp', 'saldo', 'status', 'note',
-        'created_at', 'updated_at', 'deleted_at',
-    ];
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = false;
+    protected $allowedFields    = [];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -42,18 +39,4 @@ class SupplierModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getSuppliers()
-    {
-        $data =  $this->db->table($this->table)
-            ->select('supplier.*, GROUP_CONCAT(karyawan.nama_lengkap SEPARATOR ",<br> ") as admin')
-            ->join('supplier_penanggungjawab', 'supplier.id = supplier_penanggungjawab.id_supplier', 'left')
-            ->join('users', 'supplier_penanggungjawab.id_user = users.id', 'left')
-            ->join('karyawan', 'users.id_karyawan = karyawan.id')
-            ->groupBy('supplier_penanggungjawab.id_supplier')
-            ->get()
-            ->getResultArray();
-
-        return $data;
-    }
 }

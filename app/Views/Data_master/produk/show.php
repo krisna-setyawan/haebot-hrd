@@ -170,9 +170,10 @@
             <div class="modal-body">
                 <form id="form-add-bahan" autocomplete="off" action="<?= site_url() ?>produkplan" method="POST">
 
+                    <?= csrf_field() ?>
+
                     <input type="hidden" name="id_produk_redirect" value="<?= $produk['id'] ?>">
                     <input type="hidden" name="id_produk_jadi" value="<?= $produk['id'] ?>">
-                    <!-- <input type="hidden" name="id_produk_bahan" value=""> -->
 
                     <label for="id_produk_bahan" class="form-label">Produk</label>
                     <input class="form-control mb-3" list="list_produk_bahan" id="id_produk_bahan" name="id_produk_bahan" placeholder="Cari produk">
@@ -205,9 +206,10 @@
             <div class="modal-body">
                 <form id="form-add-set" autocomplete="off" action="<?= site_url() ?>produkplan" method="POST">
 
+                    <?= csrf_field() ?>
+
                     <input type="hidden" name="id_produk_redirect" value="<?= $produk['id'] ?>">
                     <input type="hidden" name="id_produk_bahan" value="<?= $produk['id'] ?>">
-                    <!-- <input type="hidden" name="id_produk_jadi" value=""> -->
 
                     <label for="id_produk_jadi" class="form-label">Produk</label>
                     <input class="form-control mb-3" list="list_produk_jadi" id="id_produk_jadi" name="id_produk_jadi" placeholder="Cari produk">
@@ -230,22 +232,5 @@
 </div>
 
 <?= $this->include('MyLayout/js') ?>
-
-<!-- <script>
-    $(document).ready(function() {
-        $('#form-add-bahan').submit(function() {
-            var value = $('#nama_produk_bahan').val();
-            var id = ($('#list_produk_bahan [value="' + value + '"]').data('value'));
-            alert(id)
-            $('#id_produk_bahan').val(id);
-        });
-        $('#form-add-set').submit(function() {
-            var value = $('#nama_produk_jadi').val();
-            var id = ($('#list_produk_jadi [value="' + value + '"]').data('value'));
-            alert(id)
-            $('#id_produk_jadi').val(id);
-        });
-    });
-</script> -->
 
 <?= $this->endSection() ?>

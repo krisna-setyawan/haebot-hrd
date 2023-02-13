@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\ProvinsiModel;
+use App\Models\SupplierAlamatModel;
+use App\Models\SupplierLinkModel;
 use App\Models\SupplierModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
@@ -16,7 +19,7 @@ class Supplier extends ResourcePresenter
     public function index()
     {
         $modelSupplier = new SupplierModel();
-        $supplier = $modelSupplier->findAll();
+        $supplier = $modelSupplier->getSuppliers();
 
         $data = [
             'supplier' => $supplier
@@ -34,7 +37,25 @@ class Supplier extends ResourcePresenter
      */
     public function show($id = null)
     {
-        //
+        $modelSupplier = new SupplierModel();
+        $modelSupplierAlamat = new SupplierAlamatModel();
+        $modelSupplierLink = new SupplierLinkModel();
+        $modelProvinsi = new ProvinsiModel();
+
+        $supplier = $modelSupplier->find($id);
+        $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
+        $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
+        $provinsi = $modelProvinsi->orderBy('nama')->findAll();
+
+        $data = [
+            'supplier' => $supplier,
+            'alamat' => $alamat,
+            'link' => $link,
+            'provinsi' => $provinsi
+        ];
+
+        // dd($data);
+        return view('data_master/supplier/show', $data);
     }
 
     /**

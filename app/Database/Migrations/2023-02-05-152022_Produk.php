@@ -8,6 +8,28 @@ class Produk extends Migration
 {
     public function up()
     {
+        // kategori produk
+        $fields = [
+            'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'nama'             => ['type' => 'varchar', 'constraint' => 255],
+        ];
+        $this->forge->addField($fields);
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('produk_kategori', true);
+
+
+        // Gudang
+        $fields = [
+            'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'nama'             => ['type' => 'varchar', 'constraint' => 80],
+            'keterangan'       => ['type' => 'varchar', 'constraint' => 255],
+        ];
+
+        $this->forge->addField($fields);
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('gudang', true);
+
+
         // Produk
         $fields = [
             'id'                    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
@@ -20,7 +42,7 @@ class Produk extends Migration
             'satuan'                => ['type' => 'enum', 'constraint' => ['Pcs', 'Unit'], 'default' => 'Pcs'],
             'jenis'                 => ['type' => 'enum', 'constraint' => ['UNKNOWN', 'SET', 'SINGLE', 'ECER'], 'default' => 'UNKNOWN'],
             'jenis_produk'          => ['type' => 'enum', 'constraint' => ['Hardware', 'Software'], 'default' => 'Hardware'],
-            'hg_produk_penyusun'    => ['type' => 'int', 'unsigned' => true],
+            'hg_produk_penyusun'    => ['type' => 'int', 'unsigned' => true, 'default' => 0],
             'harga_beli'            => ['type' => 'int', 'unsigned' => true],
             'harga_jual'            => ['type' => 'int', 'unsigned' => true],
             'stok'                  => ['type' => 'int', 'constraint' => 11,],
@@ -38,7 +60,7 @@ class Produk extends Migration
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey('nama');
-        $this->forge->addForeignKey('id_kategori', 'kategori_produk', 'id', '', 'CASCADE');
+        $this->forge->addForeignKey('id_kategori', 'produk_kategori', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('id_gudang', 'gudang', 'id', '', 'CASCADE');
         $this->forge->createTable('produk', true);
 
@@ -60,6 +82,8 @@ class Produk extends Migration
 
     public function down()
     {
+        $this->forge->dropTable('produk_kategori');
+        $this->forge->dropTable('gudang');
         $this->forge->dropTable('produk_plan');
         $this->forge->dropTable('produk');
     }
