@@ -121,4 +121,17 @@ class UserModel extends Model
             'password' => bin2hex(random_bytes(16)),
         ]);
     }
+
+
+    public function getUserPJWithKaryawanName($pj)
+    {
+        $data =  $this->db->table($this->table)
+            ->select('users.id, karyawan.nama_lengkap as nama')
+            ->join('karyawan', 'users.id_karyawan = karyawan.id')
+            ->whereNotIn('users.id', $pj)
+            ->get()
+            ->getResultArray();
+
+        return $data;
+    }
 }

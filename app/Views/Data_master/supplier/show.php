@@ -16,121 +16,165 @@
 
     <hr class="mt-0 mb-4">
 
-    <div class="col-md-6 mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-6 mt-0 mb-4">
 
-        <div class="card">
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Origin</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['origin'] ?></div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Nama Supplier</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['nama'] ?></div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Pemilik</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['pemilik'] ?></div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Telepon</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['no_telp'] ?></div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Saldo</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['saldo'] ?></div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Status</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['status'] ?></div>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div>Note</div>
-                    </div>
-                    <div class="fw-bold"><?= $supplier['note'] ?></div>
-                </li>
-            </ol>
+            <div class="card">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Origin</div>
+                        </div>
+                        <div class="fw-bold"><?= $supplier['origin'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Nama Supplier</div>
+                        </div>
+                        <div class="fw-bold"><?= $supplier['nama'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Pemilik</div>
+                        </div>
+                        <div class="fw-bold"><?= $supplier['pemilik'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Telepon</div>
+                        </div>
+                        <div class="fw-bold"><?= $supplier['no_telp'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Saldo</div>
+                        </div>
+                        <div class="fw-bold">Rp. <?= number_format($supplier['saldo'], 0, ',', '.'); ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Status</div>
+                        </div>
+                        <div class="fw-bold"><?= $supplier['status'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>Note</div>
+                        </div>
+                        <div class="fw-bold"><?= $supplier['note'] ?></div>
+                    </li>
+                </ol>
+            </div>
+
         </div>
+        <div class="col-md-6 mt-0 mb-4">
 
+            <div class="d-flex mb-0">
+                <div class="me-auto">
+                    <h5 class="mb-3 mt-2">Penanggung Jawab</h5>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-pj">
+                        <i class="fa-fw fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped table-primary">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="70%">Penanggung Jawab</th>
+                            <th width="25%">Urutan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($pj as $pj) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
+                                <td><?= $pj['nama_pj'] ?></td>
+                                <td><?= $pj['urutan'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 
-    <div class="d-flex mb-0">
-        <div class="me-auto">
-            <h5 class="mb-3 mt-2">List Alamat</h5>
-        </div>
-        <div>
-            <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-alamat">
-                Tambah alamat <i class="fa-fw fa-solid fa-plus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="table-responsive mb-4">
-        <table class="table table-bordered table-striped table-secondary">
-            <thead>
-                <tr class="text-center">
-                    <th width="5%">No</th>
-                    <th width="25%">Nama</th>
-                    <th width="70%">Alamat</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $no = 1;
-                foreach ($alamat as $al) : ?>
-                    <tr>
-                        <td class="text-center"><?= $no++ ?></td>
-                        <td><?= $al['nama'] ?></td>
-                        <td>
-                            <?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+    <div class="row">
+        <div class="col-md-6 mt-0 mb-4">
+            <div class="d-flex mb-0">
+                <div class="me-auto">
+                    <h5 class="mb-3 mt-2">Alamat</h5>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-alamat">
+                        <i class="fa-fw fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped table-secondary">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="25%">Nama</th>
+                            <th width="70%">Alamat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($alamat as $al) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
+                                <td><?= $al['nama'] ?></td>
+                                <td>
+                                    <?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
 
-    <div class="d-flex mb-0">
-        <div class="me-auto">
-            <h5 class="mb-3 mt-2">List Link</h5>
         </div>
-        <div>
-            <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-link">
-                Tambah link <i class="fa-fw fa-solid fa-plus"></i>
-            </button>
+        <div class="col-md-6 mt-0 mb-4">
+
+            <div class="d-flex mb-0">
+                <div class="me-auto">
+                    <h5 class="mb-3 mt-2">Link</h5>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-link">
+                        <i class="fa-fw fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-secondary">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="25%">Nama</th>
+                            <th width="70%">Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($link as $li) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
+                                <td><?= $li['nama'] ?></td>
+                                <td><?= $li['link'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-secondary">
-            <thead>
-                <tr class="text-center">
-                    <th width="5%">No</th>
-                    <th width="25%">Nama</th>
-                    <th width="70%">Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $no = 1;
-                foreach ($link as $li) : ?>
-                    <tr>
-                        <td class="text-center"><?= $no++ ?></td>
-                        <td><?= $li['nama'] ?></td>
-                        <td><?= $li['link'] ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
     </div>
 
 </main>
@@ -196,7 +240,7 @@
 
                     <hr class="my-4">
 
-                    <button class="btn btn-outline-secondary mb-2 btn-sm" id="submit-add-bahan" type="submit">Tambah</button>
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Tambah</button>
                 </form>
             </div>
         </div>
@@ -228,7 +272,44 @@
 
                     <hr class="my-4">
 
-                    <button class="btn btn-outline-secondary mb-2 btn-sm" id="submit-add-bahan" type="submit">Tambah</button>
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Tambah</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add penanggung jawab -->
+<div class="modal fade" id="modal-add-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Penanggung Jawab</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="needs-validation" id="form-add-pj" autocomplete="off" action="<?= site_url() ?>supplierpj" method="POST">
+
+                    <input type="hidden" name="id_supplier" value="<?= $supplier['id'] ?>">
+
+                    <div class="mb-3">
+                        <label class="form-label">Penanggung Jawab</label>
+                        <select required class="form-control" name="id_user" id="id_user">
+                            <option value=""></option>
+                            <?php foreach ($users as $us) : ?>
+                                <option value="<?= $us['id'] ?>"><?= $us['nama'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Urutan</label>
+                        <input required type="number" class="form-control" id="urutan" name="urutan">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Tambah</button>
                 </form>
             </div>
         </div>

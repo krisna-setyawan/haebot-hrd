@@ -6,16 +6,15 @@ use App\Models\ProvinsiModel;
 use App\Models\SupplierAlamatModel;
 use App\Models\SupplierLinkModel;
 use App\Models\SupplierModel;
+use App\Models\SupplierPJModel;
+use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
 class Supplier extends ResourcePresenter
 {
     protected $helpers = ['form'];
-    /**
-     * Present a view of resource objects
-     *
-     * @return mixed
-     */
+
+
     public function index()
     {
         $modelSupplier = new SupplierModel();
@@ -28,56 +27,53 @@ class Supplier extends ResourcePresenter
         return view('data_master/supplier/index', $data);
     }
 
-    /**
-     * Present a view to present a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function show($id = null)
     {
         $modelSupplier = new SupplierModel();
         $modelSupplierAlamat = new SupplierAlamatModel();
         $modelSupplierLink = new SupplierLinkModel();
+        $modelSupplierPJ = new SupplierPJModel();
         $modelProvinsi = new ProvinsiModel();
+        $modelUser = new UserModel();
 
         $supplier = $modelSupplier->find($id);
         $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
         $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
+        $pj = $modelSupplierPJ->getPJBySupplier($id);
         $provinsi = $modelProvinsi->orderBy('nama')->findAll();
+        $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
 
         $data = [
             'supplier' => $supplier,
             'alamat' => $alamat,
             'link' => $link,
-            'provinsi' => $provinsi
+            'pj' => $pj,
+            'provinsi' => $provinsi,
+            'users' => $users
         ];
 
-        // dd($data);
         return view('data_master/supplier/show', $data);
     }
 
-    /**
-     * Present a view to present a new single resource object
-     *
-     * @return mixed
-     */
+
     public function new()
     {
         $data = ['validation' => \Config\Services::validation()];
         return view('data_master/supplier/add', $data);
     }
 
-    /**
-     * Process the creation/insertion of a new resource object.
-     * This should be a POST.
-     *
-     * @return mixed
-     */
+
     public function create()
     {
         $validasi = [
+            'origin' => [
+                'rules' => 'required|is_unique[supplier.origin]',
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                    'is_unique' => 'origin supplier sudah ada dalam database.'
+                ]
+            ],
             'nama' => [
                 'rules' => 'required|is_unique[supplier.nama]',
                 'errors' => [
@@ -91,16 +87,16 @@ class Supplier extends ResourcePresenter
                     'required' => '{field} supplier harus diisi.',
                 ]
             ],
-            'alamat' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} supplier harus diisi.',
-                ]
-            ],
             'no_telp' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'No telepon supplier harus diisi.',
+                ]
+            ],
+            'saldo' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} awal supplier harus diisi.',
                 ]
             ],
         ];
@@ -112,13 +108,17 @@ class Supplier extends ResourcePresenter
         $modelSupplier = new SupplierModel();
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
+        $saldo = str_replace(".", "", $this->request->getPost('saldo'));
 
         $data = [
+            'origin' => $this->request->getPost('origin'),
             'nama' => $this->request->getPost('nama'),
             'slug' => $slug,
             'pemilik' => $this->request->getPost('pemilik'),
-            'alamat' => $this->request->getPost('alamat'),
             'no_telp' => $this->request->getPost('no_telp'),
+            'saldo' => $saldo,
+            'status' => 'Active',
+            'note' => $this->request->getPost('note'),
         ];
         $modelSupplier->save($data);
 
@@ -127,13 +127,7 @@ class Supplier extends ResourcePresenter
         return redirect()->to('/supplier');
     }
 
-    /**
-     * Present a view to edit the properties of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function edit($id = null)
     {
         $modelSupplier = new SupplierModel();
@@ -146,14 +140,7 @@ class Supplier extends ResourcePresenter
         return view('data_master/supplier/edit', $data);
     }
 
-    /**
-     * Process the updating, full or partial, of a specific resource object.
-     * This should be a POST.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function update($id = null)
     {
         $modelSupplier = new SupplierModel();
@@ -165,7 +152,20 @@ class Supplier extends ResourcePresenter
             $rule_nama = 'required|is_unique[supplier.nama]';
         }
 
+        if ($old_supplier['origin'] == $this->request->getPost('origin')) {
+            $rule_origin = 'required';
+        } else {
+            $rule_origin = 'required|is_unique[supplier.origin]';
+        }
+
         $validasi = [
+            'origin' => [
+                'rules' => $rule_origin,
+                'errors' => [
+                    'required' => '{field} supplier harus diisi.',
+                    'is_unique' => 'origin supplier sudah ada dalam database.'
+                ]
+            ],
             'nama' => [
                 'rules' => $rule_nama,
                 'errors' => [
@@ -179,16 +179,16 @@ class Supplier extends ResourcePresenter
                     'required' => '{field} supplier harus diisi.',
                 ]
             ],
-            'alamat' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} supplier harus diisi.',
-                ]
-            ],
             'no_telp' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'No telepon supplier harus diisi.',
+                ]
+            ],
+            'saldo' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} awal supplier harus diisi.',
                 ]
             ],
         ];
@@ -198,14 +198,18 @@ class Supplier extends ResourcePresenter
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
+        $saldo = str_replace(".", "", $this->request->getPost('saldo'));
 
         $data = [
             'id'        => $id,
+            'origin'    => $this->request->getPost('origin'),
             'nama'      => $this->request->getPost('nama'),
             'slug'      => $slug,
             'pemilik'   => $this->request->getPost('pemilik'),
-            'alamat'    => $this->request->getPost('alamat'),
             'no_telp'   => $this->request->getPost('no_telp'),
+            'saldo'     => $saldo,
+            'status'    => $this->request->getPost('status'),
+            'note'      => $this->request->getPost('note'),
         ];
         $modelSupplier->save($data);
 
@@ -214,25 +218,7 @@ class Supplier extends ResourcePresenter
         return redirect()->to('/supplier');
     }
 
-    /**
-     * Present a view to confirm the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
-    public function remove($id = null)
-    {
-        //
-    }
 
-    /**
-     * Process the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function delete($id = null)
     {
         $modelSupplier = new SupplierModel();

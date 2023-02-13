@@ -31,7 +31,8 @@
                     <th class="text-center" width="5%">No</th>
                     <th class="text-center" width="20%">Nama</th>
                     <th class="text-center" width="15%">Origin</th>
-                    <th class="text-center" width="30%">Alamat</th>
+                    <th class="text-center" width="15%">Telp</th>
+                    <th class="text-center" width="15%">Status</th>
                     <th class="text-center" width="15%">PJ</th>
                     <th class="text-center" width="15%">Aksi</th>
                 </tr>
@@ -43,14 +44,15 @@
                         <td><?= $no++ ?></td>
                         <td><?= $sp['nama'] ?></td>
                         <td><?= $sp['origin'] ?></td>
-                        <td><?= $sp['alamat'] ?></td>
+                        <td><?= $sp['no_telp'] ?></td>
+                        <td><?= $sp['status'] ?></td>
                         <td><?= $sp['admin'] ?></td>
                         <td class="text-center">
                             <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" href="<?= site_url() ?>supplier/<?= $sp['id'] ?>">
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
 
-                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>supplier/<?= $sp['slug'] ?>/edit">
+                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>supplier/<?= $sp['id'] ?>/edit">
                                 <i class="fa-fw fa-solid fa-pen"></i>
                             </a>
 

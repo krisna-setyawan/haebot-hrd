@@ -16,6 +16,13 @@
             <input type="hidden" name="_method" value="PUT">
 
             <div class="row mb-3">
+                <label for="origin" class="col-sm-3 col-form-label">Origin</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control <?= (validation_show_error('origin')) ? 'is-invalid' : ''; ?>" id="origin" name="origin" value="<?= old('origin', $supplier['origin']); ?>">
+                    <div class="invalid-feedback"> <?= validation_show_error('origin'); ?></div>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <label for="nama" class="col-sm-3 col-form-label">Nama Supplier</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control <?= (validation_show_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" name="nama" value="<?= old('nama', $supplier['nama']); ?>">
@@ -30,17 +37,33 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control <?= (validation_show_error('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" name="alamat" value="<?= old('alamat', $supplier['alamat']); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('alamat'); ?></div>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label for="no_telp" class="col-sm-3 col-form-label">No Telp</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control <?= (validation_show_error('no_telp')) ? 'is-invalid' : ''; ?>" id="no_telp" name="no_telp" value="<?= old('no_telp', $supplier['no_telp']); ?>">
                     <div class="invalid-feedback"><?= validation_show_error('no_telp'); ?></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="saldo" class="col-sm-3 col-form-label">Saldo</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control <?= (validation_show_error('saldo')) ? 'is-invalid' : ''; ?>" id="saldo" name="saldo" value="<?= old('saldo', $supplier['saldo']); ?>">
+                    <div class="invalid-feedback"><?= validation_show_error('saldo'); ?></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="note" class="col-sm-3 col-form-label">Note</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="note" name="note" value="<?= old('note', $supplier['note']); ?>">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="status" class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="status" id="status">
+                        <option <?= (old('status', $supplier['status']) == 'Active') ? 'selected' : ''; ?> value="Active">Active</option>
+                        <option <?= (old('status', $supplier['status']) == 'Inactive') ? 'selected' : ''; ?> value="Inactive">Inactive</option>
+                    </select>
+                    <div class="invalid-feedback error-status"><?= validation_show_error('status'); ?></div>
                 </div>
             </div>
 
@@ -56,5 +79,13 @@
 </main>
 
 <?= $this->include('MyLayout/js') ?>
+
+<script>
+    $(document).ready(function() {
+        $('#saldo').mask('000.000.000', {
+            reverse: true
+        });
+    })
+</script>
 
 <?= $this->endSection() ?>

@@ -4,23 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SupplierModel extends Model
+class SupplierPJModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'supplier';
+    protected $table            = 'supplier_penanggungjawab';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = [
-        'origin', 'nama', 'slug', 'pemilik', 'no_telp', 'saldo', 'status', 'note',
-        'created_at', 'updated_at', 'deleted_at',
-    ];
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = false;
+    protected $allowedFields    = [];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -43,16 +40,14 @@ class SupplierModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getSuppliers()
+
+    public function getPJBySupplier($id_supplier)
     {
         $data =  $this->db->table($this->table)
-            ->select('supplier.*, GROUP_CONCAT(karyawan.nama_lengkap SEPARATOR ",<br> ") as admin')
-            ->join('supplier_penanggungjawab', 'supplier.id = supplier_penanggungjawab.id_supplier', 'left')
+            ->select('supplier_penanggungjawab.*, karyawan.nama_lengkap as nama_pj')
             ->join('users', 'supplier_penanggungjawab.id_user = users.id', 'left')
             ->join('karyawan', 'users.id_karyawan = karyawan.id', 'left')
-            ->where('supplier.deleted_at', null)
-            ->groupBy('supplier.id')
-            ->orderBy('supplier.id', 'desc')
+            ->where('supplier_penanggungjawab.id_supplier', $id_supplier)
             ->get()
             ->getResultArray();
 

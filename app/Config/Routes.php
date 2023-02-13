@@ -55,6 +55,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->resource('supplier', ['filter' => 'permission:Data Master']);
     $routes->resource('supplieralamat', ['filter' => 'permission:Data Master']);
     $routes->resource('supplierlink', ['filter' => 'permission:Data Master']);
+    $routes->resource('supplierpj', ['filter' => 'permission:Data Master']);
 
     // Produk
     $routes->resource('produk', ['filter' => 'permission:Data Master']);

@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\SupplierAlamatModel;
+use App\Models\SupplierPJModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
-class SupplierAlamat extends ResourcePresenter
+class SupplierPJ extends ResourcePresenter
 {
     public function index()
     {
@@ -27,21 +27,17 @@ class SupplierAlamat extends ResourcePresenter
 
     public function create()
     {
-        $modelSupplierAlamat = new SupplierAlamatModel();
+        $modelSupplierPJ = new SupplierPJModel();
         $id_supplier = $this->request->getPost('id_supplier');
 
         $data = [
             'id_supplier' => $this->request->getPost('id_supplier'),
-            'nama' => $this->request->getPost('nama'),
-            'id_provinsi' => $this->request->getPost('id_provinsi'),
-            'id_kota' => $this->request->getPost('id_kota'),
-            'id_kecamatan' => $this->request->getPost('id_kecamatan'),
-            'id_kelurahan' => $this->request->getPost('id_kelurahan'),
-            'detail_alamat' => $this->request->getPost('detail_alamat'),
+            'id_user' => $this->request->getPost('id_user'),
+            'urutan' => $this->request->getPost('urutan'),
         ];
-        $modelSupplierAlamat->save($data);
+        $modelSupplierPJ->save($data);
 
-        session()->setFlashdata('pesan', 'Alamat Baru berhasil ditambahkan.');
+        session()->setFlashdata('pesan', 'Penanggung Jawab berhasil ditambahkan.');
 
         return redirect()->to('/supplier/' . $id_supplier);
     }

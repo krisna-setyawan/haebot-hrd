@@ -10,15 +10,13 @@ use \Hermawan\DataTables\DataTable;
 class Produk extends ResourcePresenter
 {
     protected $helpers = ['form', 'stok_helper'];
-    /**
-     * Present a view of resource objects
-     *
-     * @return mixed
-     */
+
+
     public function index()
     {
         return view('data_master/produk/index');
     }
+
 
     public function getDataProduk()
     {
@@ -53,13 +51,6 @@ class Produk extends ResourcePresenter
     }
 
 
-    /**
-     * Present a view to present a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function show($id = null)
     {
         $modelProduk = new ProdukModel();
@@ -154,11 +145,7 @@ class Produk extends ResourcePresenter
         return view('data_master/produk/show', $data);
     }
 
-    /**
-     * Present a view to present a new single resource object
-     *
-     * @return mixed
-     */
+
     public function new()
     {
         if ($this->request->isAJAX()) {
@@ -172,12 +159,7 @@ class Produk extends ResourcePresenter
         }
     }
 
-    /**
-     * Process the creation/insertion of a new resource object.
-     * This should be a POST.
-     *
-     * @return mixed
-     */
+
     public function create()
     {
         if ($this->request->isAJAX()) {
@@ -257,13 +239,7 @@ class Produk extends ResourcePresenter
         }
     }
 
-    /**
-     * Present a view to edit the properties of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function edit($id = null)
     {
         if ($this->request->isAJAX()) {
@@ -284,14 +260,7 @@ class Produk extends ResourcePresenter
         }
     }
 
-    /**
-     * Process the updating, full or partial, of a specific resource object.
-     * This should be a POST.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function update($id = null)
     {
         if ($this->request->isAJAX()) {
@@ -372,25 +341,7 @@ class Produk extends ResourcePresenter
         }
     }
 
-    /**
-     * Present a view to confirm the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
-    public function remove($id = null)
-    {
-        //
-    }
 
-    /**
-     * Process the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function delete($id = null)
     {
         $modelProduk = new ProdukModel();
