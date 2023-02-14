@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
             'Akuntansi',
             'SDM',
             'Laporan',
+            'Admin Supplier'
         ];
 
         foreach ($data as $key => $value) {

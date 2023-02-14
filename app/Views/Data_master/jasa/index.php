@@ -29,7 +29,8 @@
                 <tr>
                     <th class="text-center" width="5%">No</th>
                     <th class="text-center" width="25%">Nama</th>
-                    <th class="text-center" width="40%">Deskripsi</th>
+                    <th class="text-center" width="20%">Deskripsi</th>
+                    <th class="text-center" width="20%">Kategori</th>
                     <th class="text-center" width="15%">Biaya</th>
                     <th class="text-center" width="15%">Aksi</th>
                 </tr>
@@ -41,6 +42,7 @@
                         <td><?= $no++ ?></td>
                         <td><?= $sp['nama'] ?></td>
                         <td><?= $sp['deskripsi'] ?></td>
+                        <td><?= $sp['kategori_jasa'] ?></td>
                         <td>Rp. <?= number_format($sp['biaya'], 0, ',', '.') ?></td>
                         <td class="text-center">
                             <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>jasa/<?= $sp['id'] ?>/edit">

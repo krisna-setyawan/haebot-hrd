@@ -26,7 +26,24 @@ class Customer extends ResourcePresenter
 
     public function show($id = null)
     {
-        //
+        if ($this->request->isAJAX()) {
+            $modelCustomer = new CustomerModel();
+            $modelCustomerRekening = new CustomerRekeningModel();
+            $rekening = $modelCustomerRekening->where(['id_customer' => $id])->findAll();
+
+            $data = [
+                'customer' => $modelCustomer->where(['id' => $id])->first(),
+                'rekening' => $rekening,
+            ];
+
+            $json = [
+                'data' => view('data_master/customer/show', $data),
+            ];
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
+        }
     }
 
 

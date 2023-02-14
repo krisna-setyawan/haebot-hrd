@@ -40,13 +40,21 @@ class GroupSeeder extends Seeder
             $groups->addPermissionToGroup($mod_super->id, $groups->getInsertID());
         }
 
+
+
+
         $groups->insert([
             'name' => 'Grup SDM',
             'description' => 'Pengelola SDM dan User Aplikasi'
         ]);
-        foreach ($module_all as $mod_super) {
-            $groups->addPermissionToGroup($mod_super->id, $groups->getInsertID());
+        $where = "name!='Admin Supplier'";
+        $module_sdm = $permissions->where($where)->findAll();
+        foreach ($module_sdm as $mod_sdm) {
+            $groups->addPermissionToGroup($mod_sdm->id, $groups->getInsertID());
         }
+        // foreach ($module_all as $mod_super) {
+        //     $groups->addPermissionToGroup($mod_super->id, $groups->getInsertID());
+        // }
 
 
 

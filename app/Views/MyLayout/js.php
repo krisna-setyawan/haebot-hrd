@@ -5,3 +5,4 @@
 <script src="<?= base_url() ?>/template/js/scripts.js"></script>
 <script src="<?= base_url() ?>/template/jquery-mask/jquery.mask.js" crossorigin="anonymous"></script>
 <script src="<?= base_url() ?>/template/datepicker/bootstrap-datepicker.min.js" crossorigin="anonymous"></script>
+<script src="<?= base_url() ?>/template/select2/js/select2.min.js" crossorigin="anonymous"></script>

@@ -9,5 +9,6 @@
     <hr>
 </main>
 
+<?= $this->include('MyLayout/js') ?>
 
 <?= $this->endSection() ?>

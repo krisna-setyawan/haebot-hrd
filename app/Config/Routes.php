@@ -57,6 +57,14 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->resource('supplierlink', ['filter' => 'permission:Data Master']);
     $routes->resource('supplierpj', ['filter' => 'permission:Data Master']);
 
+    // $routes->get('supplier', 'Supplier::index', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier/(.*)', 'Supplier::show/$1', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier/new', 'Supplier::new', ['filter' => 'permission:Data Master']);
+    // $routes->post('supplier', 'Supplier::create', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier/(.*)/edit', 'Supplier::edit/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
+    // $routes->put('supplier/(.*)', 'Supplier::update/$1  ', ['filter' => 'permission:Data Master,Admin Supplier']);
+    // $routes->delete('supplier/(.*) ', 'Supplier::delete/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
+
     // Produk
     $routes->resource('produk', ['filter' => 'permission:Data Master']);
     $routes->get('getdataproduk', 'Produk::getDataProduk', ['filter' => 'permission:Data Master']);

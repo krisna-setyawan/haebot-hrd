@@ -80,6 +80,15 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label text-secondary" for="status">Status</label>
+                    <select class="form-control" name="status" id="status">
+                        <option <?= (old('status', $customer['status']) == 'Active') ? 'selected' : ''; ?> value="Active">Active</option>
+                        <option <?= (old('status', $customer['status']) == 'Inactive') ? 'selected' : ''; ?> value="Inactive">Inactive</option>
+                    </select>
+                    <div class="invalid-feedback error-status"><?= validation_show_error('status'); ?></div>
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label text-secondary" for="note">Note</label>
                     <input type="text" class="form-control <?= (validation_show_error('note')) ? 'is-invalid' : ''; ?>" id="note" name="note" value="<?= old('note', $customer['note']); ?>">
                     <div class="invalid-feedback"><?= validation_show_error('note'); ?></div>
@@ -178,6 +187,7 @@
 </div>
 
 <?= $this->include('MyLayout/js') ?>
+<?= $this->include('MyLayout/validation') ?>
 
 <script>
     $(document).ready(function() {

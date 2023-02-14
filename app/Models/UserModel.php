@@ -134,4 +134,16 @@ class UserModel extends Model
 
         return $data;
     }
+
+
+    public function getAllUserWithKaryawanName()
+    {
+        $data =  $this->db->table($this->table)
+            ->select('users.id, karyawan.nama_lengkap as nama')
+            ->join('karyawan', 'users.id_karyawan = karyawan.id')
+            ->get()
+            ->getResultArray();
+
+        return $data;
+    }
 }

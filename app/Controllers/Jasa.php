@@ -8,15 +8,12 @@ use CodeIgniter\RESTful\ResourcePresenter;
 class Jasa extends ResourcePresenter
 {
     protected $helpers = ['form'];
-    /**
-     * Present a view of resource objects
-     *
-     * @return mixed
-     */
+
+
     public function index()
     {
         $modelJasa = new JasaModel();
-        $jasa = $modelJasa->findAll();
+        $jasa = $modelJasa->getJasa();
 
         $data = [
             'jasa' => $jasa
@@ -25,35 +22,26 @@ class Jasa extends ResourcePresenter
         return view('data_master/jasa/index', $data);
     }
 
-    /**
-     * Present a view to present a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function show($id = null)
     {
         //
     }
 
-    /**
-     * Present a view to present a new single resource object
-     *
-     * @return mixed
-     */
+
     public function new()
     {
-        $data = ['validation' => \Config\Services::validation()];
+        $db = \Config\Database::connect();
+        $builder_jasa_kategori = $db->table('jasa_kategori');
+
+        $data = [
+            'validation'    => \Config\Services::validation(),
+            'kategori'      => $builder_jasa_kategori->get()->getResultArray()
+        ];
         return view('data_master/jasa/add', $data);
     }
 
-    /**
-     * Process the creation/insertion of a new resource object.
-     * This should be a POST.
-     *
-     * @return mixed
-     */
+
     public function create()
     {
         $validasi = [
@@ -76,10 +64,27 @@ class Jasa extends ResourcePresenter
                     'required' => '{field} jasa harus diisi.',
                 ]
             ],
+            'kategori' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'kategori jasa harus diisi.',
+                ]
+            ],
         ];
 
         if (!$this->validate($validasi)) {
             return redirect()->to('/jasa/new')->withInput();
+        }
+
+        $db = \Config\Database::connect();
+        $builder_jasa_kategori = $db->table('jasa_kategori');
+
+        if (strpos($this->request->getPost('kategori'), '-krisna-') !== false) {
+            $post_kategori = explode('-', $this->request->getPost('kategori'));
+            $the_id_kategori = $post_kategori[0];
+        } else {
+            $builder_jasa_kategori->insert(['nama' => $this->request->getPost('kategori')]);
+            $the_id_kategori = $db->insertID();
         }
 
         $modelJasa = new JasaModel();
@@ -89,6 +94,7 @@ class Jasa extends ResourcePresenter
         $biaya = str_replace(".", "", $this->request->getPost('biaya'));
 
         $data = [
+            'id_kategori' => $the_id_kategori,
             'nama' => $this->request->getPost('nama'),
             'slug' => $slug,
             'biaya' => $biaya,
@@ -101,33 +107,23 @@ class Jasa extends ResourcePresenter
         return redirect()->to('/jasa');
     }
 
-    /**
-     * Present a view to edit the properties of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function edit($id = null)
     {
         $modelJasa = new JasaModel();
+        $db = \Config\Database::connect();
+        $builder_jasa_kategori = $db->table('jasa_kategori');
 
         $data = [
-            'validation' => \Config\Services::validation(),
-            'jasa' => $modelJasa->where(['id' => $id])->first()
+            'validation'    => \Config\Services::validation(),
+            'jasa'          => $modelJasa->where(['id' => $id])->first(),
+            'kategori'      => $builder_jasa_kategori->get()->getResultArray()
         ];
 
         return view('data_master/jasa/edit', $data);
     }
 
-    /**
-     * Process the updating, full or partial, of a specific resource object.
-     * This should be a POST.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function update($id = null)
     {
         $modelJasa = new JasaModel();
@@ -159,10 +155,27 @@ class Jasa extends ResourcePresenter
                     'required' => '{field} jasa harus diisi.',
                 ]
             ],
+            'kategori' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'kategori jasa harus diisi.',
+                ]
+            ],
         ];
 
         if (!$this->validate($validasi)) {
             return redirect()->to('/jasa/' . $old_jasa["id"] . '/edit')->withInput();
+        }
+
+        $db = \Config\Database::connect();
+        $builder_jasa_kategori = $db->table('jasa_kategori');
+
+        if (strpos($this->request->getPost('kategori'), '-krisna-') !== false) {
+            $post_kategori = explode('-', $this->request->getPost('kategori'));
+            $the_id_kategori = $post_kategori[0];
+        } else {
+            $builder_jasa_kategori->insert(['nama' => $this->request->getPost('kategori')]);
+            $the_id_kategori = $db->insertID();
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
@@ -171,6 +184,7 @@ class Jasa extends ResourcePresenter
 
         $data = [
             'id'        => $id,
+            'id_kategori' => $the_id_kategori,
             'nama'      => $this->request->getPost('nama'),
             'slug'      => $slug,
             'biaya'     => $biaya,
@@ -183,25 +197,13 @@ class Jasa extends ResourcePresenter
         return redirect()->to('/jasa');
     }
 
-    /**
-     * Present a view to confirm the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function remove($id = null)
     {
         //
     }
 
-    /**
-     * Process the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function delete($id = null)
     {
         $modelJasa = new JasaModel();

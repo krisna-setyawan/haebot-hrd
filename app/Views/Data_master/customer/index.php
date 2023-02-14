@@ -45,6 +45,10 @@
                         <td><?= $sp['alamat'] ?></td>
                         <td><?= $sp['no_telp'] ?></td>
                         <td class="text-center">
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $sp['id'] ?>)">
+                                <i class="fa-fw fa-solid fa-magnifying-glass"></i>
+                            </a>
+
                             <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>customer/<?= $sp['id'] ?>/edit">
                                 <i class="fa-fw fa-solid fa-pen"></i>
                             </a>
@@ -63,6 +67,22 @@
     </div>
 
 </main>
+
+<!-- Modal -->
+<div class="modal fade" id="my-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="judulModal"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="isiModal">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 
 <?= $this->include('MyLayout/js') ?>
 
@@ -110,6 +130,25 @@
             if (result.isConfirmed) {
                 $('#form_delete').attr('action', '<?= site_url() ?>customer/' + id);
                 $('#form_delete').submit();
+            }
+        })
+    }
+
+
+    function showModalDetail(id) {
+        $.ajax({
+            type: 'GET',
+            url: '<?= site_url() ?>customer/' + id,
+            dataType: 'json',
+            success: function(res) {
+                if (res.data) {
+                    $('#isiModal').html(res.data)
+                    $('#my-modal').modal('toggle')
+                    $('#judulModal').html('Detail Customer')
+                }
+            },
+            error: function(e) {
+                alert('Error \n' + e.responseText);
             }
         })
     }

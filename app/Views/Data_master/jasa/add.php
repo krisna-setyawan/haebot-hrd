@@ -3,7 +3,16 @@
 <?= $this->section('content') ?>
 
 <main class="p-md-3 p-2">
-    <h3 class="mb-3" style="color: #566573;">Tambah Jasa</h3>
+    <div class="d-flex mb-0">
+        <div class="me-auto mb-1">
+            <h3 style="color: #566573;">Tambah Jasa</h3>
+        </div>
+        <div class="me-2 mb-1">
+            <a class="btn btn-sm btn-outline-dark" href="<?= site_url() ?>jasa">
+                <i class="fa-fw fa-solid fa-arrow-left"></i> Kembali
+            </a>
+        </div>
+    </div>
 
     <hr class="mt-0 mb-4">
 
@@ -37,6 +46,17 @@
                     <div class="invalid-feedback"><?= validation_show_error('deskripsi'); ?></div>
                 </div>
             </div>
+            <div class="row mb-3">
+                <label for="kategori" class="col-sm-3 col-form-label">Kategori</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="kategori" id="kategori">
+                        <?php foreach ($kategori as $kt) : ?>
+                            <option value="<?= $kt['id'] ?>-krisna-<?= $kt['nama'] ?>"><?= $kt['nama'] ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <div class="invalid-feedback"><?= validation_show_error('kategori'); ?></div>
+                </div>
+            </div>
 
             <div class="col-md-9 offset-3">
                 <a class="btn px-5 btn-outline-danger" href="<?= site_url() ?>jasa">
@@ -53,6 +73,11 @@
 
 <script>
     $(document).ready(function() {
+        $("#kategori").select2({
+            theme: "bootstrap-5",
+            tags: true
+        });
+
         $('#biaya').mask('000.000.000', {
             reverse: true
         });

@@ -104,9 +104,9 @@
                     <thead>
                         <tr class="text-center">
                             <th width="5%">No</th>
-                            <th width="55%">Penanggung Jawab</th>
-                            <th width="25%">Urutan</th>
-                            <th width="15%">Aksi</th>
+                            <th width="55%">Admin</th>
+                            <th width="20%">Urutan</th>
+                            <th width="20%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,8 +115,8 @@
                             <tr>
                                 <td class="text-center"><?= $no++ ?></td>
                                 <td><?= $pj['nama_pj'] ?></td>
-                                <td><?= $pj['urutan'] ?></td>
-                                <td>
+                                <td class="text-center"><?= $pj['urutan'] ?></td>
+                                <td class="text-center">
                                     <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" onclick="edit_pj(<?= $pj['id'] ?>)">
                                         <i class="fa-fw fa-solid fa-pen"></i>
                                     </a>
@@ -397,9 +397,27 @@
 </div>
 
 <?= $this->include('MyLayout/js') ?>
+<?= $this->include('MyLayout/validation') ?>
 
 <script>
     $(document).ready(function() {
+        $("#id_provinsi").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
+        });
+        $("#id_kota").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
+        });
+        $("#id_kecamatan").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
+        });
+        $("#id_kelurahan").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
+        });
+
         $('#saldo').mask('000.000.000', {
             reverse: true
         });

@@ -30,24 +30,32 @@ class Supplier extends ResourcePresenter
 
     public function show($id = null)
     {
-        $modelSupplier = new SupplierModel();
-        $modelSupplierAlamat = new SupplierAlamatModel();
-        $modelSupplierLink = new SupplierLinkModel();
-        $modelSupplierPJ = new SupplierPJModel();
+        if ($this->request->isAJAX()) {
+            $modelSupplier = new SupplierModel();
+            $modelSupplierAlamat = new SupplierAlamatModel();
+            $modelSupplierLink = new SupplierLinkModel();
+            $modelSupplierPJ = new SupplierPJModel();
 
-        $supplier = $modelSupplier->getSuppliersWithAdmins($id);
-        $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
-        $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
-        $pj = $modelSupplierPJ->getPJBySupplier($id);
+            $supplier = $modelSupplier->getSuppliersWithAdmins($id);
+            $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
+            $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
+            $pj = $modelSupplierPJ->getPJBySupplier($id);
 
-        $data = [
-            'supplier' => $supplier,
-            'alamat' => $alamat,
-            'link' => $link,
-            'pj' => $pj,
-        ];
+            $data = [
+                'supplier' => $supplier,
+                'alamat' => $alamat,
+                'link' => $link,
+                'pj' => $pj,
+            ];
 
-        return view('data_master/supplier/show', $data);
+            $json = [
+                'data' => view('data_master/supplier/show', $data),
+            ];
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
+        }
     }
 
 
@@ -136,7 +144,11 @@ class Supplier extends ResourcePresenter
         $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
         $pj = $modelSupplierPJ->getPJBySupplier($id);
         $provinsi = $modelProvinsi->orderBy('nama')->findAll();
-        $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
+        if ($pj) {
+            $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
+        } else {
+            $users = $modelUser->getAllUserWithKaryawanName();
+        }
 
         $data = [
             'validation' => \Config\Services::validation(),
