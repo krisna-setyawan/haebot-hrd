@@ -43,10 +43,11 @@ class SupplierModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+
     public function getSuppliers()
     {
         $data =  $this->db->table($this->table)
-            ->select('supplier.*, GROUP_CONCAT(karyawan.nama_lengkap SEPARATOR ",<br> ") as admin')
+            ->select('supplier.*, GROUP_CONCAT(karyawan.nama_lengkap SEPARATOR ",<br> ") as admin, GROUP_CONCAT(users.id SEPARATOR ", ") as id_admin')
             ->join('supplier_penanggungjawab', 'supplier.id = supplier_penanggungjawab.id_supplier', 'left')
             ->join('users', 'supplier_penanggungjawab.id_user = users.id', 'left')
             ->join('karyawan', 'users.id_karyawan = karyawan.id', 'left')
@@ -55,6 +56,20 @@ class SupplierModel extends Model
             ->orderBy('supplier.id', 'desc')
             ->get()
             ->getResultArray();
+
+        return $data;
+    }
+
+
+    public function getSuppliersWithAdmins($id_supplier)
+    {
+        $data =  $this->db->table($this->table)
+            ->select('supplier.*, GROUP_CONCAT(supplier_penanggungjawab.id_user SEPARATOR ", ") as id_admin')
+            ->join('supplier_penanggungjawab', 'supplier.id = supplier_penanggungjawab.id_supplier', 'left')
+            ->where('supplier.id', $id_supplier)
+            ->groupBy('supplier.id')
+            ->get()
+            ->getRowArray();
 
         return $data;
     }

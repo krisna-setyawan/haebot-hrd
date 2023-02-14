@@ -39,7 +39,7 @@ class SupplierLink extends ResourcePresenter
 
         session()->setFlashdata('pesan', 'Link Baru berhasil ditambahkan.');
 
-        return redirect()->to('/supplier/' . $id_supplier);
+        return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
 
 
@@ -63,6 +63,13 @@ class SupplierLink extends ResourcePresenter
 
     public function delete($id = null)
     {
-        //
+        $id_supplier = $this->request->getPost('id_supplier');
+
+        $modelSupplierLink = new SupplierLinkModel();
+
+        $modelSupplierLink->delete($id);
+
+        session()->setFlashdata('pesan', 'Link berhasil dihapus.');
+        return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
 }

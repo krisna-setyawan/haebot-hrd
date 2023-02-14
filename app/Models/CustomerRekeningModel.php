@@ -4,24 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CustomerModel extends Model
+class CustomerRekeningModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'customer';
+    protected $table            = 'customer_no_rekening';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = [
-        'origin', 'nama', 'slug', 'alamat', 'no_telp', 'email', 'status',
-        'saldo_utama', 'saldo_belanja', 'saldo_lain', 'tgl_registrasi', 'note',
-        'created_at', 'updated_at', 'deleted_at',
-    ];
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = false;
+    protected $allowedFields    = [];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

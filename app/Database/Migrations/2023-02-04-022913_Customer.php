@@ -30,6 +30,7 @@ class Customer extends Migration
 
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
+        $this->forge->addUniqueKey('origin');
         $this->forge->addUniqueKey('nama');
         $this->forge->addUniqueKey('email');
         $this->forge->createTable('customer', true);

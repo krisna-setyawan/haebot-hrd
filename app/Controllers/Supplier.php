@@ -34,23 +34,17 @@ class Supplier extends ResourcePresenter
         $modelSupplierAlamat = new SupplierAlamatModel();
         $modelSupplierLink = new SupplierLinkModel();
         $modelSupplierPJ = new SupplierPJModel();
-        $modelProvinsi = new ProvinsiModel();
-        $modelUser = new UserModel();
 
-        $supplier = $modelSupplier->find($id);
+        $supplier = $modelSupplier->getSuppliersWithAdmins($id);
         $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
         $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
         $pj = $modelSupplierPJ->getPJBySupplier($id);
-        $provinsi = $modelProvinsi->orderBy('nama')->findAll();
-        $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
 
         $data = [
             'supplier' => $supplier,
             'alamat' => $alamat,
             'link' => $link,
             'pj' => $pj,
-            'provinsi' => $provinsi,
-            'users' => $users
         ];
 
         return view('data_master/supplier/show', $data);
@@ -131,10 +125,27 @@ class Supplier extends ResourcePresenter
     public function edit($id = null)
     {
         $modelSupplier = new SupplierModel();
+        $modelSupplierAlamat = new SupplierAlamatModel();
+        $modelSupplierLink = new SupplierLinkModel();
+        $modelSupplierPJ = new SupplierPJModel();
+        $modelProvinsi = new ProvinsiModel();
+        $modelUser = new UserModel();
+
+        $supplier = $modelSupplier->getSuppliersWithAdmins($id);
+        $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
+        $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
+        $pj = $modelSupplierPJ->getPJBySupplier($id);
+        $provinsi = $modelProvinsi->orderBy('nama')->findAll();
+        $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
 
         $data = [
             'validation' => \Config\Services::validation(),
-            'supplier' => $modelSupplier->where(['id' => $id])->first()
+            'supplier' => $supplier,
+            'alamat' => $alamat,
+            'link' => $link,
+            'pj' => $pj,
+            'provinsi' => $provinsi,
+            'users' => $users
         ];
 
         return view('data_master/supplier/edit', $data);

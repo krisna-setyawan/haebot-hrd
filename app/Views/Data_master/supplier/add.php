@@ -3,7 +3,16 @@
 <?= $this->section('content') ?>
 
 <main class="p-md-3 p-2">
-    <h3 class="mb-3" style="color: #566573;">Tambah Supplier</h3>
+    <div class="d-flex mb-0">
+        <div class="me-auto mb-1">
+            <h3 style="color: #566573;">Tambah Supplier</h3>
+        </div>
+        <div class="me-2 mb-1">
+            <a class="btn btn-sm btn-outline-dark" href="<?= site_url() ?>supplier">
+                <i class="fa-fw fa-solid fa-arrow-left"></i> Kembali
+            </a>
+        </div>
+    </div>
 
     <hr class="mt-0 mb-4">
 

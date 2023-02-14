@@ -43,7 +43,7 @@ class SupplierAlamat extends ResourcePresenter
 
         session()->setFlashdata('pesan', 'Alamat Baru berhasil ditambahkan.');
 
-        return redirect()->to('/supplier/' . $id_supplier);
+        return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
 
 
@@ -67,6 +67,13 @@ class SupplierAlamat extends ResourcePresenter
 
     public function delete($id = null)
     {
-        //
+        $id_supplier = $this->request->getPost('id_supplier');
+
+        $modelSupplierAlamat = new SupplierAlamatModel();
+
+        $modelSupplierAlamat->delete($id);
+
+        session()->setFlashdata('pesan', 'Alamat berhasil dihapus.');
+        return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
 }

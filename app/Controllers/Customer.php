@@ -3,16 +3,14 @@
 namespace App\Controllers;
 
 use App\Models\CustomerModel;
+use App\Models\CustomerRekeningModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
 class Customer extends ResourcePresenter
 {
     protected $helpers = ['form'];
-    /**
-     * Present a view of resource objects
-     *
-     * @return mixed
-     */
+
+
     public function index()
     {
         $modelCustomer = new CustomerModel();
@@ -25,38 +23,30 @@ class Customer extends ResourcePresenter
         return view('data_master/customer/index', $data);
     }
 
-    /**
-     * Present a view to present a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function show($id = null)
     {
         //
     }
 
-    /**
-     * Present a view to present a new single resource object
-     *
-     * @return mixed
-     */
+
     public function new()
     {
         $data = ['validation' => \Config\Services::validation()];
         return view('data_master/customer/add', $data);
     }
 
-    /**
-     * Process the creation/insertion of a new resource object.
-     * This should be a POST.
-     *
-     * @return mixed
-     */
+
     public function create()
     {
         $validasi = [
+            'origin' => [
+                'rules' => 'required|is_unique[customer.origin]',
+                'errors' => [
+                    'required' => '{field} customer harus diisi.',
+                    'is_unique' => 'origin customer sudah ada dalam database.'
+                ]
+            ],
             'nama' => [
                 'rules' => 'required|is_unique[customer.nama]',
                 'errors' => [
@@ -76,6 +66,38 @@ class Customer extends ResourcePresenter
                     'required' => 'No telepon customer harus diisi.',
                 ]
             ],
+            'email' => [
+                'rules' => 'required|valid_email|is_unique[customer.email]',
+                'errors' => [
+                    'required' => '{field} customer harus diisi.',
+                    'is_unique' => 'email customer sudah ada dalam database.',
+                    'valid_email' => 'format penulisan email salah.'
+                ]
+            ],
+            'saldo_utama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Awal Saldo Utama harus diisi.',
+                ]
+            ],
+            'saldo_belanja' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Awal Saldo Belanja harus diisi.',
+                ]
+            ],
+            'saldo_lain' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Awal Saldo Lain harus diisi.',
+                ]
+            ],
+            'tgl_registrasi' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tgl Registrasi harus diisi.',
+                ]
+            ],
         ];
 
         if (!$this->validate($validasi)) {
@@ -85,12 +107,23 @@ class Customer extends ResourcePresenter
         $modelCustomer = new CustomerModel();
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
+        $saldo_utama = str_replace(".", "", $this->request->getPost('saldo_utama'));
+        $saldo_belanja = str_replace(".", "", $this->request->getPost('saldo_belanja'));
+        $saldo_lain = str_replace(".", "", $this->request->getPost('saldo_lain'));
 
         $data = [
-            'nama' => $this->request->getPost('nama'),
-            'slug' => $slug,
-            'alamat' => $this->request->getPost('alamat'),
-            'no_telp' => $this->request->getPost('no_telp'),
+            'origin'            => $this->request->getPost('origin'),
+            'nama'              => $this->request->getPost('nama'),
+            'slug'              => $slug,
+            'alamat'            => $this->request->getPost('alamat'),
+            'no_telp'           => $this->request->getPost('no_telp'),
+            'email'             => $this->request->getPost('email'),
+            'status'            => 'Active',
+            'saldo_utama'       => $saldo_utama,
+            'saldo_belanja'     => $saldo_belanja,
+            'saldo_lain'        => $saldo_lain,
+            'tgl_registrasi'    => $this->request->getPost('tgl_registrasi'),
+            'note'              => $this->request->getPost('note'),
         ];
         $modelCustomer->save($data);
 
@@ -99,37 +132,34 @@ class Customer extends ResourcePresenter
         return redirect()->to('/customer');
     }
 
-    /**
-     * Present a view to edit the properties of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function edit($id = null)
     {
         $modelCustomer = new CustomerModel();
+        $modelCustomerRekening = new CustomerRekeningModel();
+
+        $rekening = $modelCustomerRekening->where(['id_customer' => $id])->findAll();
 
         $data = [
             'validation' => \Config\Services::validation(),
-            'customer' => $modelCustomer->where(['id' => $id])->first()
+            'customer' => $modelCustomer->where(['id' => $id])->first(),
+            'rekening' => $rekening,
         ];
 
         return view('data_master/customer/edit', $data);
     }
 
-    /**
-     * Process the updating, full or partial, of a specific resource object.
-     * This should be a POST.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function update($id = null)
     {
         $modelCustomer = new CustomerModel();
         $old_customer = $modelCustomer->find($id);
+
+        if ($old_customer['origin'] == $this->request->getPost('origin')) {
+            $rule_origin = 'required';
+        } else {
+            $rule_origin = 'required|is_unique[customer.origin]';
+        }
 
         if ($old_customer['nama'] == $this->request->getPost('nama')) {
             $rule_nama = 'required';
@@ -137,7 +167,20 @@ class Customer extends ResourcePresenter
             $rule_nama = 'required|is_unique[customer.nama]';
         }
 
+        if ($old_customer['email'] == $this->request->getPost('email')) {
+            $rule_email = 'required|valid_email';
+        } else {
+            $rule_email = 'required|valid_email|is_unique[customer.email]';
+        }
+
         $validasi = [
+            'origin' => [
+                'rules' => $rule_origin,
+                'errors' => [
+                    'required' => '{field} customer harus diisi.',
+                    'is_unique' => 'origin customer sudah ada dalam database.'
+                ]
+            ],
             'nama' => [
                 'rules' => $rule_nama,
                 'errors' => [
@@ -157,6 +200,38 @@ class Customer extends ResourcePresenter
                     'required' => 'No telepon customer harus diisi.',
                 ]
             ],
+            'email' => [
+                'rules' => $rule_email,
+                'errors' => [
+                    'required' => '{field} customer harus diisi.',
+                    'is_unique' => 'email customer sudah ada dalam database.',
+                    'valid_email' => 'format penulisan email salah.'
+                ]
+            ],
+            'saldo_utama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Awal Saldo Utama harus diisi.',
+                ]
+            ],
+            'saldo_belanja' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Awal Saldo Belanja harus diisi.',
+                ]
+            ],
+            'saldo_lain' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Awal Saldo Lain harus diisi.',
+                ]
+            ],
+            'tgl_registrasi' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tgl Registrasi harus diisi.',
+                ]
+            ],
         ];
 
         if (!$this->validate($validasi)) {
@@ -164,13 +239,24 @@ class Customer extends ResourcePresenter
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
+        $saldo_utama = str_replace(".", "", $this->request->getPost('saldo_utama'));
+        $saldo_belanja = str_replace(".", "", $this->request->getPost('saldo_belanja'));
+        $saldo_lain = str_replace(".", "", $this->request->getPost('saldo_lain'));
 
         $data = [
-            'id'        => $id,
-            'nama'      => $this->request->getPost('nama'),
-            'slug'      => $slug,
-            'alamat'    => $this->request->getPost('alamat'),
-            'no_telp'   => $this->request->getPost('no_telp'),
+            'id'                => $id,
+            'origin'            => $this->request->getPost('origin'),
+            'nama'              => $this->request->getPost('nama'),
+            'slug'              => $slug,
+            'alamat'            => $this->request->getPost('alamat'),
+            'no_telp'           => $this->request->getPost('no_telp'),
+            'email'             => $this->request->getPost('email'),
+            'status'            => $this->request->getPost('status'),
+            'saldo_utama'       => $saldo_utama,
+            'saldo_belanja'     => $saldo_belanja,
+            'saldo_lain'        => $saldo_lain,
+            'tgl_registrasi'    => $this->request->getPost('tgl_registrasi'),
+            'note'              => $this->request->getPost('note'),
         ];
         $modelCustomer->save($data);
 
@@ -179,25 +265,13 @@ class Customer extends ResourcePresenter
         return redirect()->to('/customer');
     }
 
-    /**
-     * Present a view to confirm the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function remove($id = null)
     {
         //
     }
 
-    /**
-     * Process the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function delete($id = null)
     {
         $modelCustomer = new CustomerModel();
