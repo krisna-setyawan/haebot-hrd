@@ -29,8 +29,8 @@
             <thead>
                 <tr>
                     <th class="text-center" width="5%">No</th>
-                    <th class="text-center" width="20%">Nama</th>
                     <th class="text-center" width="15%">Origin</th>
+                    <th class="text-center" width="20%">Nama</th>
                     <th class="text-center" width="15%">Telp</th>
                     <th class="text-center" width="15%">Status</th>
                     <th class="text-center" width="15%">Admin</th>
@@ -42,8 +42,8 @@
                 <?php foreach ($supplier as $sp) : ?>
                     <tr>
                         <td><?= $no++ ?></td>
-                        <td><?= $sp['nama'] ?></td>
                         <td><?= $sp['origin'] ?></td>
+                        <td><?= $sp['nama'] ?></td>
                         <td><?= $sp['no_telp'] ?></td>
                         <td><?= $sp['status'] ?></td>
                         <td><?= $sp['admin'] ?></td>

@@ -52,17 +52,18 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->get('laporan', 'Menu::Laporan', ['filter' => 'permission:Laporan']);
 
     // Supplier
-    $routes->get('supplier', 'Supplier::index', ['filter' => 'permission:Data Master']);
-    $routes->get('supplier/(:num)', 'Supplier::show/$1', ['filter' => 'permission:Data Master']);
-    $routes->get('supplier/new', 'Supplier::new', ['filter' => 'permission:Data Master']);
-    $routes->post('supplier', 'Supplier::create', ['filter' => 'permission:Data Master']);
-    $routes->get('supplier/(:num)/edit', 'Supplier::edit/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
-    $routes->put('supplier/(:num)', 'Supplier::update/$1  ', ['filter' => 'permission:Data Master,Admin Supplier']);
-    $routes->delete('supplier/(:num) ', 'Supplier::delete/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
-    // $routes->resource('supplier', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier', 'Supplier::index', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier/(:num)', 'Supplier::show/$1', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier/new', 'Supplier::new', ['filter' => 'permission:Data Master']);
+    // $routes->post('supplier', 'Supplier::create', ['filter' => 'permission:Data Master']);
+    // $routes->get('supplier/(:num)/edit', 'Supplier::edit/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
+    // $routes->put('supplier/(:num)', 'Supplier::update/$1  ', ['filter' => 'permission:Data Master,Admin Supplier']);
+    // $routes->delete('supplier/(:num) ', 'Supplier::delete/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
+    $routes->resource('supplier', ['filter' => 'permission:Data Master']);
+    $routes->resource('supplierpj', ['filter' => 'permission:Data Master']);
     $routes->resource('supplieralamat', ['filter' => 'permission:Data Master']);
     $routes->resource('supplierlink', ['filter' => 'permission:Data Master']);
-    $routes->resource('supplierpj', ['filter' => 'permission:Data Master']);
+    $routes->resource('suppliercs', ['filter' => 'permission:Data Master']);
 
     // Produk
     $routes->resource('produk', ['filter' => 'permission:Data Master']);
@@ -71,6 +72,8 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
 
     // Customer
     $routes->resource('customer', ['filter' => 'permission:Data Master']);
+    $routes->resource('customerpj', ['filter' => 'permission:Data Master']);
+    $routes->resource('customeralamat', ['filter' => 'permission:Data Master']);
     $routes->resource('customerrekening', ['filter' => 'permission:Data Master']);
 
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);

@@ -28,10 +28,11 @@
             <thead>
                 <tr>
                     <th class="text-center" width="5%">No</th>
-                    <th class="text-center" width="10%">Origin</th>
+                    <th class="text-center" width="15%">ID Customer</th>
                     <th class="text-center" width="25%">Nama</th>
-                    <th class="text-center" width="30%">Alamat</th>
                     <th class="text-center" width="15%">Telp</th>
+                    <th class="text-center" width="10%">Status</th>
+                    <th class="text-center" width="15%">Admin</th>
                     <th class="text-center" width="15%">Aksi</th>
                 </tr>
             </thead>
@@ -40,10 +41,11 @@
                 <?php foreach ($customer as $sp) : ?>
                     <tr>
                         <td><?= $no++ ?></td>
-                        <td><?= $sp['origin'] ?></td>
+                        <td><?= $sp['id_customer'] ?></td>
                         <td><?= $sp['nama'] ?></td>
-                        <td><?= $sp['alamat'] ?></td>
                         <td><?= $sp['no_telp'] ?></td>
+                        <td><?= $sp['status'] ?></td>
+                        <td><?= $sp['admin'] ?></td>
                         <td class="text-center">
                             <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $sp['id'] ?>)">
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>

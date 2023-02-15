@@ -1,10 +1,10 @@
 <div>
     <div class="row mb-3">
         <div class="col-md-3">
-            <div class="fw-bold">Origin</div>
+            <div class="fw-bold">ID Customer</div>
         </div>
         <div class="col-md-9">
-            <?= $customer['origin'] ?>
+            <?= $customer['id_customer'] ?>
         </div>
     </div>
     <div class="row mb-3">
@@ -15,14 +15,23 @@
             <?= $customer['nama'] ?>
         </div>
     </div>
+
     <div class="row mb-3">
         <div class="col-md-3">
             <div class="fw-bold">Alamat</div>
         </div>
         <div class="col-md-9">
-            <?= $customer['alamat'] ?>
+            <?php foreach ($alamat as $al) : ?>
+                <div class="mb-2">
+                    <p class="mb-0"><?= $al['nama'] ?></p>
+                    <p class="mb-0"><?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?></p>
+                    <p class="mb-0">Penerima : <?= $al['penerima'] ?></p>
+                    <p class="mb-0">Telp : <?= $al['no_telp'] ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
+
     <div class="row mb-3">
         <div class="col-md-3">
             <div class="fw-bold">Telepon</div>
@@ -70,7 +79,7 @@
         </div>
         <div class="col-md-9">
             <?php foreach ($rekening as $rek) : ?>
-                <p class="mb-2"><?= $rek['nama'] ?> : <?= $rek['no_rekening'] ?></p>
+                <p class="mb-2"><?= $rek['bank'] ?> : <?= $rek['atas_nama'] ?> - <?= $rek['no_rekening'] ?></p>
             <?php endforeach; ?>
         </div>
     </div>
@@ -99,4 +108,17 @@
             <?= $customer['note'] ?>
         </div>
     </div>
+
+    <hr class="my-4">
+
+    <?php foreach ($pj as $pj) : ?>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="fw-bold">Admin <?= $pj['urutan'] ?></div>
+            </div>
+            <div class="col-md-9">
+                <?= $pj['nama_pj'] ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>

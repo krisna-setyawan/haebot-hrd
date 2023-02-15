@@ -32,7 +32,8 @@ class CustomerRekening extends ResourcePresenter
 
         $data = [
             'id_customer'   => $this->request->getPost('id_customer'),
-            'nama'          => $this->request->getPost('nama'),
+            'bank'          => $this->request->getPost('bank'),
+            'atas_nama'          => $this->request->getPost('atas_nama'),
             'no_rekening'   => $this->request->getPost('no_rekening'),
         ];
         $modelCustomerRekening->save($data);

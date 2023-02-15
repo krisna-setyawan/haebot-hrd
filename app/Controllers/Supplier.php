@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ProvinsiModel;
 use App\Models\SupplierAlamatModel;
+use App\Models\SupplierCsModel;
 use App\Models\SupplierLinkModel;
 use App\Models\SupplierModel;
 use App\Models\SupplierPJModel;
@@ -32,20 +33,23 @@ class Supplier extends ResourcePresenter
     {
         if ($this->request->isAJAX()) {
             $modelSupplier = new SupplierModel();
+            $modelSupplierPJ = new SupplierPJModel();
             $modelSupplierAlamat = new SupplierAlamatModel();
             $modelSupplierLink = new SupplierLinkModel();
-            $modelSupplierPJ = new SupplierPJModel();
+            $modelSupplierCs = new SupplierCsModel();
 
-            $supplier = $modelSupplier->getSuppliersWithAdmins($id);
+            $supplier = $modelSupplier->find($id);
+            $pj = $modelSupplierPJ->getPJBySupplier($id);
             $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
             $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
-            $pj = $modelSupplierPJ->getPJBySupplier($id);
+            $customer_service = $modelSupplierCs->where(['id_supplier' => $id])->findAll();
 
             $data = [
                 'supplier' => $supplier,
+                'pj' => $pj,
                 'alamat' => $alamat,
                 'link' => $link,
-                'pj' => $pj,
+                'customer_service' => $customer_service,
             ];
 
             $json = [
@@ -133,29 +137,32 @@ class Supplier extends ResourcePresenter
     public function edit($id = null)
     {
         $modelSupplier = new SupplierModel();
+        $modelSupplierPJ = new SupplierPJModel();
         $modelSupplierAlamat = new SupplierAlamatModel();
         $modelSupplierLink = new SupplierLinkModel();
-        $modelSupplierPJ = new SupplierPJModel();
+        $modelSupplierCs = new SupplierCsModel();
         $modelProvinsi = new ProvinsiModel();
         $modelUser = new UserModel();
 
         $supplier = $modelSupplier->getSuppliersWithAdmins($id);
-        $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
-        $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
         $pj = $modelSupplierPJ->getPJBySupplier($id);
-        $provinsi = $modelProvinsi->orderBy('nama')->findAll();
         if ($pj) {
             $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
         } else {
             $users = $modelUser->getAllUserWithKaryawanName();
         }
+        $alamat = $modelSupplierAlamat->getAlamatBySupplier($id);
+        $link = $modelSupplierLink->where(['id_supplier' => $id])->findAll();
+        $customer_service = $modelSupplierCs->where(['id_supplier' => $id])->findAll();
+        $provinsi = $modelProvinsi->orderBy('nama')->findAll();
 
         $data = [
             'validation' => \Config\Services::validation(),
             'supplier' => $supplier,
+            'pj' => $pj,
             'alamat' => $alamat,
             'link' => $link,
-            'pj' => $pj,
+            'customer_service' => $customer_service,
             'provinsi' => $provinsi,
             'users' => $users
         ];
@@ -208,12 +215,6 @@ class Supplier extends ResourcePresenter
                     'required' => 'No telepon supplier harus diisi.',
                 ]
             ],
-            'saldo' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} awal supplier harus diisi.',
-                ]
-            ],
         ];
 
         if (!$this->validate($validasi)) {
@@ -221,7 +222,6 @@ class Supplier extends ResourcePresenter
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
-        $saldo = str_replace(".", "", $this->request->getPost('saldo'));
 
         $data = [
             'id'        => $id,
@@ -230,7 +230,6 @@ class Supplier extends ResourcePresenter
             'slug'      => $slug,
             'pemilik'   => $this->request->getPost('pemilik'),
             'no_telp'   => $this->request->getPost('no_telp'),
-            'saldo'     => $saldo,
             'status'    => $this->request->getPost('status'),
             'note'      => $this->request->getPost('note'),
         ];

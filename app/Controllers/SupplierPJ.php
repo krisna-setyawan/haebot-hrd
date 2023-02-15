@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\SupplierPJModel;
 use CodeIgniter\RESTful\ResourcePresenter;
-use Myth\Auth\Models\PermissionModel;
 
 class SupplierPJ extends ResourcePresenter
 {
@@ -31,14 +30,16 @@ class SupplierPJ extends ResourcePresenter
         $modelSupplierPJ = new SupplierPJModel();
         $id_supplier = $this->request->getPost('id_supplier');
 
+        $jml_admin = $modelSupplierPJ->where(['id_supplier' => $id_supplier])->countAllResults();
+
         $data = [
             'id_supplier' => $this->request->getPost('id_supplier'),
             'id_user' => $this->request->getPost('id_user'),
-            'urutan' => $this->request->getPost('urutan'),
+            'urutan' => $jml_admin + 1,
         ];
         $modelSupplierPJ->save($data);
 
-        session()->setFlashdata('pesan', 'Penanggung Jawab berhasil ditambahkan.');
+        session()->setFlashdata('pesan', 'Admin Supplier berhasil ditambahkan.');
 
         return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
@@ -62,7 +63,7 @@ class SupplierPJ extends ResourcePresenter
         ];
         $modelSupplierPJ->save($data);
 
-        session()->setFlashdata('pesan', 'Penanggung Jawab berhasil diedit.');
+        session()->setFlashdata('pesan', 'Admin Supplier berhasil diedit.');
 
         return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
@@ -76,13 +77,23 @@ class SupplierPJ extends ResourcePresenter
 
     public function delete($id = null)
     {
-        $id_supplier = $this->request->getPost('id_supplier');
-
         $modelSupplierPJ = new SupplierPJModel();
+        $id_supplier = $this->request->getPost('id_supplier');
+        $pj = $modelSupplierPJ->find($id);
+        $urutan_pj = $pj['urutan'];
+
+        $pj_bawahnya = $modelSupplierPJ->where(['id_supplier' => $id_supplier, 'urutan >' => $urutan_pj])->findAll();
+
+        foreach ($pj_bawahnya as $pjb) {
+            $modelSupplierPJ->save([
+                'id'        => $pjb['id'],
+                'urutan'    => $pjb['urutan'] - 1,
+            ]);
+        }
 
         $modelSupplierPJ->delete($id);
 
-        session()->setFlashdata('pesan', 'Penanggung Jawab berhasil dihapus.');
+        session()->setFlashdata('pesan', 'Admin Supplier berhasil dihapus.');
         return redirect()->to('/supplier/' . $id_supplier . '/edit');
     }
 }

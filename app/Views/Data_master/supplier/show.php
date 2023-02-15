@@ -40,7 +40,9 @@
             <?php foreach ($alamat as $al) : ?>
                 <div class="mb-2">
                     <p class="mb-0"><?= $al['nama'] ?></p>
-                    <?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?>
+                    <p class="mb-0"><?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?></p>
+                    <p class="mb-0">PIC : <?= $al['pic'] ?></p>
+                    <p class="mb-0">Telp : <?= $al['no_telp'] ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -53,6 +55,17 @@
         <div class="col-md-9">
             <?php foreach ($link as $li) : ?>
                 <p class="mb-2"><?= $li['nama'] ?> : <?= $li['link'] ?></p>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="fw-bold">Customer Service</div>
+        </div>
+        <div class="col-md-9">
+            <?php foreach ($customer_service as $cs) : ?>
+                <p class="mb-2"><?= $cs['nama'] ?> : <?= $cs['no_telp'] ?></p>
             <?php endforeach; ?>
         </div>
     </div>

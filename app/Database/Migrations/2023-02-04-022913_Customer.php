@@ -11,10 +11,9 @@ class Customer extends Migration
         // Customer
         $fields = [
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'origin'           => ['type' => 'varchar', 'constraint' => 80],
+            'id_customer'      => ['type' => 'varchar', 'constraint' => 80],
             'nama'             => ['type' => 'varchar', 'constraint' => 80],
             'slug'             => ['type' => 'varchar', 'constraint' => 255],
-            'alamat'           => ['type' => 'varchar', 'constraint' => 255],
             'no_telp'          => ['type' => 'varchar', 'constraint' => 20],
             'email'            => ['type' => 'varchar', 'constraint' => 50],
             'status'           => ['type' => 'enum', 'constraint' => ['Active', 'Inactive'], 'default' => 'Active'],
@@ -30,7 +29,7 @@ class Customer extends Migration
 
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
-        $this->forge->addUniqueKey('origin');
+        $this->forge->addUniqueKey('id_customer');
         $this->forge->addUniqueKey('nama');
         $this->forge->addUniqueKey('email');
         $this->forge->createTable('customer', true);

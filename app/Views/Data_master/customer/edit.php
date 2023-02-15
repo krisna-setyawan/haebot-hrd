@@ -26,21 +26,15 @@
                 <input type="hidden" name="_method" value="PUT">
 
                 <div class="mb-3">
-                    <label class="form-label text-secondary" for="origin">Origin</label>
-                    <input type="text" class="form-control <?= (validation_show_error('origin')) ? 'is-invalid' : ''; ?>" id="origin" name="origin" value="<?= old('origin', $customer['origin']); ?>">
-                    <div class="invalid-feedback"> <?= validation_show_error('origin'); ?></div>
+                    <label class="form-label text-secondary" for="id_customer">ID Customer</label>
+                    <input type="text" class="form-control <?= (validation_show_error('id_customer')) ? 'is-invalid' : ''; ?>" id="id_customer" name="id_customer" value="<?= old('id_customer', $customer['id_customer']); ?>">
+                    <div class="invalid-feedback"> <?= validation_show_error('id_customer'); ?></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label text-secondary" for="nama">Nama Customer</label>
                     <input type="text" class="form-control <?= (validation_show_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" name="nama" value="<?= old('nama', $customer['nama']); ?>">
                     <div class="invalid-feedback"> <?= validation_show_error('nama'); ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label text-secondary" for="alamat">Alamat</label>
-                    <input type="text" class="form-control <?= (validation_show_error('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" name="alamat" value="<?= old('alamat', $customer['alamat']); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('alamat'); ?></div>
                 </div>
 
                 <div class="mb-3">
@@ -53,24 +47,6 @@
                     <label class="form-label text-secondary" for="email">Email</label>
                     <input type="text" class="form-control <?= (validation_show_error('email')) ? 'is-invalid' : ''; ?>" id="email" name="email" value="<?= old('email', $customer['email']); ?>">
                     <div class="invalid-feedback"><?= validation_show_error('email'); ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label text-secondary" for="saldo_utama">Saldo Utama</label>
-                    <input type="text" class="form-control <?= (validation_show_error('saldo_utama')) ? 'is-invalid' : ''; ?>" id="saldo_utama" name="saldo_utama" value="<?= old('saldo_utama', $customer['saldo_utama']); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('saldo_utama'); ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label text-secondary" for="saldo_belanja">Saldo Belanja</label>
-                    <input type="text" class="form-control <?= (validation_show_error('saldo_belanja')) ? 'is-invalid' : ''; ?>" id="saldo_belanja" name="saldo_belanja" value="<?= old('saldo_belanja', $customer['saldo_belanja']); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('saldo_belanja'); ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label text-secondary" for="saldo_lain">Saldo Lain</label>
-                    <input type="text" class="form-control <?= (validation_show_error('saldo_lain')) ? 'is-invalid' : ''; ?>" id="saldo_lain" name="saldo_lain" value="<?= old('saldo_lain', $customer['saldo_lain']); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('saldo_lain'); ?></div>
                 </div>
 
                 <div class="mb-3">
@@ -105,6 +81,100 @@
         </div>
 
         <div class="col-md-5">
+            <!-- ADMIN PENANGGUNGJAWAB -->
+            <div class="d-flex mb-0">
+                <div class="me-auto">
+                    <h5 class="mb-2">Admin</h5>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-secondary mb-2 py-0" data-bs-toggle="modal" data-bs-target="#modal-add-pj">
+                        <i class="fa-fw fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped table-secondary">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="55%">Admin</th>
+                            <th width="20%">Urutan</th>
+                            <th width="20%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($pj as $pj) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
+                                <td><?= $pj['nama_pj'] ?></td>
+                                <td class="text-center"><?= $pj['urutan'] ?></td>
+                                <td class="text-center">
+                                    <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" onclick="edit_pj(<?= $pj['id'] ?>)">
+                                        <i class="fa-fw fa-solid fa-pen"></i>
+                                    </a>
+                                    <form id="form_delete_pj" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="id_customer" value="<?= $customer['id'] ?>">
+                                    </form>
+                                    <button onclick="confirm_delete_pj(<?= $pj['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ALAMAT -->
+            <div class="d-flex mb-0">
+                <div class="me-auto">
+                    <h5 class="mb-2">Alamat</h5>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-secondary mb-2 py-0" data-bs-toggle="modal" data-bs-target="#modal-add-alamat">
+                        <i class="fa-fw fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped table-secondary">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="25%">Nama</th>
+                            <th width="60%">Alamat, Penerima, Telp</th>
+                            <th width="10%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($alamat as $al) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
+                                <td><?= $al['nama'] ?></td>
+                                <td>
+                                    <?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?>
+                                    <br>
+                                    Penerima : <?= $al['penerima'] ?>
+                                    <br>
+                                    TELP : <?= $al['no_telp'] ?>
+                                </td>
+                                <td class="text-center">
+                                    <form id="form_delete_alamat" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="id_customer" value="<?= $customer['id'] ?>">
+                                    </form>
+                                    <button onclick="confirm_delete_alamat(<?= $al['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- NOMOR REKENING -->
             <div class="d-flex mb-0">
                 <div class="me-auto">
                     <h5 class="mb-3 mt-0">Nomor Rekening</h5>
@@ -120,8 +190,9 @@
                     <thead>
                         <tr class="text-center">
                             <th width="5%">No</th>
-                            <th width="40%">Nama</th>
-                            <th width="45%">No Rekening</th>
+                            <th width="25%">Bank</th>
+                            <th width="35%">A/n</th>
+                            <th width="25%">No Rekening</th>
                             <th width="10%">Aksi</th>
                         </tr>
                     </thead>
@@ -130,7 +201,8 @@
                         foreach ($rekening as $rek) : ?>
                             <tr>
                                 <td class="text-center"><?= $no++ ?></td>
-                                <td><?= $rek['nama'] ?></td>
+                                <td><?= $rek['bank'] ?></td>
+                                <td><?= $rek['atas_nama'] ?></td>
                                 <td><?= $rek['no_rekening'] ?></td>
                                 <td class="text-center">
                                     <form id="form_delete_rekening" method="POST" class="d-inline">
@@ -152,6 +224,149 @@
 </main>
 
 
+<!-- Modal add penanggung jawab -->
+<div class="modal fade" id="modal-add-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Admin</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="needs-validation" id="form-add-pj" autocomplete="off" action="<?= site_url() ?>customerpj" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_customer" value="<?= $customer['id'] ?>">
+
+                    <div class="mb-3">
+                        <label class="form-label">Admin</label>
+                        <select required class="form-control" name="id_user" id="id_user">
+                            <option value=""></option>
+                            <?php foreach ($users as $us) : ?>
+                                <option value="<?= $us['id'] ?>"><?= $us['nama'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Tambah</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit penanggung jawab -->
+<div class="modal fade" id="modal-edit-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Admin</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="needs-validation" id="form-edit-pj" autocomplete="off" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id_customer" value="<?= $customer['id'] ?>">
+
+                    <div class="mb-3">
+                        <label class="form-label">Urutan</label>
+                        <input required type="number" class="form-control" id="edit-urutan" name="edit-urutan">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal add alamat -->
+<div class="modal fade" id="modal-add-alamat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Alamat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="needs-validation" id="form-add-alamat" autocomplete="off" action="<?= site_url() ?>customeralamat" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_customer" value="<?= $customer['id'] ?>">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Alamat</label>
+                        <input required type="text" class="form-control" name="nama">
+                    </div>
+
+                    <!-- PROVINSI -->
+                    <div class="mb-3">
+                        <label class="form-label">Provinsi</label>
+                        <select required class="form-select" id="id_provinsi" name="id_provinsi">
+                            <option selected value=""></option>
+                            <?php foreach ($provinsi as $prov) { ?>
+                                <option value="<?= $prov['id'] ?>"><?= $prov['nama'] ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <!-- KOTA -->
+                    <div class="mb-3">
+                        <label class="form-label">Kota</label>
+                        <select required class="form-select" id="id_kota" name="id_kota">
+                            <option selected value=""></option>
+                        </select>
+                    </div>
+
+                    <!-- KECAMATAN -->
+                    <div class="mb-3">
+                        <label class="form-label">Kecamatan</label>
+                        <select required class="form-select" id="id_kecamatan" name="id_kecamatan">
+                            <option selected value=""></option>
+                        </select>
+                    </div>
+
+                    <!-- KELURAHAN -->
+                    <div class="mb-3">
+                        <label class="form-label">Kelurahan</label>
+                        <select required class="form-select" id="id_kelurahan" name="id_kelurahan">
+                            <option selected value=""></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Detail Alamat</label>
+                        <input required type="text" class="form-control" name="detail_alamat">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Penerima</label>
+                        <input required type="text" class="form-control" name="penerima">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">No Telp</label>
+                        <input required type="text" class="form-control" name="no_telp">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Tambah</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal add rekening -->
 <div class="modal fade" id="modal-add-rekening" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -168,8 +383,13 @@
                     <input type="hidden" name="id_customer" value="<?= $customer['id'] ?>">
 
                     <div class="mb-3">
-                        <label class="form-label text-secondary">Nama</label>
-                        <input required type="text" class="form-control" id="nama" name="nama">
+                        <label class="form-label text-secondary">Bank</label>
+                        <input required type="text" class="form-control" id="bank" name="bank">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-secondary">A/n</label>
+                        <input required type="text" class="form-control" id="atas_nama" name="atas_nama">
                     </div>
 
                     <div class="mb-3">
@@ -191,15 +411,23 @@
 
 <script>
     $(document).ready(function() {
-        $('#saldo_utama').mask('000.000.000', {
-            reverse: true
+        $("#id_provinsi").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
         });
-        $('#saldo_belanja').mask('000.000.000', {
-            reverse: true
+        $("#id_kota").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
         });
-        $('#saldo_lain').mask('000.000.000', {
-            reverse: true
+        $("#id_kecamatan").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
         });
+        $("#id_kelurahan").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-alamat')
+        });
+
         $('#tgl_registrasi').datepicker({
             format: "yyyy-mm-dd"
         });
@@ -232,7 +460,116 @@
     })
 
 
+    // RANTAI WILAYAH
+    $(document).ready(function() {
+        $('#id_provinsi').change(function() {
+            let id_provinsi = $(this).val();
+            if (id_provinsi != '') {
+                $.ajax({
+                    type: 'get',
+                    url: '<?= site_url('wilayah/kota_by_provinsi') ?>',
+                    data: '&id_provinsi=' + id_provinsi,
+                    success: function(html) {
+                        $('#id_kota').html(html);
+                        $('#id_kecamatan').html('<option selected value=""></option>');
+                        $('#id_kelurahan').html('<option selected value=""></option>');
+                    }
+                })
+            } else {
+                $('#id_kota').html('<option selected value=""></option>');
+                $('#id_kecamatan').html('<option selected value=""></option>');
+                $('#id_kelurahan').html('<option selected value=""></option>');
+            }
+        })
 
+        $('#id_kota').change(function() {
+            let id_kota = $(this).val();
+            if (id_kota != '') {
+                $.ajax({
+                    type: 'get',
+                    url: '<?= site_url('wilayah/kecamatan_by_kota') ?>',
+                    data: '&id_kota=' + id_kota,
+                    success: function(html) {
+                        $('#id_kecamatan').html(html);
+                        $('#id_kelurahan').html('<option selected value=""></option>');
+                    }
+                })
+            } else {
+                $('#id_kecamatan').html('<option selected value=""></option>');
+                $('#id_kelurahan').html('<option selected value=""></option>');
+            }
+        })
+
+        $('#id_kecamatan').change(function() {
+            let id_kecamatan = $(this).val();
+            if (id_kecamatan != '') {
+                $.ajax({
+                    type: 'get',
+                    url: '<?= site_url('wilayah/kelurahan_by_kecamatan') ?>',
+                    data: '&id_kecamatan=' + id_kecamatan,
+                    success: function(html) {
+                        $('#id_kelurahan').html(html);
+                    }
+                })
+            } else {
+                $('#id_kelurahan').html('<option selected value=""></option>');
+            }
+        })
+    })
+
+
+    // PENANGGUNG JAWAB
+    function edit_pj(id) {
+        $.ajax({
+            type: "get",
+            url: "<?= site_url() ?>customerpj/" + id + "/edit",
+            dataType: "json",
+            success: function(response) {
+                $('#form-edit-pj').attr('action', '<?= site_url() ?>customerpj/' + id);
+                $('#edit-urutan').val(response.urutan);
+                $('#modal-edit-pj').modal('toggle')
+            }
+        });
+    }
+
+    function confirm_delete_pj(id) {
+        Swal.fire({
+            title: 'Konfirmasi?',
+            text: "Apakah yakin menghapus Admin?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#form_delete_pj').attr('action', '<?= site_url() ?>customerpj/' + id);
+                $('#form_delete_pj').submit();
+            }
+        })
+    }
+
+
+    // ALAMAT
+    function confirm_delete_alamat(id) {
+        Swal.fire({
+            title: 'Konfirmasi?',
+            text: "Apakah yakin menghapus alamat?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#form_delete_alamat').attr('action', '<?= site_url() ?>customeralamat/' + id);
+                $('#form_delete_alamat').submit();
+            }
+        })
+    }
+
+
+    // REKENING
     function confirm_delete_rekening(id) {
         Swal.fire({
             title: 'Konfirmasi?',

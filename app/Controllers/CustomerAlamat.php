@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\SupplierAlamatModel;
+use App\Models\CustomerAlamatModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
-class SupplierAlamat extends ResourcePresenter
+class CustomerAlamat extends ResourcePresenter
 {
     public function index()
     {
@@ -27,25 +27,25 @@ class SupplierAlamat extends ResourcePresenter
 
     public function create()
     {
-        $modelSupplierAlamat = new SupplierAlamatModel();
-        $id_supplier = $this->request->getPost('id_supplier');
+        $modelCustomerAlamat = new CustomerAlamatModel();
+        $id_customer = $this->request->getPost('id_customer');
 
         $data = [
-            'id_supplier' => $this->request->getPost('id_supplier'),
+            'id_customer' => $this->request->getPost('id_customer'),
             'nama' => $this->request->getPost('nama'),
             'id_provinsi' => $this->request->getPost('id_provinsi'),
             'id_kota' => $this->request->getPost('id_kota'),
             'id_kecamatan' => $this->request->getPost('id_kecamatan'),
             'id_kelurahan' => $this->request->getPost('id_kelurahan'),
             'detail_alamat' => $this->request->getPost('detail_alamat'),
-            'pic' => $this->request->getPost('pic'),
+            'penerima' => $this->request->getPost('penerima'),
             'no_telp' => $this->request->getPost('no_telp'),
         ];
-        $modelSupplierAlamat->save($data);
+        $modelCustomerAlamat->save($data);
 
         session()->setFlashdata('pesan', 'Alamat Baru berhasil ditambahkan.');
 
-        return redirect()->to('/supplier/' . $id_supplier . '/edit');
+        return redirect()->to('/customer/' . $id_customer . '/edit');
     }
 
 
@@ -69,13 +69,13 @@ class SupplierAlamat extends ResourcePresenter
 
     public function delete($id = null)
     {
-        $id_supplier = $this->request->getPost('id_supplier');
+        $id_customer = $this->request->getPost('id_customer');
 
-        $modelSupplierAlamat = new SupplierAlamatModel();
+        $modelCustomerAlamat = new CustomerAlamatModel();
 
-        $modelSupplierAlamat->delete($id);
+        $modelCustomerAlamat->delete($id);
 
         session()->setFlashdata('pesan', 'Alamat berhasil dihapus.');
-        return redirect()->to('/supplier/' . $id_supplier . '/edit');
+        return redirect()->to('/customer/' . $id_customer . '/edit');
     }
 }

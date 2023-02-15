@@ -54,13 +54,6 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="saldo" class="col-sm-2 col-form-label">Saldo</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control <?= (validation_show_error('saldo')) ? 'is-invalid' : ''; ?>" id="saldo" name="saldo" value="<?= old('saldo', $supplier['saldo']); ?>">
-                        <div class="invalid-feedback"><?= validation_show_error('saldo'); ?></div>
-                    </div>
-                </div>
-                <div class="row mb-3">
                     <label for="note" class="col-sm-2 col-form-label">Note</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="note" name="note" value="<?= old('note', $supplier['note']); ?>">
@@ -89,9 +82,10 @@
 
         <div class="col-md-6 mt-2 mb-4">
 
+            <!-- ADMIN PENANGGUNGJAWAB -->
             <div class="d-flex mb-0">
                 <div class="me-auto">
-                    <h5 class="mb-2">Penanggung Jawab</h5>
+                    <h5 class="mb-2">Admin</h5>
                 </div>
                 <div>
                     <button class="btn btn-sm btn-secondary mb-2 py-0" data-bs-toggle="modal" data-bs-target="#modal-add-pj">
@@ -133,7 +127,7 @@
                 </table>
             </div>
 
-
+            <!-- ALAMAT -->
             <div class="d-flex mb-0">
                 <div class="me-auto">
                     <h5 class="mb-2">Alamat</h5>
@@ -150,7 +144,7 @@
                         <tr class="text-center">
                             <th width="5%">No</th>
                             <th width="25%">Nama</th>
-                            <th width="60%">Alamat</th>
+                            <th width="60%">Alamat, PIC, Telp</th>
                             <th width="10%">Aksi</th>
                         </tr>
                     </thead>
@@ -162,6 +156,10 @@
                                 <td><?= $al['nama'] ?></td>
                                 <td>
                                     <?= $al['detail_alamat'] ?>, <?= $al['kelurahan'] ?>, <?= $al['kecamatan'] ?>, <?= $al['kota'] ?>, <?= $al['provinsi'] ?>
+                                    <br>
+                                    PIC : <?= $al['pic'] ?>
+                                    <br>
+                                    TELP : <?= $al['no_telp'] ?>
                                 </td>
                                 <td class="text-center">
                                     <form id="form_delete_alamat" method="POST" class="d-inline">
@@ -177,7 +175,7 @@
                 </table>
             </div>
 
-
+            <!-- LINK -->
             <div class="d-flex mb-0">
                 <div class="me-auto">
                     <h5 class="mb-2">Link</h5>
@@ -218,15 +216,124 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- CUSTOMER SERVICE -->
+            <div class="d-flex mb-0">
+                <div class="me-auto">
+                    <h5 class="mb-2">Customer Service</h5>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-secondary mb-2 py-0" data-bs-toggle="modal" data-bs-target="#modal-add-cs">
+                        <i class="fa-fw fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped table-secondary">
+                    <thead>
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="40%">Nama</th>
+                            <th width="35%">Telp</th>
+                            <th width="20%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($customer_service as $cs) : ?>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
+                                <td><?= $cs['nama'] ?></td>
+                                <td><?= $cs['no_telp'] ?></td>
+                                <td class="text-center">
+                                    <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" onclick="edit_cs(<?= $cs['id'] ?>)">
+                                        <i class="fa-fw fa-solid fa-pen"></i>
+                                    </a>
+                                    <form id="form_delete_cs" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="id_supplier" value="<?= $supplier['id'] ?>">
+                                    </form>
+                                    <button onclick="confirm_delete_cs(<?= $cs['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 </main>
 
 
+<!-- Modal add penanggung jawab -->
+<div class="modal fade" id="modal-add-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Admin</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="needs-validation" id="form-add-pj" autocomplete="off" action="<?= site_url() ?>supplierpj" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_supplier" value="<?= $supplier['id'] ?>">
+
+                    <div class="mb-3">
+                        <label class="form-label">Admin</label>
+                        <select required class="form-control" name="id_user" id="id_user">
+                            <option value=""></option>
+                            <?php foreach ($users as $us) : ?>
+                                <option value="<?= $us['id'] ?>"><?= $us['nama'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Tambah</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit penanggung jawab -->
+<div class="modal fade" id="modal-edit-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Admin</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="needs-validation" id="form-edit-pj" autocomplete="off" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id_supplier" value="<?= $supplier['id'] ?>">
+
+                    <div class="mb-3">
+                        <label class="form-label">Urutan</label>
+                        <input required type="number" class="form-control" id="edit-urutan" name="edit-urutan">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" type="submit">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal add alamat -->
 <div class="modal fade" id="modal-add-alamat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Alamat</h1>
@@ -241,7 +348,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Nama Alamat</label>
-                        <input required type="text" class="form-control" id="nama" name="nama">
+                        <input required type="text" class="form-control" name="nama">
                     </div>
 
                     <!-- PROVINSI -->
@@ -281,7 +388,17 @@
 
                     <div class="mb-3">
                         <label class="form-label">Detail Alamat</label>
-                        <input required type="text" class="form-control" id="detail_alamat" name="detail_alamat">
+                        <input required type="text" class="form-control" name="detail_alamat">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">PIC</label>
+                        <input required type="text" class="form-control" name="pic">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">No Telp</label>
+                        <input required type="text" class="form-control" name="no_telp">
                     </div>
 
                     <hr class="my-4">
@@ -295,7 +412,7 @@
 
 <!-- Modal add link -->
 <div class="modal fade" id="modal-add-link" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Link</h1>
@@ -327,34 +444,29 @@
     </div>
 </div>
 
-<!-- Modal add penanggung jawab -->
-<div class="modal fade" id="modal-add-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Modal add CS -->
+<div class="modal fade" id="modal-add-cs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Penanggung Jawab</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah CS</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form novalidate class="needs-validation" id="form-add-pj" autocomplete="off" action="<?= site_url() ?>supplierpj" method="POST">
+                <form novalidate class="needs-validation" id="form-add-cs" autocomplete="off" action="<?= site_url() ?>suppliercs" method="POST">
 
                     <?= csrf_field() ?>
 
                     <input type="hidden" name="id_supplier" value="<?= $supplier['id'] ?>">
 
                     <div class="mb-3">
-                        <label class="form-label">Penanggung Jawab</label>
-                        <select required class="form-control" name="id_user" id="id_user">
-                            <option value=""></option>
-                            <?php foreach ($users as $us) : ?>
-                                <option value="<?= $us['id'] ?>"><?= $us['nama'] ?></option>
-                            <?php endforeach ?>
-                        </select>
+                        <label class="form-label">Nama</label>
+                        <input required type="text" class="form-control" id="nama" name="nama">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Urutan</label>
-                        <input required type="number" class="form-control" id="urutan" name="urutan">
+                        <label class="form-label">No Telp</label>
+                        <input required type="text" class="form-control" id="no_telp" name="no_telp">
                     </div>
 
                     <hr class="my-4">
@@ -366,16 +478,16 @@
     </div>
 </div>
 
-<!-- Modal edit penanggung jawab -->
-<div class="modal fade" id="modal-edit-pj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Modal edit CS -->
+<div class="modal fade" id="modal-edit-cs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Penanggung Jawab</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit CS</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form novalidate class="needs-validation" id="form-edit-pj" autocomplete="off" method="POST">
+                <form novalidate class="needs-validation" id="form-edit-cs" autocomplete="off" method="POST">
 
                     <?= csrf_field() ?>
 
@@ -383,8 +495,12 @@
                     <input type="hidden" name="id_supplier" value="<?= $supplier['id'] ?>">
 
                     <div class="mb-3">
-                        <label class="form-label">Urutan</label>
-                        <input required type="number" class="form-control" id="edit-urutan" name="edit-urutan">
+                        <label class="form-label">Nama</label>
+                        <input required type="text" class="form-control" id="edit-nama_cs" name="nama">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">No Telp</label>
+                        <input required type="text" class="form-control" id="edit-no_telp_cs" name="no_telp">
                     </div>
 
                     <hr class="my-4">
@@ -418,9 +534,6 @@
             dropdownParent: $('#modal-add-alamat')
         });
 
-        $('#saldo').mask('000.000.000', {
-            reverse: true
-        });
         // Alert
         var op = <?= (!empty(session()->getFlashdata('pesan')) ? json_encode(session()->getFlashdata('pesan')) : '""'); ?>;
         if (op != '') {
@@ -523,7 +636,7 @@
     function confirm_delete_pj(id) {
         Swal.fire({
             title: 'Konfirmasi?',
-            text: "Apakah yakin menghapus penanggung jawab?",
+            text: "Apakah yakin menghapus Admin?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -571,6 +684,39 @@
             if (result.isConfirmed) {
                 $('#form_delete_link').attr('action', '<?= site_url() ?>supplierlink/' + id);
                 $('#form_delete_link').submit();
+            }
+        })
+    }
+
+
+    // CS
+    function edit_cs(id) {
+        $.ajax({
+            type: "get",
+            url: "<?= site_url() ?>suppliercs/" + id + "/edit",
+            dataType: "json",
+            success: function(res) {
+                $('#form-edit-cs').attr('action', '<?= site_url() ?>suppliercs/' + id);
+                $('#edit-nama_cs').val(res.nama);
+                $('#edit-no_telp_cs').val(res.no_telp);
+                $('#modal-edit-cs').modal('toggle')
+            }
+        });
+    }
+
+    function confirm_delete_cs(id) {
+        Swal.fire({
+            title: 'Konfirmasi?',
+            text: "Apakah yakin menghapus CS?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#form_delete_cs').attr('action', '<?= site_url() ?>suppliercs/' + id);
+                $('#form_delete_cs').submit();
             }
         })
     }

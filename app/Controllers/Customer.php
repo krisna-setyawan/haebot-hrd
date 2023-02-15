@@ -2,8 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\CustomerAlamatModel;
 use App\Models\CustomerModel;
+use App\Models\CustomerPJModel;
 use App\Models\CustomerRekeningModel;
+use App\Models\ProvinsiModel;
+use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
 class Customer extends ResourcePresenter
@@ -14,7 +18,7 @@ class Customer extends ResourcePresenter
     public function index()
     {
         $modelCustomer = new CustomerModel();
-        $customer = $modelCustomer->findAll();
+        $customer = $modelCustomer->getCustomers();
 
         $data = [
             'customer' => $customer
@@ -28,12 +32,15 @@ class Customer extends ResourcePresenter
     {
         if ($this->request->isAJAX()) {
             $modelCustomer = new CustomerModel();
+            $modelCustomerPJ = new CustomerPJModel();
+            $modelCustomerAlamat = new CustomerAlamatModel();
             $modelCustomerRekening = new CustomerRekeningModel();
-            $rekening = $modelCustomerRekening->where(['id_customer' => $id])->findAll();
 
             $data = [
-                'customer' => $modelCustomer->where(['id' => $id])->first(),
-                'rekening' => $rekening,
+                'customer'  => $modelCustomer->find($id),
+                'pj'        => $modelCustomerPJ->getPJByCustomer($id),
+                'alamat'    => $modelCustomerAlamat->getAlamatByCustomer($id),
+                'rekening'  => $modelCustomerRekening->where(['id_customer' => $id])->findAll(),
             ];
 
             $json = [
@@ -57,11 +64,11 @@ class Customer extends ResourcePresenter
     public function create()
     {
         $validasi = [
-            'origin' => [
-                'rules' => 'required|is_unique[customer.origin]',
+            'id_customer' => [
+                'rules' => 'required|is_unique[customer.id_customer]',
                 'errors' => [
-                    'required' => '{field} customer harus diisi.',
-                    'is_unique' => 'origin customer sudah ada dalam database.'
+                    'required' => 'ID customer harus diisi.',
+                    'is_unique' => 'ID customer sudah ada dalam database.'
                 ]
             ],
             'nama' => [
@@ -69,12 +76,6 @@ class Customer extends ResourcePresenter
                 'errors' => [
                     'required' => '{field} customer harus diisi.',
                     'is_unique' => 'nama customer sudah ada dalam database.'
-                ]
-            ],
-            'alamat' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} customer harus diisi.',
                 ]
             ],
             'no_telp' => [
@@ -129,10 +130,9 @@ class Customer extends ResourcePresenter
         $saldo_lain = str_replace(".", "", $this->request->getPost('saldo_lain'));
 
         $data = [
-            'origin'            => $this->request->getPost('origin'),
+            'id_customer'       => $this->request->getPost('id_customer'),
             'nama'              => $this->request->getPost('nama'),
             'slug'              => $slug,
-            'alamat'            => $this->request->getPost('alamat'),
             'no_telp'           => $this->request->getPost('no_telp'),
             'email'             => $this->request->getPost('email'),
             'status'            => 'Active',
@@ -153,14 +153,27 @@ class Customer extends ResourcePresenter
     public function edit($id = null)
     {
         $modelCustomer = new CustomerModel();
+        $modelCustomerPJ = new CustomerPJModel();
+        $modelCustomerAlamat = new CustomerAlamatModel();
         $modelCustomerRekening = new CustomerRekeningModel();
+        $modelProvinsi = new ProvinsiModel();
+        $modelUser = new UserModel();
 
-        $rekening = $modelCustomerRekening->where(['id_customer' => $id])->findAll();
+        $pj = $modelCustomerPJ->getPJByCustomer($id);
+        if ($pj) {
+            $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
+        } else {
+            $users = $modelUser->getAllUserWithKaryawanName();
+        }
 
         $data = [
-            'validation' => \Config\Services::validation(),
-            'customer' => $modelCustomer->where(['id' => $id])->first(),
-            'rekening' => $rekening,
+            'validation'        => \Config\Services::validation(),
+            'customer'          => $modelCustomer->where(['id' => $id])->first(),
+            'pj'                => $pj,
+            'alamat'            => $modelCustomerAlamat->getAlamatByCustomer($id),
+            'rekening'          => $modelCustomerRekening->where(['id_customer' => $id])->findAll(),
+            'provinsi'          => $modelProvinsi->orderBy('nama')->findAll(),
+            'users'             => $users
         ];
 
         return view('data_master/customer/edit', $data);
@@ -172,10 +185,10 @@ class Customer extends ResourcePresenter
         $modelCustomer = new CustomerModel();
         $old_customer = $modelCustomer->find($id);
 
-        if ($old_customer['origin'] == $this->request->getPost('origin')) {
-            $rule_origin = 'required';
+        if ($old_customer['id_customer'] == $this->request->getPost('id_customer')) {
+            $rule_id_customer = 'required';
         } else {
-            $rule_origin = 'required|is_unique[customer.origin]';
+            $rule_id_customer = 'required|is_unique[customer.id_customer]';
         }
 
         if ($old_customer['nama'] == $this->request->getPost('nama')) {
@@ -191,11 +204,11 @@ class Customer extends ResourcePresenter
         }
 
         $validasi = [
-            'origin' => [
-                'rules' => $rule_origin,
+            'id_customer' => [
+                'rules' => $rule_id_customer,
                 'errors' => [
-                    'required' => '{field} customer harus diisi.',
-                    'is_unique' => 'origin customer sudah ada dalam database.'
+                    'required' => 'ID customer harus diisi.',
+                    'is_unique' => 'ID customer sudah ada dalam database.'
                 ]
             ],
             'nama' => [
@@ -203,12 +216,6 @@ class Customer extends ResourcePresenter
                 'errors' => [
                     'required' => '{field} customer harus diisi.',
                     'is_unique' => 'nama customer sudah ada dalam database.'
-                ]
-            ],
-            'alamat' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} customer harus diisi.',
                 ]
             ],
             'no_telp' => [
@@ -225,24 +232,6 @@ class Customer extends ResourcePresenter
                     'valid_email' => 'format penulisan email salah.'
                 ]
             ],
-            'saldo_utama' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Awal Saldo Utama harus diisi.',
-                ]
-            ],
-            'saldo_belanja' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Awal Saldo Belanja harus diisi.',
-                ]
-            ],
-            'saldo_lain' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Awal Saldo Lain harus diisi.',
-                ]
-            ],
             'tgl_registrasi' => [
                 'rules' => 'required',
                 'errors' => [
@@ -256,22 +245,15 @@ class Customer extends ResourcePresenter
         }
 
         $slug = url_title($this->request->getPost('nama'), '-', true);
-        $saldo_utama = str_replace(".", "", $this->request->getPost('saldo_utama'));
-        $saldo_belanja = str_replace(".", "", $this->request->getPost('saldo_belanja'));
-        $saldo_lain = str_replace(".", "", $this->request->getPost('saldo_lain'));
 
         $data = [
             'id'                => $id,
-            'origin'            => $this->request->getPost('origin'),
+            'id_customer'       => $this->request->getPost('id_customer'),
             'nama'              => $this->request->getPost('nama'),
             'slug'              => $slug,
-            'alamat'            => $this->request->getPost('alamat'),
             'no_telp'           => $this->request->getPost('no_telp'),
             'email'             => $this->request->getPost('email'),
             'status'            => $this->request->getPost('status'),
-            'saldo_utama'       => $saldo_utama,
-            'saldo_belanja'     => $saldo_belanja,
-            'saldo_lain'        => $saldo_lain,
             'tgl_registrasi'    => $this->request->getPost('tgl_registrasi'),
             'note'              => $this->request->getPost('note'),
         ];

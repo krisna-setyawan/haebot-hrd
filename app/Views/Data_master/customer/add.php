@@ -23,10 +23,10 @@
             <?= csrf_field() ?>
 
             <div class="row mb-3">
-                <label for="origin" class="col-sm-3 col-form-label">Origin</label>
+                <label for="id_customer" class="col-sm-3 col-form-label">ID Customer</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control <?= (validation_show_error('origin')) ? 'is-invalid' : ''; ?>" id="origin" name="origin" value="<?= old('origin'); ?>">
-                    <div class="invalid-feedback"> <?= validation_show_error('origin'); ?></div>
+                    <input type="text" class="form-control <?= (validation_show_error('id_customer')) ? 'is-invalid' : ''; ?>" id="id_customer" name="id_customer" value="<?= old('id_customer'); ?>">
+                    <div class="invalid-feedback"> <?= validation_show_error('id_customer'); ?></div>
                 </div>
             </div>
             <div class="row mb-3">
@@ -34,13 +34,6 @@
                 <div class="col-sm-9">
                     <input type="text" class="form-control <?= (validation_show_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" name="nama" value="<?= old('nama'); ?>">
                     <div class="invalid-feedback"> <?= validation_show_error('nama'); ?></div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control <?= (validation_show_error('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" name="alamat" value="<?= old('alamat'); ?>">
-                    <div class="invalid-feedback"><?= validation_show_error('alamat'); ?></div>
                 </div>
             </div>
             <div class="row mb-3">
@@ -81,7 +74,7 @@
             <div class="row mb-3">
                 <label for="tgl_registrasi" class="col-sm-3 col-form-label">Tgl Registrasi</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control <?= (validation_show_error('tgl_registrasi')) ? 'is-invalid' : ''; ?>" id="tgl_registrasi" name="tgl_registrasi" value="<?= old('tgl_registrasi'); ?>">
+                    <input type="text" class="form-control <?= (validation_show_error('tgl_registrasi')) ? 'is-invalid' : ''; ?>" id="tgl_registrasi" name="tgl_registrasi" value="<?= old('tgl_registrasi', date('Y-m-d')); ?>">
                     <div class="invalid-feedback"> <?= validation_show_error('tgl_registrasi'); ?></div>
                 </div>
             </div>
