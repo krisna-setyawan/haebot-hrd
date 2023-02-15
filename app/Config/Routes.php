@@ -45,25 +45,24 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->get('pembelian', 'Menu::Pembelian', ['filter' => 'permission:Pembelian']);
     $routes->get('penjualan', 'Menu::Penjualan', ['filter' => 'permission:Penjualan']);
     $routes->get('produksi', 'Menu::Produksi', ['filter' => 'permission:Produksi']);
-    $routes->get('gudang', 'Menu::Gudang', ['filter' => 'permission:Gudang']);
+    $routes->get('menu_gudang', 'Menu::Gudang', ['filter' => 'permission:Gudang']);
     $routes->get('inventaris', 'Menu::Inventaris', ['filter' => 'permission:Inventaris']);
     $routes->get('akuntansi', 'Menu::Akuntansi', ['filter' => 'permission:Akuntansi']);
     $routes->get('sdm', 'Menu::SDM', ['filter' => 'permission:SDM']);
     $routes->get('laporan', 'Menu::Laporan', ['filter' => 'permission:Laporan']);
 
     // Supplier
-    $routes->resource('supplier', ['filter' => 'permission:Data Master']);
+    $routes->get('supplier', 'Supplier::index', ['filter' => 'permission:Data Master']);
+    $routes->get('supplier/(:num)', 'Supplier::show/$1', ['filter' => 'permission:Data Master']);
+    $routes->get('supplier/new', 'Supplier::new', ['filter' => 'permission:Data Master']);
+    $routes->post('supplier', 'Supplier::create', ['filter' => 'permission:Data Master']);
+    $routes->get('supplier/(:num)/edit', 'Supplier::edit/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
+    $routes->put('supplier/(:num)', 'Supplier::update/$1  ', ['filter' => 'permission:Data Master,Admin Supplier']);
+    $routes->delete('supplier/(:num) ', 'Supplier::delete/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
+    // $routes->resource('supplier', ['filter' => 'permission:Data Master']);
     $routes->resource('supplieralamat', ['filter' => 'permission:Data Master']);
     $routes->resource('supplierlink', ['filter' => 'permission:Data Master']);
     $routes->resource('supplierpj', ['filter' => 'permission:Data Master']);
-
-    // $routes->get('supplier', 'Supplier::index', ['filter' => 'permission:Data Master']);
-    // $routes->get('supplier/(.*)', 'Supplier::show/$1', ['filter' => 'permission:Data Master']);
-    // $routes->get('supplier/new', 'Supplier::new', ['filter' => 'permission:Data Master']);
-    // $routes->post('supplier', 'Supplier::create', ['filter' => 'permission:Data Master']);
-    // $routes->get('supplier/(.*)/edit', 'Supplier::edit/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
-    // $routes->put('supplier/(.*)', 'Supplier::update/$1  ', ['filter' => 'permission:Data Master,Admin Supplier']);
-    // $routes->delete('supplier/(.*) ', 'Supplier::delete/$1', ['filter' => 'permission:Data Master,Admin Supplier']);
 
     // Produk
     $routes->resource('produk', ['filter' => 'permission:Data Master']);
@@ -76,6 +75,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
 
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
+    $routes->resource('gudang', ['filter' => 'permission:Data Master']);
 });
 
 /*

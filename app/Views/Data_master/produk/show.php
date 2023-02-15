@@ -16,45 +16,106 @@
                 <ol class="list-group list-group-numbered">
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Nama Produk</div>
+                            <div>&nbsp;&nbsp; Nama Produk</div>
                         </div>
-                        <div class="fw-bold"><?= $produk['nama'] ?></div>
+                        <div class="fw-bold me-1"><?= $produk['nama'] ?></div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Jenis</div>
+                            <div>&nbsp;&nbsp; Kategori</div>
                         </div>
-                        <div class="fw-bold"><?= $produk['jenis'] ?></div>
+                        <div class="fw-bold me-1"><?= $produk['kategori'] ?></div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Harga Jual</div>
+                            <div>&nbsp;&nbsp; SKU</div>
                         </div>
-                        <div class="fw-bold">Rp. <?= number_format($produk['harga_jual'], 0, ',', '.') ?></div>
+                        <div class="fw-bold me-1"><?= $produk['sku'] ?></div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Harga Beli</div>
+                            <div>&nbsp;&nbsp; HS Code</div>
                         </div>
-                        <div class="fw-bold">Rp. <?= number_format($produk['harga_beli'], 0, ',', '.') ?></div>
+                        <div class="fw-bold me-1"><?= $produk['hs_code'] ?></div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Stok di Gudang</div>
+                            <div>&nbsp;&nbsp; Jenis Produk</div>
                         </div>
-                        <div class="fw-bold"><?= $produk['stok'] ?></div>
+                        <div class="fw-bold me-1"><?= $produk['jenis_produk'] ?></div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Stok Virtual</div>
+                            <div>&nbsp;&nbsp; Jenis</div>
                         </div>
-                        <div class="fw-bold"><?= ($jenis_produk == 'SET' || $jenis_produk == 'SINGLE') ? $bisa_membuat : $bisa_dipecah ?></div>
+                        <div class="fw-bold me-1"><?= $produk['jenis'] ?></div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div>Stok Total</div>
+                            <div>&nbsp;&nbsp; Harga Jual</div>
                         </div>
-                        <div class="fw-bold"><?= ($jenis_produk == 'SET' || $jenis_produk == 'SINGLE') ? ($bisa_membuat + $produk['stok']) : ($bisa_dipecah + $produk['stok']) ?></div>
+                        <div class="fw-bold me-1">Rp. <?= number_format($produk['harga_jual'], 0, ',', '.') ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Harga Beli</div>
+                        </div>
+                        <div class="fw-bold me-1">Rp. <?= number_format($produk['harga_beli'], 0, ',', '.') ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Berat</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['berat'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Panjang</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['panjang'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Lebar</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['lebar'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Tinggi</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['tinggi'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Marketing</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['status_marketing'] ?></div>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Gudang</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['gudang'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Stok di Gudang</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= $produk['stok'] ?> <?= $produk['satuan'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Stok Virtual</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= ($jenis_produk == 'SET' || $jenis_produk == 'SINGLE') ? $bisa_membuat : $bisa_dipecah ?> <?= $produk['satuan'] ?></div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div>&nbsp;&nbsp; Stok Total</div>
+                        </div>
+                        <div class="fw-bold me-1"><?= ($jenis_produk == 'SET' || $jenis_produk == 'SINGLE') ? ($bisa_membuat + $produk['stok']) : ($bisa_dipecah + $produk['stok']) ?> <?= $produk['satuan'] ?></div>
                     </li>
                 </ol>
             </div>

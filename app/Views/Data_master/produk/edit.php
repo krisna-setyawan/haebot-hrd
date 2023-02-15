@@ -11,16 +11,82 @@
             <div class="invalid-feedback error-nama"></div>
         </div>
     </div>
+
+    <div class="row mb-3">
+        <label for="nama" class="col-sm-3 col-form-label">Nama Produk</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="nama" name="nama" value="<?= $produk['nama']; ?>">
+            <div class="invalid-feedback error-nama"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="sku" class="col-sm-3 col-form-label">SKU</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="sku" name="sku" value="<?= $produk['sku']; ?>">
+            <div class="invalid-feedback error-sku"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="id_kategori" class="col-sm-3 col-form-label">Kategori</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="id_kategori" id="id_kategori">
+                <?php foreach ($kategori as $kt) : ?>
+                    <option <?= ($produk['id_kategori'] == $kt['id']) ? 'selected' : ''; ?> value="<?= $kt['id'] ?>-krisna-<?= $kt['nama'] ?>"><?= $kt['nama'] ?></option>
+                <?php endforeach ?>
+            </select>
+            <div class="invalid-feedback error-id_kategori"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="id_gudang" class="col-sm-3 col-form-label">Gudang</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="id_gudang" id="id_gudang">
+                <?php foreach ($gudang as $gd) : ?>
+                    <option <?= ($produk['id_gudang'] == $gd['id']) ? 'selected' : ''; ?> value="<?= $gd['id'] ?>"><?= $gd['nama'] ?></option>
+                <?php endforeach ?>
+            </select>
+            <div class="invalid-feedback error-id_gudang"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="hs_code" class="col-sm-3 col-form-label">HS Code</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="hs_code" name="hs_code" value="<?= $produk['hs_code']; ?>">
+            <div class="invalid-feedback error-hs_code"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="satuan" class="col-sm-3 col-form-label">Satuan</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="satuan" id="satuan">
+                <option value=""></option>
+                <option <?= ($produk['satuan'] == "Unit") ? 'selected' : ''; ?> value="Unit">Unit</option>
+                <option <?= ($produk['satuan'] == "Pcs") ? 'selected' : ''; ?> value="Pcs">Pcs</option>
+            </select>
+            <div class="invalid-feedback error-satuan"></div>
+        </div>
+    </div>
     <div class="row mb-3">
         <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
         <div class="col-sm-9">
             <select class="form-control" name="jenis" id="jenis">
-                <option <?= ($produk['jenis'] == '') ? 'selected' : ''; ?> value=""></option>
-                <option <?= ($produk['jenis'] == 'SET') ? 'selected' : ''; ?> value="SET">SET</option>
-                <option <?= ($produk['jenis'] == 'SINGLE') ? 'selected' : ''; ?> value="SINGLE">SINGLE</option>
-                <option <?= ($produk['jenis'] == 'ECER') ? 'selected' : ''; ?> value="ECER">ECER</option>
+                <option value=""></option>
+                <option <?= ($produk['jenis'] == "SET") ? 'selected' : ''; ?> value="SET">SET</option>
+                <option <?= ($produk['jenis'] == "SINGLE") ? 'selected' : ''; ?> value="SINGLE">SINGLE</option>
+                <option <?= ($produk['jenis'] == "ECER") ? 'selected' : ''; ?> value="ECER">ECER</option>
             </select>
             <div class="invalid-feedback error-jenis"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="jenis_produk" class="col-sm-3 col-form-label">Jenis Produk</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="jenis_produk" id="jenis_produk">
+                <option value=""></option>
+                <option <?= ($produk['jenis_produk'] == "Hardware") ? 'selected' : ''; ?> value="Hardware">Hardware</option>
+                <option <?= ($produk['jenis_produk'] == "Software") ? 'selected' : ''; ?> value="Software">Software</option>
+            </select>
+            <div class="invalid-feedback error-jenis_produk"></div>
         </div>
     </div>
     <div class="row mb-3">
@@ -28,7 +94,7 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <span class="input-group-text">Rp.</span>
-                <input type="text" class="form-control" id="harga_beli" name="harga_beli" value="<?= $produk['harga_beli'] ?>">
+                <input type="text" class="form-control" id="harga_beli" name="harga_beli" value="<?= $produk['harga_beli']; ?>">
                 <div class="invalid-feedback error-harga_beli"></div>
             </div>
         </div>
@@ -38,9 +104,56 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <span class="input-group-text">Rp.</span>
-                <input type="text" class="form-control" id="harga_jual" name="harga_jual" value="<?= $produk['harga_jual'] ?>">
+                <input type="text" class="form-control" id="harga_jual" name="harga_jual" value="<?= $produk['harga_jual']; ?>">
                 <div class="invalid-feedback error-harga_jual"></div>
             </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="stok" class="col-sm-3 col-form-label">Stok Awal</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="stok" name="stok" value="<?= $produk['stok']; ?>">
+            <div class="invalid-feedback error-stok"></div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="berat" class="col-sm-3 col-form-label">Berat</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="berat" name="berat" value="<?= $produk['berat']; ?>">
+            <div class="invalid-feedback error-berat"></div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="panjang" class="col-sm-3 col-form-label">Panjang</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="panjang" name="panjang" value="<?= $produk['panjang']; ?>">
+            <div class="invalid-feedback error-panjang"></div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="lebar" class="col-sm-3 col-form-label">Lebar</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="lebar" name="lebar" value="<?= $produk['lebar']; ?>">
+            <div class="invalid-feedback error-lebar"></div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="tinggi" class="col-sm-3 col-form-label">Tinggi</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="tinggi" name="tinggi" value="<?= $produk['tinggi']; ?>">
+            <div class="invalid-feedback error-tinggi"></div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="status_marketing" class="col-sm-3 col-form-label">Marketing</label>
+        <div class="col-sm-9">
+            <select class="form-control" name="status_marketing" id="status_marketing">
+                <option value=""></option>
+                <option <?= ($produk['status_marketing'] == "Belum desain") ? 'selected' : ''; ?> value="Belum desain">Belum desain</option>
+                <option <?= ($produk['status_marketing'] == "Sudah desain") ? 'selected' : ''; ?> value="Sudah desain">Sudah desain</option>
+                <option <?= ($produk['status_marketing'] == "Sudah dipost") ? 'selected' : ''; ?> value="Sudah dipost">Sudah dipost</option>
+            </select>
+            <div class="invalid-feedback error-status_marketing"></div>
         </div>
     </div>
 
@@ -72,6 +185,38 @@
                 if (response.error) {
                     let err = response.error;
 
+                    if (err.error_id_kategori) {
+                        $('.error-id_kategori').html(err.error_id_kategori);
+                        $('#id_kategori').addClass('is-invalid');
+                    } else {
+                        $('.error-id_kategori').html('');
+                        $('#id_kategori').removeClass('is-invalid');
+                        $('#id_kategori').addClass('is-valid');
+                    }
+                    if (err.error_id_gudang) {
+                        $('.error-id_gudang').html(err.error_id_gudang);
+                        $('#id_gudang').addClass('is-invalid');
+                    } else {
+                        $('.error-id_gudang').html('');
+                        $('#id_gudang').removeClass('is-invalid');
+                        $('#id_gudang').addClass('is-valid');
+                    }
+                    if (err.error_sku) {
+                        $('.error-sku').html(err.error_sku);
+                        $('#sku').addClass('is-invalid');
+                    } else {
+                        $('.error-sku').html('');
+                        $('#sku').removeClass('is-invalid');
+                        $('#sku').addClass('is-valid');
+                    }
+                    if (err.error_hs_code) {
+                        $('.error-hs_code').html(err.error_hs_code);
+                        $('#hs_code').addClass('is-invalid');
+                    } else {
+                        $('.error-hs_code').html('');
+                        $('#hs_code').removeClass('is-invalid');
+                        $('#hs_code').addClass('is-valid');
+                    }
                     if (err.error_nama) {
                         $('.error-nama').html(err.error_nama);
                         $('#nama').addClass('is-invalid');
@@ -80,6 +225,14 @@
                         $('#nama').removeClass('is-invalid');
                         $('#nama').addClass('is-valid');
                     }
+                    if (err.error_satuan) {
+                        $('.error-satuan').html(err.error_satuan);
+                        $('#satuan').addClass('is-invalid');
+                    } else {
+                        $('.error-satuan').html('');
+                        $('#satuan').removeClass('is-invalid');
+                        $('#satuan').addClass('is-valid');
+                    }
                     if (err.error_jenis) {
                         $('.error-jenis').html(err.error_jenis);
                         $('#jenis').addClass('is-invalid');
@@ -87,6 +240,14 @@
                         $('.error-jenis').html('');
                         $('#jenis').removeClass('is-invalid');
                         $('#jenis').addClass('is-valid');
+                    }
+                    if (err.error_jenis_produk) {
+                        $('.error-jenis_produk').html(err.error_jenis_produk);
+                        $('#jenis_produk').addClass('is-invalid');
+                    } else {
+                        $('.error-jenis_produk').html('');
+                        $('#jenis_produk').removeClass('is-invalid');
+                        $('#jenis_produk').addClass('is-valid');
                     }
                     if (err.error_harga_beli) {
                         $('.error-harga_beli').html(err.error_harga_beli);
@@ -111,6 +272,46 @@
                         $('.error-stok').html('');
                         $('#stok').removeClass('is-invalid');
                         $('#stok').addClass('is-valid');
+                    }
+                    if (err.error_berat) {
+                        $('.error-berat').html(err.error_berat);
+                        $('#berat').addClass('is-invalid');
+                    } else {
+                        $('.error-berat').html('');
+                        $('#berat').removeClass('is-invalid');
+                        $('#berat').addClass('is-valid');
+                    }
+                    if (err.error_panjang) {
+                        $('.error-panjang').html(err.error_panjang);
+                        $('#panjang').addClass('is-invalid');
+                    } else {
+                        $('.error-panjang').html('');
+                        $('#panjang').removeClass('is-invalid');
+                        $('#panjang').addClass('is-valid');
+                    }
+                    if (err.error_lebar) {
+                        $('.error-lebar').html(err.error_lebar);
+                        $('#lebar').addClass('is-invalid');
+                    } else {
+                        $('.error-lebar').html('');
+                        $('#lebar').removeClass('is-invalid');
+                        $('#lebar').addClass('is-valid');
+                    }
+                    if (err.error_tinggi) {
+                        $('.error-tinggi').html(err.error_tinggi);
+                        $('#tinggi').addClass('is-invalid');
+                    } else {
+                        $('.error-tinggi').html('');
+                        $('#tinggi').removeClass('is-invalid');
+                        $('#tinggi').addClass('is-valid');
+                    }
+                    if (err.error_status_marketing) {
+                        $('.error-status_marketing').html(err.error_status_marketing);
+                        $('#status_marketing').addClass('is-invalid');
+                    } else {
+                        $('.error-status_marketing').html('');
+                        $('#status_marketing').removeClass('is-invalid');
+                        $('#status_marketing').addClass('is-valid');
                     }
                 }
                 if (response.success) {
@@ -137,6 +338,17 @@
 
 
     $(document).ready(function() {
+        $("#id_kategori").select2({
+            theme: "bootstrap-5",
+            tags: true,
+            dropdownParent: $('#my-modal')
+        });
+
+        $("#id_gudang").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#my-modal')
+        });
+
         $('#harga_beli').mask('000.000.000', {
             reverse: true
         });

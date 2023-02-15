@@ -63,7 +63,7 @@
                 <?php endif; ?>
 
                 <?php if (has_permission('Gudang')) : ?>
-                    <a class="nav-link" href="<?= base_url() ?>/gudang">
+                    <a class="nav-link" href="<?= base_url() ?>/menu_gudang">
                         <div class="sb-nav-link-icon">
                             <i class="fa-fw fa-solid fa-warehouse"></i>
                         </div>
