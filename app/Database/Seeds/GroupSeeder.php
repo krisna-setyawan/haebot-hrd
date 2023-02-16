@@ -47,7 +47,7 @@ class GroupSeeder extends Seeder
             'name' => 'Grup SDM',
             'description' => 'Pengelola SDM dan User Aplikasi'
         ]);
-        $where = "name!='Admin Supplier'";
+        $where = "name!='Admin Supplier' AND name!='Admin Customer' AND name!='Penanggung Jawab Gudang'";
         $module_sdm = $permissions->where($where)->findAll();
         foreach ($module_sdm as $mod_sdm) {
             $groups->addPermissionToGroup($mod_sdm->id, $groups->getInsertID());
@@ -64,7 +64,7 @@ class GroupSeeder extends Seeder
             'name' => 'Grup Kepala Divisi',
             'description' => 'Kepala setiap Divisi'
         ]);
-        $where = "name!='Akuntansi' AND name!='SDM'";
+        $where = "name!='Akuntansi' AND name!='SDM' AND name!='Admin Supplier' AND name!='Admin Customer' AND name!='Penanggung Jawab Gudang'";
         $module_kadiv = $permissions->where($where)->findAll();
         foreach ($module_kadiv as $mod_kadiv) {
             $groups->addPermissionToGroup($mod_kadiv->id, $groups->getInsertID());

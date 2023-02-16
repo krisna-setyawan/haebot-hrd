@@ -29,7 +29,8 @@
                 <tr>
                     <th class="text-center" width="5%">No</th>
                     <th class="text-center" width="35%">Nama</th>
-                    <th class="text-center" width="45%">Keterangan</th>
+                    <th class="text-center" width="30%">Penanggung Jawab</th>
+                    <th class="text-center" width="15%">Telp</th>
                     <th class="text-center" width="15%">Aksi</th>
                 </tr>
             </thead>
@@ -39,17 +40,27 @@
                     <tr>
                         <td><?= $no++ ?></td>
                         <td><?= $sp['nama'] ?></td>
-                        <td><?= $sp['keterangan'] ?></td>
+                        <td><?= $sp['pj'] ?></td>
+                        <td><?= $sp['no_telp'] ?></td>
                         <td class="text-center">
-                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>gudang/<?= $sp['id'] ?>/edit">
-                                <i class="fa-fw fa-solid fa-pen"></i>
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $sp['id'] ?>)">
+                                <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
 
-                            <form id="form_delete" method="POST" class="d-inline">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="_method" value="DELETE">
-                            </form>
-                            <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                            <?php
+                            $rule = has_permission('Penanggung Jawab Gudang') && (strpos($sp['id_pj'], user()->id) !== false);
+                            $in_group = in_groups('Grup Super admin') || in_groups('Grup Owner');
+                            if ($rule || $in_group) { ?>
+                                <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>gudang/<?= $sp['id'] ?>/edit">
+                                    <i class="fa-fw fa-solid fa-pen"></i>
+                                </a>
+
+                                <form id="form_delete" method="POST" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                </form>
+                                <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                            <?php }  ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -59,6 +70,22 @@
     </div>
 
 </main>
+
+<!-- Modal -->
+<div class="modal fade" id="my-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="judulModal"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="isiModal">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 
 <?= $this->include('MyLayout/js') ?>
 
@@ -106,6 +133,25 @@
             if (result.isConfirmed) {
                 $('#form_delete').attr('action', '<?= site_url() ?>gudang/' + id);
                 $('#form_delete').submit();
+            }
+        })
+    }
+
+
+    function showModalDetail(id) {
+        $.ajax({
+            type: 'GET',
+            url: '<?= site_url() ?>gudang/' + id,
+            dataType: 'json',
+            success: function(res) {
+                if (res.data) {
+                    $('#isiModal').html(res.data)
+                    $('#my-modal').modal('toggle')
+                    $('#judulModal').html('Detail Gudang')
+                }
+            },
+            error: function(e) {
+                alert('Error \n' + e.responseText);
             }
         })
     }

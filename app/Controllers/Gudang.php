@@ -3,20 +3,20 @@
 namespace App\Controllers;
 
 use App\Models\GudangModel;
+use App\Models\GudangPJModel;
+use App\Models\ProvinsiModel;
+use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
 class Gudang extends ResourcePresenter
 {
     protected $helpers = ['form'];
-    /**
-     * Present a view of resource objects
-     *
-     * @return mixed
-     */
+
+
     public function index()
     {
         $modelGudang = new GudangModel();
-        $gudang = $modelGudang->findAll();
+        $gudang = $modelGudang->getGudang();
 
         $data = [
             'gudang' => $gudang
@@ -25,35 +25,40 @@ class Gudang extends ResourcePresenter
         return view('data_master/gudang/index', $data);
     }
 
-    /**
-     * Present a view to present a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function show($id = null)
     {
-        //
+        if ($this->request->isAJAX()) {
+            $modelGudang = new GudangModel();
+            $modelGudangPJ = new GudangPJModel();
+
+            $data = [
+                'gudang'  => $modelGudang->find($id),
+                'pj'        => $modelGudangPJ->getPJByGudang($id),
+            ];
+
+            $json = [
+                'data' => view('data_master/gudang/show', $data),
+            ];
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
+        }
     }
 
-    /**
-     * Present a view to present a new single resource object
-     *
-     * @return mixed
-     */
+
     public function new()
     {
-        $data = ['validation' => \Config\Services::validation()];
+        $modelProvinsi = new ProvinsiModel();
+        $data = [
+            'validation'        => \Config\Services::validation(),
+            'provinsi'          => $modelProvinsi->orderBy('nama')->findAll(),
+        ];
         return view('data_master/gudang/add', $data);
     }
 
-    /**
-     * Process the creation/insertion of a new resource object.
-     * This should be a POST.
-     *
-     * @return mixed
-     */
+
     public function create()
     {
         $validasi = [
@@ -62,6 +67,42 @@ class Gudang extends ResourcePresenter
                 'errors' => [
                     'required' => '{field} gudang harus diisi.',
                     'is_unique' => 'nama gudang sudah ada dalam database.'
+                ]
+            ],
+            // 'id_provinsi' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'provinsi gudang harus diisi.',
+            //     ]
+            // ],
+            // 'id_kota' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'kota gudang harus diisi.',
+            //     ]
+            // ],
+            // 'id_kecamatan' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'kecamatan gudang harus diisi.',
+            //     ]
+            // ],
+            // 'id_kelurahan' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'kelurahan gudang harus diisi.',
+            //     ]
+            // ],
+            'detail_alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'detail alamat gudang harus diisi.',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No telepon gudang harus diisi.',
                 ]
             ],
             'keterangan' => [
@@ -79,8 +120,14 @@ class Gudang extends ResourcePresenter
         $modelGudang = new GudangModel();
 
         $data = [
-            'nama' => $this->request->getPost('nama'),
-            'keterangan' => $this->request->getPost('keterangan'),
+            'nama'          => $this->request->getPost('nama'),
+            'id_provinsi'   => $this->request->getPost('id_provinsi'),
+            'id_kota'       => $this->request->getPost('id_kota'),
+            'id_kecamatan'  => $this->request->getPost('id_kecamatan'),
+            'id_kelurahan'  => $this->request->getPost('id_kelurahan'),
+            'detail_alamat' => $this->request->getPost('detail_alamat'),
+            'no_telp'       => $this->request->getPost('no_telp'),
+            'keterangan'    => $this->request->getPost('keterangan'),
         ];
         $modelGudang->save($data);
 
@@ -89,33 +136,33 @@ class Gudang extends ResourcePresenter
         return redirect()->to('/gudang');
     }
 
-    /**
-     * Present a view to edit the properties of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function edit($id = null)
     {
         $modelGudang = new GudangModel();
+        $modelGudangPJ = new GudangPJModel();
+        $modelProvinsi = new ProvinsiModel();
+        $modelUser = new UserModel();
+
+        $pj = $modelGudangPJ->getPJByCustomer($id);
+        if ($pj) {
+            $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
+        } else {
+            $users = $modelUser->getAllUserWithKaryawanName();
+        }
 
         $data = [
-            'validation' => \Config\Services::validation(),
-            'gudang' => $modelGudang->where(['id' => $id])->first()
+            'validation'        => \Config\Services::validation(),
+            'gudang'            => $modelGudang->where(['id' => $id])->first(),
+            'pj'                => $pj,
+            'provinsi'          => $modelProvinsi->orderBy('nama')->findAll(),
+            'users'             => $users
         ];
 
         return view('data_master/gudang/edit', $data);
     }
 
-    /**
-     * Process the updating, full or partial, of a specific resource object.
-     * This should be a POST.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function update($id = null)
     {
         $modelGudang = new GudangModel();
@@ -135,6 +182,42 @@ class Gudang extends ResourcePresenter
                     'is_unique' => 'nama gudang sudah ada dalam database.'
                 ]
             ],
+            // 'id_provinsi' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'provinsi gudang harus diisi.',
+            //     ]
+            // ],
+            // 'id_kota' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'kota gudang harus diisi.',
+            //     ]
+            // ],
+            // 'id_kecamatan' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'kecamatan gudang harus diisi.',
+            //     ]
+            // ],
+            // 'id_kelurahan' => [
+            //     'rules' => 'required',
+            //     'errors' => [
+            //         'required' => 'kelurahan gudang harus diisi.',
+            //     ]
+            // ],
+            'detail_alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'detail alamat gudang harus diisi.',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No telepon gudang harus diisi.',
+                ]
+            ],
             'keterangan' => [
                 'rules' => 'required',
                 'errors' => [
@@ -148,8 +231,14 @@ class Gudang extends ResourcePresenter
         }
 
         $data = [
-            'id'        => $id,
-            'nama'      => $this->request->getPost('nama'),
+            'id'            => $id,
+            'nama'          => $this->request->getPost('nama'),
+            'id_provinsi'   => $this->request->getPost('id_provinsi'),
+            'id_kota'       => $this->request->getPost('id_kota'),
+            'id_kecamatan'  => $this->request->getPost('id_kecamatan'),
+            'id_kelurahan'  => $this->request->getPost('id_kelurahan'),
+            'detail_alamat' => $this->request->getPost('detail_alamat'),
+            'no_telp'       => $this->request->getPost('no_telp'),
             'keterangan'    => $this->request->getPost('keterangan'),
         ];
         $modelGudang->save($data);
@@ -159,25 +248,13 @@ class Gudang extends ResourcePresenter
         return redirect()->to('/gudang');
     }
 
-    /**
-     * Present a view to confirm the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function remove($id = null)
     {
         //
     }
 
-    /**
-     * Process the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
+
     public function delete($id = null)
     {
         $modelGudang = new GudangModel();

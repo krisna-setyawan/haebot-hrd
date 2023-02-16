@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\SupplierPJModel;
 use CodeIgniter\RESTful\ResourcePresenter;
+use Myth\Auth\Models\PermissionModel;
 
 class SupplierPJ extends ResourcePresenter
 {
@@ -38,6 +39,9 @@ class SupplierPJ extends ResourcePresenter
             'urutan' => $jml_admin + 1,
         ];
         $modelSupplierPJ->save($data);
+
+        $modelPermissions = new PermissionModel();
+        $modelPermissions->addPermissionToUser(11, intval($this->request->getPost('id_user')));
 
         session()->setFlashdata('pesan', 'Admin Supplier berhasil ditambahkan.');
 
@@ -92,6 +96,9 @@ class SupplierPJ extends ResourcePresenter
         }
 
         $modelSupplierPJ->delete($id);
+
+        $modelPermissions = new PermissionModel();
+        $modelPermissions->removePermissionFromUser(11, intval($pj['id_user']));
 
         session()->setFlashdata('pesan', 'Admin Supplier berhasil dihapus.');
         return redirect()->to('/supplier/' . $id_supplier . '/edit');

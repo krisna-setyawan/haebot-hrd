@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\CustomerPJModel;
 use CodeIgniter\RESTful\ResourcePresenter;
+use Myth\Auth\Models\PermissionModel;
 
 class CustomerPJ extends ResourcePresenter
 {
@@ -38,6 +39,9 @@ class CustomerPJ extends ResourcePresenter
             'urutan' => $jml_admin + 1,
         ];
         $modelCustomerPJ->save($data);
+
+        $modelPermissions = new PermissionModel();
+        $modelPermissions->addPermissionToUser(12, intval($this->request->getPost('id_user')));
 
         session()->setFlashdata('pesan', 'Admin Customer berhasil ditambahkan.');
 
@@ -92,6 +96,9 @@ class CustomerPJ extends ResourcePresenter
         }
 
         $modelCustomerPJ->delete($id);
+
+        $modelPermissions = new PermissionModel();
+        $modelPermissions->removePermissionFromUser(12, intval($pj['id_user']));
 
         session()->setFlashdata('pesan', 'Admin Customer berhasil dihapus.');
         return redirect()->to('/customer/' . $id_customer . '/edit');

@@ -51,15 +51,20 @@
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
 
-                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>customer/<?= $sp['id'] ?>/edit">
-                                <i class="fa-fw fa-solid fa-pen"></i>
-                            </a>
+                            <?php
+                            $rule = has_permission('Admin Customer') && (strpos($sp['id_admin'], user()->id) !== false);
+                            $in_group = in_groups('Grup Super admin') || in_groups('Grup Owner');
+                            if ($rule || $in_group) { ?>
+                                <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" href="<?= site_url() ?>customer/<?= $sp['id'] ?>/edit">
+                                    <i class="fa-fw fa-solid fa-pen"></i>
+                                </a>
 
-                            <form id="form_delete" method="POST" class="d-inline">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="_method" value="DELETE">
-                            </form>
-                            <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                                <form id="form_delete" method="POST" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                </form>
+                                <button onclick="confirm_delete(<?= $sp['id'] ?>)" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+                            <?php }  ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
