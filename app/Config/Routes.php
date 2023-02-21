@@ -51,6 +51,8 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->get('sdm', 'Menu::SDM', ['filter' => 'permission:SDM']);
     $routes->get('laporan', 'Menu::Laporan', ['filter' => 'permission:Laporan']);
 
+    // ------------------------------------------------------------------------------------ DATA MASTER
+
     // Supplier
     $routes->get('supplier', 'Supplier::index', ['filter' => 'permission:Data Master']);
     $routes->get('supplier/(:num)', 'Supplier::show/$1', ['filter' => 'permission:Data Master']);
@@ -96,6 +98,11 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
 
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
+
+    // ------------------------------------------------------------------------------------ TRANSAKSI
+
+    // Pemesanan
+    $routes->resource('pemesanan', ['filter' => 'permission:Data Master']);
 });
 
 /*
