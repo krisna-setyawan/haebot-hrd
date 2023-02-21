@@ -40,7 +40,6 @@
                             <option value="<?= $prov['id'] ?>"><?= $prov['nama'] ?></option>
                         <?php } ?>
                     </select>
-                    <div class="invalid-feedback">harus diisi.</div>
                 </div>
             </div>
 
@@ -51,7 +50,6 @@
                     <select required class="form-select" id="id_kota" name="id_kota">
                         <option selected value=""></option>
                     </select>
-                    <div class="invalid-feedback">harus diisi.</div>
                 </div>
             </div>
 
@@ -62,7 +60,6 @@
                     <select required class="form-select" id="id_kecamatan" name="id_kecamatan">
                         <option selected value=""></option>
                     </select>
-                    <div class="invalid-feedback">harus diisi.</div>
                 </div>
             </div>
 
@@ -73,14 +70,13 @@
                     <select required class="form-select" id="id_kelurahan" name="id_kelurahan">
                         <option selected value=""></option>
                     </select>
-                    <div class="invalid-feedback">harus diisi.</div>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Detail Alamat</label>
                 <div class="col-sm-9">
-                    <input required type="text" class="form-control <?= (validation_show_error('keterangan')) ? 'is-invalid' : ''; ?>" name="detail_alamat">
+                    <input required type="text" class="form-control <?= (validation_show_error('keterangan')) ? 'is-invalid' : ''; ?>" name="detail_alamat" value="<?= old('no_telp'); ?>">
                     <div class="invalid-feedback"><?= validation_show_error('detail_alamat'); ?></div>
                 </div>
             </div>
@@ -101,7 +97,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 offset-3">
+            <div class="text-center">
                 <a class="btn px-5 btn-outline-danger" href="<?= site_url() ?>gudang">
                     Batal <i class="fa-fw fa-solid fa-xmark"></i>
                 </a>

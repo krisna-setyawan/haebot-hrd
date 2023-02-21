@@ -28,17 +28,6 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label for="id_gudang" class="col-sm-3 col-form-label">Gudang</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="id_gudang" id="id_gudang">
-                <?php foreach ($gudang as $gd) : ?>
-                    <option value="<?= $gd['id'] ?>"><?= $gd['nama'] ?></option>
-                <?php endforeach ?>
-            </select>
-            <div class="invalid-feedback error-id_gudang"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
         <label for="hs_code" class="col-sm-3 col-form-label">HS Code</label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="hs_code" name="hs_code" autofocus>
@@ -57,26 +46,26 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
+        <label for="tipe" class="col-sm-3 col-form-label">Tipe</label>
         <div class="col-sm-9">
-            <select class="form-control" name="jenis" id="jenis">
+            <select class="form-control" name="tipe" id="tipe">
                 <option value=""></option>
                 <option value="SET">SET</option>
                 <option value="SINGLE">SINGLE</option>
                 <option value="ECER">ECER</option>
             </select>
-            <div class="invalid-feedback error-jenis"></div>
+            <div class="invalid-feedback error-tipe"></div>
         </div>
     </div>
     <div class="row mb-3">
-        <label for="jenis_produk" class="col-sm-3 col-form-label">Jenis Produk</label>
+        <label for="jenis" class="col-sm-3 col-form-label">Jenis Produk</label>
         <div class="col-sm-9">
-            <select class="form-control" name="jenis_produk" id="jenis_produk">
+            <select class="form-control" name="jenis" id="jenis">
                 <option value=""></option>
-                <option value="Hardware">Hardware</option>
-                <option value="Software">Software</option>
+                <option value="Produk Fisik">Produk Fisik</option>
+                <option value="Produk Digital">Produk Digital</option>
             </select>
-            <div class="invalid-feedback error-jenis_produk"></div>
+            <div class="invalid-feedback error-jenis"></div>
         </div>
     </div>
     <div class="row mb-3">
@@ -144,6 +133,13 @@
                 <option value="Sudah dipost">Sudah dipost</option>
             </select>
             <div class="invalid-feedback error-status_marketing"></div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="note" class="col-sm-3 col-form-label">Note</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="note" name="note">
+            <div class="invalid-feedback error-note"></div>
         </div>
     </div>
 
@@ -223,6 +219,14 @@
                         $('#satuan').removeClass('is-invalid');
                         $('#satuan').addClass('is-valid');
                     }
+                    if (err.error_tipe) {
+                        $('.error-tipe').html(err.error_tipe);
+                        $('#tipe').addClass('is-invalid');
+                    } else {
+                        $('.error-tipe').html('');
+                        $('#tipe').removeClass('is-invalid');
+                        $('#tipe').addClass('is-valid');
+                    }
                     if (err.error_jenis) {
                         $('.error-jenis').html(err.error_jenis);
                         $('#jenis').addClass('is-invalid');
@@ -230,14 +234,6 @@
                         $('.error-jenis').html('');
                         $('#jenis').removeClass('is-invalid');
                         $('#jenis').addClass('is-valid');
-                    }
-                    if (err.error_jenis_produk) {
-                        $('.error-jenis_produk').html(err.error_jenis_produk);
-                        $('#jenis_produk').addClass('is-invalid');
-                    } else {
-                        $('.error-jenis_produk').html('');
-                        $('#jenis_produk').removeClass('is-invalid');
-                        $('#jenis_produk').addClass('is-valid');
                     }
                     if (err.error_harga_beli) {
                         $('.error-harga_beli').html(err.error_harga_beli);

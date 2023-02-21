@@ -29,7 +29,7 @@
                 <tr>
                     <th class="text-center" width="5%">No</th>
                     <th class="text-center" width="30%">Nama</th>
-                    <th class="text-center" width="10%">Jenis</th>
+                    <th class="text-center" width="10%">Tipe</th>
                     <th class="text-center" width="15%">Harga Beli</th>
                     <th class="text-center" width="15%">Harga Jual</th>
                     <th class="text-center" width="10%">Stok</th>
@@ -97,7 +97,7 @@
                     data: 'nama'
                 },
                 {
-                    data: 'jenis'
+                    data: 'tipe'
                 },
                 {
                     data: 'harga_beli',
@@ -157,16 +157,18 @@
     }
 
 
-    function showModalEdit(id) {
+    function showModalDetail(id) {
         $.ajax({
             type: 'GET',
-            url: '<?= site_url() ?>produk/' + id + '/edit',
+            url: '<?= site_url() ?>produk/' + id,
             dataType: 'json',
             success: function(res) {
                 if (res.data) {
                     $('#isiForm').html(res.data)
                     $('#my-modal').modal('toggle')
-                    $('#judulModal').html('Edit Produk')
+                    $('#judulModal').html('Detail Produk')
+                } else {
+                    console.log(res)
                 }
             },
             error: function(e) {

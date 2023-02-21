@@ -73,4 +73,20 @@ class GudangModel extends Model
 
         return $data;
     }
+
+
+    public function getGudangWithAlamat($id_gudang)
+    {
+        $data =  $this->db->table($this->table)
+            ->select('gudang.*, provinsi.nama as provinsi, kota.nama as kota, kecamatan.nama as kecamatan, kelurahan.nama as kelurahan')
+            ->join('provinsi', 'gudang.id_provinsi = provinsi.id', 'left')
+            ->join('kota', 'gudang.id_kota = kota.id', 'left')
+            ->join('kecamatan', 'gudang.id_kecamatan = kecamatan.id', 'left')
+            ->join('kelurahan', 'gudang.id_kelurahan = kelurahan.id', 'left')
+            ->where('gudang.id', $id_gudang)
+            ->get()
+            ->getRowArray();
+
+        return $data;
+    }
 }

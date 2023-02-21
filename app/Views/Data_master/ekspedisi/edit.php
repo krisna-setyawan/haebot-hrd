@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 offset-3">
+            <div class="text-center">
                 <a class="btn px-5 btn-outline-danger" href="<?= site_url() ?>ekspedisi">
                     Batal <i class="fa-fw fa-solid fa-xmark"></i>
                 </a>

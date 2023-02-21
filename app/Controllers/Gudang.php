@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\GudangModel;
 use App\Models\GudangPJModel;
+use App\Models\KecamatanModel;
+use App\Models\KelurahanModel;
+use App\Models\KotaModel;
 use App\Models\ProvinsiModel;
 use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -33,7 +36,7 @@ class Gudang extends ResourcePresenter
             $modelGudangPJ = new GudangPJModel();
 
             $data = [
-                'gudang'  => $modelGudang->find($id),
+                'gudang'  => $modelGudang->getGudangWithAlamat($id),
                 'pj'        => $modelGudangPJ->getPJByGudang($id),
             ];
 
@@ -142,9 +145,14 @@ class Gudang extends ResourcePresenter
         $modelGudang = new GudangModel();
         $modelGudangPJ = new GudangPJModel();
         $modelProvinsi = new ProvinsiModel();
+        $modelKota = new KotaModel();
+        $modelKecamatan = new KecamatanModel();
+        $modelKelurahan = new KelurahanModel();
         $modelUser = new UserModel();
 
-        $pj = $modelGudangPJ->getPJByCustomer($id);
+        $gudang = $modelGudang->find($id);
+
+        $pj = $modelGudangPJ->getPJByGudang($id);
         if ($pj) {
             $users = $modelUser->getUserPJWithKaryawanName(array_column($pj, 'id_user'));
         } else {
@@ -153,9 +161,12 @@ class Gudang extends ResourcePresenter
 
         $data = [
             'validation'        => \Config\Services::validation(),
-            'gudang'            => $modelGudang->where(['id' => $id])->first(),
+            'gudang'            => $gudang,
             'pj'                => $pj,
             'provinsi'          => $modelProvinsi->orderBy('nama')->findAll(),
+            'kota'              => $modelKota->where(['id_provinsi' => $gudang['id_provinsi']])->findAll(),
+            'kecamatan'         => $modelKecamatan->where(['id_kota' => $gudang['id_kota']])->findAll(),
+            'kelurahan'         => $modelKelurahan->where(['id_kecamatan' => $gudang['id_kecamatan']])->findAll(),
             'users'             => $users
         ];
 

@@ -17,7 +17,7 @@
     <hr class="mt-0 mb-3">
 
     <div class="row">
-        <div class="col-md-6 mt-2 mb-4">
+        <div class="col-md-6 mt-2 mb-5">
 
             <form autocomplete="off" class="mt-1" action="<?= site_url() ?>supplier/<?= $supplier['id'] ?>" method="POST">
 
@@ -80,7 +80,7 @@
 
         </div>
 
-        <div class="col-md-6 mt-2 mb-4">
+        <div class="col-md-6 mt-2 mb-5">
 
             <!-- ADMIN PENANGGUNGJAWAB -->
             <div class="d-flex mb-0">

@@ -16,7 +16,7 @@
 
     <hr class="mt-0 mb-4">
 
-    <div class="col-md-10 mt-4">
+    <div class="col-md-10 mt-4 mb-5">
 
         <form autocomplete="off" class="row g-3 mt-3" action="<?= site_url() ?>customer" method="POST">
 
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 offset-3">
+            <div class="text-center">
                 <a class="btn px-5 btn-outline-danger" href="<?= site_url() ?>customer">
                     Batal <i class="fa-fw fa-solid fa-xmark"></i>
                 </a>

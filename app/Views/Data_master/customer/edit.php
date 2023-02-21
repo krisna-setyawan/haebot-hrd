@@ -17,7 +17,7 @@
     <hr class="mt-0 mb-4">
 
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-7 mb-5">
 
             <form autocomplete="off" class="row mt-0 mb-4" action="<?= site_url() ?>customer/<?= $customer['id'] ?>" method="POST">
 
@@ -70,7 +70,7 @@
                     <div class="invalid-feedback"><?= validation_show_error('note'); ?></div>
                 </div>
 
-                <div class="col-md-9 offset-3">
+                <div class="text-center">
                     <a class="btn px-5 btn-outline-danger" href="<?= site_url() ?>customer">
                         Batal <i class="fa-fw fa-solid fa-xmark"></i>
                     </a>
@@ -80,7 +80,7 @@
 
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-5 mb-5">
             <!-- ADMIN PENANGGUNGJAWAB -->
             <div class="d-flex mb-0">
                 <div class="me-auto">

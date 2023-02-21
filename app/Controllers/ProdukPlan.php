@@ -58,9 +58,9 @@ class ProdukPlan extends ResourcePresenter
 
         $modelProdukPlan->save($data);
 
-        session()->setFlashdata('pesan', 'Data berhasil ditambahkan.');
+        session()->setFlashdata('pesan', 'Produk penyusun/pecahan berhasil ditambahkan.');
 
-        return redirect()->to('/produk/' . $id_produk_redirect);
+        return redirect()->to('/produk/' . $id_produk_redirect . '/edit');
     }
 
     /**

@@ -83,9 +83,19 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->resource('customeralamat', ['filter' => 'permission:Data Master']);
     $routes->resource('customerrekening', ['filter' => 'permission:Data Master']);
 
+    // Gudang
+    $routes->get('gudang', 'Gudang::index', ['filter' => 'permission:Data Master']);
+    $routes->get('gudang/(:num)', 'Gudang::show/$1', ['filter' => 'permission:Data Master']);
+    $routes->get('gudang/new', 'Gudang::new', ['filter' => 'permission:Data Master']);
+    $routes->post('gudang', 'Gudang::create', ['filter' => 'permission:Data Master']);
+    $routes->get('gudang/(:num)/edit', 'Gudang::edit/$1', ['filter' => 'permission:Data Master,Penanggung Jawab Gudang']);
+    $routes->put('gudang/(:num)', 'Gudang::update/$1  ', ['filter' => 'permission:Data Master,Penanggung Jawab Gudang']);
+    $routes->delete('gudang/(:num) ', 'Gudang::delete/$1', ['filter' => 'permission:Data Master,Penanggung Jawab Gudang']);
+    // $routes->resource('gudang', ['filter' => 'permission:Data Master']);
+    $routes->resource('gudangpj', ['filter' => 'permission:Data Master']);
+
     $routes->resource('ekspedisi', ['filter' => 'permission:Data Master']);
     $routes->resource('jasa', ['filter' => 'permission:Data Master']);
-    $routes->resource('gudang', ['filter' => 'permission:Data Master']);
 });
 
 /*

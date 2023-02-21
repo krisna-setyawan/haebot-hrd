@@ -1,352 +1,352 @@
-<form id="form" autocomplete="off" class="row g-3 mt-2 mb-3" action="<?= site_url() ?>produk/<?= $produk['id'] ?>" method="POST">
+<?= $this->extend('MyLayout/template') ?>
 
-    <?= csrf_field() ?>
+<?= $this->section('content') ?>
 
-    <input type="hidden" name="_method" value="PUT">
+<main class="p-md-3 p-2">
 
-    <div class="row mb-3">
-        <label for="nama" class="col-sm-3 col-form-label">Nama Produk</label>
-        <div class="col-sm-9">
-            <input type="text" class="form-control" id="nama" name="nama" value="<?= $produk['nama']; ?>">
-            <div class="invalid-feedback error-nama"></div>
+    <div class="d-flex mb-0">
+        <div class="me-auto mb-1">
+            <h3 style="color: #566573;">Edit Produk dan Stok</h3>
+        </div>
+        <div class="me-2 mb-1">
+            <a class="btn btn-sm btn-outline-dark" href="<?= site_url() ?>produk">
+                <i class="fa-fw fa-solid fa-arrow-left"></i> Kembali
+            </a>
         </div>
     </div>
 
-    <div class="row mb-3">
-        <label for="nama" class="col-sm-3 col-form-label">Nama Produk</label>
-        <div class="col-sm-9">
-            <input type="text" class="form-control" id="nama" name="nama" value="<?= $produk['nama']; ?>">
-            <div class="invalid-feedback error-nama"></div>
+    <hr class="mt-0 mb-4">
+
+    <div class="row justify-content-between">
+
+        <div class="col-md-6">
+
+            <form id="form" autocomplete="off" class="row g-3 mt-2 mb-3" action="<?= site_url() ?>produk/<?= $produk['id'] ?>" method="POST">
+
+                <?= csrf_field() ?>
+
+                <input type="hidden" name="_method" value="PUT">
+
+                <div class="row mb-3">
+                    <label for="nama" class="col-sm-3 col-form-label">Nama Produk</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= (validation_show_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" name="nama" value="<?= old('nama',  $produk['nama']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('nama'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="sku" class="col-sm-3 col-form-label">SKU</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= (validation_show_error('sku')) ? 'is-invalid' : ''; ?>" id="sku" name="sku" value="<?= old('sku',  $produk['sku']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('sku'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="id_kategori" class="col-sm-3 col-form-label">Kategori</label>
+                    <div class="col-sm-9">
+                        <select class="form-control <?= (validation_show_error('id_kategori')) ? 'is-invalid' : ''; ?>" name="id_kategori" id="id_kategori">
+                            <?php foreach ($kategori as $kt) : ?>
+                                <option <?= (old('id_kategori', $produk['id_kategori']) == $kt['id']) ? 'selected' : ''; ?> value="<?= $kt['id'] ?>-krisna-<?= $kt['nama'] ?>"><?= $kt['nama'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                        <div class="invalid-feedback"> <?= validation_show_error('id_kategori'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="hs_code" class="col-sm-3 col-form-label">HS Code</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= (validation_show_error('hs_code')) ? 'is-invalid' : ''; ?>" id="hs_code" name="hs_code" value="<?= old('hs_code',  $produk['hs_code']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('hs_code'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="satuan" class="col-sm-3 col-form-label">Satuan</label>
+                    <div class="col-sm-9">
+                        <select class="form-control <?= (validation_show_error('satuan')) ? 'is-invalid' : ''; ?>" name="satuan" id="satuan">
+                            <option value=""></option>
+                            <option <?= (old('satuan', $produk['satuan']) == "Unit") ? 'selected' : ''; ?> value="Unit">Unit</option>
+                            <option <?= (old('satuan', $produk['satuan']) == "Pcs") ? 'selected' : ''; ?> value="Pcs">Pcs</option>
+                        </select>
+                        <div class="invalid-feedback"> <?= validation_show_error('satuan'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="tipe" class="col-sm-3 col-form-label">Tipe</label>
+                    <div class="col-sm-9">
+                        <select class="form-control <?= (validation_show_error('tipe')) ? 'is-invalid' : ''; ?>" name="tipe" id="tipe">
+                            <option value=""></option>
+                            <option <?= (old('tipe', $produk['tipe']) == "SET") ? 'selected' : ''; ?> value="SET">SET</option>
+                            <option <?= (old('tipe', $produk['tipe']) == "SINGLE") ? 'selected' : ''; ?> value="SINGLE">SINGLE</option>
+                            <option <?= (old('tipe', $produk['tipe']) == "ECER") ? 'selected' : ''; ?> value="ECER">ECER</option>
+                        </select>
+                        <div class="invalid-feedback"> <?= validation_show_error('tipe'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
+                    <div class="col-sm-9">
+                        <select class="form-control <?= (validation_show_error('jenis')) ? 'is-invalid' : ''; ?>" name="jenis" id="jenis">
+                            <option value=""></option>
+                            <option <?= (old('jenis', $produk['jenis']) == "Produk Fisik") ? 'selected' : ''; ?> value="Produk Fisik">Produk Fisik</option>
+                            <option <?= (old('jenis', $produk['jenis']) == "Produk Digital") ? 'selected' : ''; ?> value="Produk Digital">Produk Digital</option>
+                        </select>
+                        <div class="invalid-feedback"> <?= validation_show_error('jenis'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="harga_jual" class="col-sm-3 col-form-label">Harga Jual</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp.</span>
+                            <input type="text" class="form-control <?= (validation_show_error('harga_jual')) ? 'is-invalid' : ''; ?>" id="harga_jual" name="harga_jual" value="<?= old('harga_jual',  $produk['harga_jual']); ?>">
+                            <div class="invalid-feedback"> <?= validation_show_error('harga_jual'); ?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="berat" class="col-sm-3 col-form-label">Berat</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control <?= (validation_show_error('berat')) ? 'is-invalid' : ''; ?>" id="berat" name="berat" value="<?= old('berat',  $produk['berat']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('berat'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="panjang" class="col-sm-3 col-form-label">Panjang</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control <?= (validation_show_error('panjang')) ? 'is-invalid' : ''; ?>" id="panjang" name="panjang" value="<?= old('panjang',  $produk['panjang']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('panjang'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="lebar" class="col-sm-3 col-form-label">Lebar</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control <?= (validation_show_error('lebar')) ? 'is-invalid' : ''; ?>" id="lebar" name="lebar" value="<?= old('lebar',  $produk['lebar']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('lebar'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="tinggi" class="col-sm-3 col-form-label">Tinggi</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control <?= (validation_show_error('tinggi')) ? 'is-invalid' : ''; ?>" id="tinggi" name="tinggi" value="<?= old('tinggi',  $produk['tinggi']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('tinggi'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="status_marketing" class="col-sm-3 col-form-label">Marketing</label>
+                    <div class="col-sm-9">
+                        <select class="form-control <?= (validation_show_error('status_marketing')) ? 'is-invalid' : ''; ?>" name="status_marketing" id="status_marketing">
+                            <option value=""></option>
+                            <option <?= (old('status_marketing', $produk['status_marketing']) == "Belum desain") ? 'selected' : ''; ?> value="Belum desain">Belum desain</option>
+                            <option <?= (old('status_marketing', $produk['status_marketing']) == "Sudah desain") ? 'selected' : ''; ?> value="Sudah desain">Sudah desain</option>
+                            <option <?= (old('status_marketing', $produk['status_marketing']) == "Sudah dipost") ? 'selected' : ''; ?> value="Sudah dipost">Sudah dipost</option>
+                        </select>
+                        <div class="invalid-feedback"> <?= validation_show_error('status_marketing'); ?></div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="note" class="col-sm-3 col-form-label">Note</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control <?= (validation_show_error('note')) ? 'is-invalid' : ''; ?>" id="note" name="note" value="<?= old('note',  $produk['note']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('note'); ?></div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="tombolSimpan" class="btn px-5 btn-outline-primary" type="submit">Simpan <i class="fa-fw fa-solid fa-check"></i></button>
+                </div>
+            </form>
+
         </div>
-    </div>
-    <div class="row mb-3">
-        <label for="sku" class="col-sm-3 col-form-label">SKU</label>
-        <div class="col-sm-9">
-            <input type="text" class="form-control" id="sku" name="sku" value="<?= $produk['sku']; ?>">
-            <div class="invalid-feedback error-sku"></div>
+
+        <div class="col-md-6 table-responsive">
+
+            <?php if ($tipe == 'SET' || $tipe == 'SINGLE') { ?>
+
+                <div class="d-flex mb-0">
+                    <div class="me-auto">
+                        <h5 class="mb-3 mt-2">List Produk Komponen</h5>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-komponen">
+                            Tambah Komponen <i class="fa-fw fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <?php if ($result == 'ok') { ?>
+
+                    <table class="table table-bordered table-striped table-secondary">
+                        <thead>
+                            <tr class="text-center">
+                                <th width="10%" width="10%">No</th>
+                                <th width="30%">Produk</th>
+                                <th width="20%">Stok</th>
+                                <th width="20%">Butuh</th>
+                                <th width="20%">Bisa membuat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1;
+                            foreach ($virtual_stok as $vs) : ?>
+                                <tr>
+                                    <td class="text-center"><?= $no++ ?></td>
+                                    <td><?= $vs['nama_produk'] ?></td>
+                                    <td class="text-center"><?= $vs['stok_bahan'] ?></td>
+                                    <td class="text-center"><?= $vs['qty_bahan'] ?></td>
+                                    <td class="text-center"><?= $vs['bisa_membuat'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php } else { ?>
+
+                    <h2 class="text-center mt-2"><?= $result ?></h2>
+
+                <?php } ?>
+
+            <?php } else { ?>
+
+                <div class="d-flex mb-0">
+                    <div class="me-auto">
+                        <h5 class="mb-3 mt-2">List Produk Set</h5>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-secondary py-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-add-set">
+                            Tambah Set <i class="fa-fw fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <?php if ($result == 'ok') { ?>
+
+                    <table class="table table-bordered table-striped table-secondary">
+                        <thead>
+                            <tr class="text-center">
+                                <th width="10%" width="10%">No</th>
+                                <th width="30%">Produk</th>
+                                <th width="20%">Stok</th>
+                                <th width="20%">Pecahan</th>
+                                <th width="20%">Bisa dipecah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1;
+                            foreach ($virtual_stok as $vs) : ?>
+                                <tr>
+                                    <td class="text-center"><?= $no++ ?></td>
+                                    <td><?= $vs['nama_produk'] ?></td>
+                                    <td class="text-center"><?= $vs['stok_jadi'] ?></td>
+                                    <td class="text-center"><?= $vs['qty_bahan'] ?></td>
+                                    <td class="text-center"><?= $vs['bisa_dipecah'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php } else { ?>
+
+                    <h2 class="text-center mt-2"><?= $result ?></h2>
+
+                <?php } ?>
+
+            <?php } ?>
+
         </div>
+
     </div>
-    <div class="row mb-3">
-        <label for="id_kategori" class="col-sm-3 col-form-label">Kategori</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="id_kategori" id="id_kategori">
-                <?php foreach ($kategori as $kt) : ?>
-                    <option <?= ($produk['id_kategori'] == $kt['id']) ? 'selected' : ''; ?> value="<?= $kt['id'] ?>-krisna-<?= $kt['nama'] ?>"><?= $kt['nama'] ?></option>
-                <?php endforeach ?>
-            </select>
-            <div class="invalid-feedback error-id_kategori"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="id_gudang" class="col-sm-3 col-form-label">Gudang</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="id_gudang" id="id_gudang">
-                <?php foreach ($gudang as $gd) : ?>
-                    <option <?= ($produk['id_gudang'] == $gd['id']) ? 'selected' : ''; ?> value="<?= $gd['id'] ?>"><?= $gd['nama'] ?></option>
-                <?php endforeach ?>
-            </select>
-            <div class="invalid-feedback error-id_gudang"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="hs_code" class="col-sm-3 col-form-label">HS Code</label>
-        <div class="col-sm-9">
-            <input type="text" class="form-control" id="hs_code" name="hs_code" value="<?= $produk['hs_code']; ?>">
-            <div class="invalid-feedback error-hs_code"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="satuan" class="col-sm-3 col-form-label">Satuan</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="satuan" id="satuan">
-                <option value=""></option>
-                <option <?= ($produk['satuan'] == "Unit") ? 'selected' : ''; ?> value="Unit">Unit</option>
-                <option <?= ($produk['satuan'] == "Pcs") ? 'selected' : ''; ?> value="Pcs">Pcs</option>
-            </select>
-            <div class="invalid-feedback error-satuan"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="jenis" id="jenis">
-                <option value=""></option>
-                <option <?= ($produk['jenis'] == "SET") ? 'selected' : ''; ?> value="SET">SET</option>
-                <option <?= ($produk['jenis'] == "SINGLE") ? 'selected' : ''; ?> value="SINGLE">SINGLE</option>
-                <option <?= ($produk['jenis'] == "ECER") ? 'selected' : ''; ?> value="ECER">ECER</option>
-            </select>
-            <div class="invalid-feedback error-jenis"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="jenis_produk" class="col-sm-3 col-form-label">Jenis Produk</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="jenis_produk" id="jenis_produk">
-                <option value=""></option>
-                <option <?= ($produk['jenis_produk'] == "Hardware") ? 'selected' : ''; ?> value="Hardware">Hardware</option>
-                <option <?= ($produk['jenis_produk'] == "Software") ? 'selected' : ''; ?> value="Software">Software</option>
-            </select>
-            <div class="invalid-feedback error-jenis_produk"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="harga_beli" class="col-sm-3 col-form-label">Harga Beli</label>
-        <div class="col-sm-9">
-            <div class="input-group">
-                <span class="input-group-text">Rp.</span>
-                <input type="text" class="form-control" id="harga_beli" name="harga_beli" value="<?= $produk['harga_beli']; ?>">
-                <div class="invalid-feedback error-harga_beli"></div>
+
+</main>
+
+<!-- Modal add komponen -->
+<div class="modal fade" id="modal-add-komponen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Produk Komponen</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add-bahan" autocomplete="off" action="<?= site_url() ?>produkplan" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_produk_redirect" value="<?= $produk['id'] ?>">
+                    <input type="hidden" name="id_produk_jadi" value="<?= $produk['id'] ?>">
+
+                    <div class="mb-3">
+                        <label for="id_produk_bahan" class="form-label">Produk</label>
+                        <select class="form-control" name="id_produk_bahan" id="id_produk_bahan">
+                            <?php foreach ($all_plan as $ap) : ?>
+                                <option value="<?= $ap['id'] ?>"><?= $ap['nama'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+                    <label for="qty_bahan" class="form-label">Jumlah</label>
+                    <input type="number" class="form-control mb-3" id="qty_bahan" name="qty_bahan" placeholder="Jumlah produk">
+
+                    <hr>
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" id="submit-add-bahan" type="submit">Tambah</button>
+                </form>
             </div>
         </div>
     </div>
-    <div class="row mb-3">
-        <label for="harga_jual" class="col-sm-3 col-form-label">Harga Jual</label>
-        <div class="col-sm-9">
-            <div class="input-group">
-                <span class="input-group-text">Rp.</span>
-                <input type="text" class="form-control" id="harga_jual" name="harga_jual" value="<?= $produk['harga_jual']; ?>">
-                <div class="invalid-feedback error-harga_jual"></div>
+</div>
+
+<!-- Modal add set -->
+<div class="modal fade" id="modal-add-set" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Produk Set</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add-set" autocomplete="off" action="<?= site_url() ?>produkplan" method="POST">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_produk_redirect" value="<?= $produk['id'] ?>">
+                    <input type="hidden" name="id_produk_bahan" value="<?= $produk['id'] ?>">
+
+                    <div class="mb-3">
+                        <label for="id_produk_jadi" class="form-label">Produk</label>
+                        <select class="form-control" name="id_produk_jadi" id="id_produk_jadi">
+                            <?php foreach ($all_plan as $ap) : ?>
+                                <option value="<?= $ap['id'] ?>"><?= $ap['nama'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+                    <label for="qty_bahan" class="form-label">Jumlah</label>
+                    <input type="number" class="form-control mb-3" id="qty_bahan" name="qty_bahan" placeholder="Jumlah produk">
+
+                    <hr>
+
+                    <button class="btn btn-outline-secondary mb-2 btn-sm" id="submit-add-set" type="submit">Tambah</button>
+                </form>
             </div>
         </div>
     </div>
-    <div class="row mb-2">
-        <label for="stok" class="col-sm-3 col-form-label">Stok Awal</label>
-        <div class="col-sm-9">
-            <input type="number" class="form-control" id="stok" name="stok" value="<?= $produk['stok']; ?>">
-            <div class="invalid-feedback error-stok"></div>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <label for="berat" class="col-sm-3 col-form-label">Berat</label>
-        <div class="col-sm-9">
-            <input type="number" class="form-control" id="berat" name="berat" value="<?= $produk['berat']; ?>">
-            <div class="invalid-feedback error-berat"></div>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <label for="panjang" class="col-sm-3 col-form-label">Panjang</label>
-        <div class="col-sm-9">
-            <input type="number" class="form-control" id="panjang" name="panjang" value="<?= $produk['panjang']; ?>">
-            <div class="invalid-feedback error-panjang"></div>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <label for="lebar" class="col-sm-3 col-form-label">Lebar</label>
-        <div class="col-sm-9">
-            <input type="number" class="form-control" id="lebar" name="lebar" value="<?= $produk['lebar']; ?>">
-            <div class="invalid-feedback error-lebar"></div>
-        </div>
-    </div>
-    <div class="row mb-2">
-        <label for="tinggi" class="col-sm-3 col-form-label">Tinggi</label>
-        <div class="col-sm-9">
-            <input type="number" class="form-control" id="tinggi" name="tinggi" value="<?= $produk['tinggi']; ?>">
-            <div class="invalid-feedback error-tinggi"></div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="status_marketing" class="col-sm-3 col-form-label">Marketing</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="status_marketing" id="status_marketing">
-                <option value=""></option>
-                <option <?= ($produk['status_marketing'] == "Belum desain") ? 'selected' : ''; ?> value="Belum desain">Belum desain</option>
-                <option <?= ($produk['status_marketing'] == "Sudah desain") ? 'selected' : ''; ?> value="Sudah desain">Sudah desain</option>
-                <option <?= ($produk['status_marketing'] == "Sudah dipost") ? 'selected' : ''; ?> value="Sudah dipost">Sudah dipost</option>
-            </select>
-            <div class="invalid-feedback error-status_marketing"></div>
-        </div>
-    </div>
+</div>
 
-    <div class="col-md-9 offset-3">
-        <button id="tombolSimpan" class="btn px-5 btn-outline-primary" type="submit">Simpan <i class="fa-fw fa-solid fa-check"></i></button>
-    </div>
-</form>
-
-
+<?= $this->include('MyLayout/js') ?>
 
 <script>
-    $('#form').submit(function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            type: "post",
-            url: $(this).attr('action'),
-            data: $(this).serialize(),
-            dataType: "json",
-            beforeSend: function() {
-                $('#tombolSimpan').html('Tunggu <i class="fa-solid fa-spin fa-spinner"></i>');
-                $('#tombolSimpan').prop('disabled', true);
-            },
-            complete: function() {
-                $('#tombolSimpan').html('Simpan <i class="fa-fw fa-solid fa-check"></i>');
-                $('#tombolSimpan').prop('disabled', false);
-            },
-            success: function(response) {
-                if (response.error) {
-                    let err = response.error;
-
-                    if (err.error_id_kategori) {
-                        $('.error-id_kategori').html(err.error_id_kategori);
-                        $('#id_kategori').addClass('is-invalid');
-                    } else {
-                        $('.error-id_kategori').html('');
-                        $('#id_kategori').removeClass('is-invalid');
-                        $('#id_kategori').addClass('is-valid');
-                    }
-                    if (err.error_id_gudang) {
-                        $('.error-id_gudang').html(err.error_id_gudang);
-                        $('#id_gudang').addClass('is-invalid');
-                    } else {
-                        $('.error-id_gudang').html('');
-                        $('#id_gudang').removeClass('is-invalid');
-                        $('#id_gudang').addClass('is-valid');
-                    }
-                    if (err.error_sku) {
-                        $('.error-sku').html(err.error_sku);
-                        $('#sku').addClass('is-invalid');
-                    } else {
-                        $('.error-sku').html('');
-                        $('#sku').removeClass('is-invalid');
-                        $('#sku').addClass('is-valid');
-                    }
-                    if (err.error_hs_code) {
-                        $('.error-hs_code').html(err.error_hs_code);
-                        $('#hs_code').addClass('is-invalid');
-                    } else {
-                        $('.error-hs_code').html('');
-                        $('#hs_code').removeClass('is-invalid');
-                        $('#hs_code').addClass('is-valid');
-                    }
-                    if (err.error_nama) {
-                        $('.error-nama').html(err.error_nama);
-                        $('#nama').addClass('is-invalid');
-                    } else {
-                        $('.error-nama').html('');
-                        $('#nama').removeClass('is-invalid');
-                        $('#nama').addClass('is-valid');
-                    }
-                    if (err.error_satuan) {
-                        $('.error-satuan').html(err.error_satuan);
-                        $('#satuan').addClass('is-invalid');
-                    } else {
-                        $('.error-satuan').html('');
-                        $('#satuan').removeClass('is-invalid');
-                        $('#satuan').addClass('is-valid');
-                    }
-                    if (err.error_jenis) {
-                        $('.error-jenis').html(err.error_jenis);
-                        $('#jenis').addClass('is-invalid');
-                    } else {
-                        $('.error-jenis').html('');
-                        $('#jenis').removeClass('is-invalid');
-                        $('#jenis').addClass('is-valid');
-                    }
-                    if (err.error_jenis_produk) {
-                        $('.error-jenis_produk').html(err.error_jenis_produk);
-                        $('#jenis_produk').addClass('is-invalid');
-                    } else {
-                        $('.error-jenis_produk').html('');
-                        $('#jenis_produk').removeClass('is-invalid');
-                        $('#jenis_produk').addClass('is-valid');
-                    }
-                    if (err.error_harga_beli) {
-                        $('.error-harga_beli').html(err.error_harga_beli);
-                        $('#harga_beli').addClass('is-invalid');
-                    } else {
-                        $('.error-harga_beli').html('');
-                        $('#harga_beli').removeClass('is-invalid');
-                        $('#harga_beli').addClass('is-valid');
-                    }
-                    if (err.error_harga_jual) {
-                        $('.error-harga_jual').html(err.error_harga_jual);
-                        $('#harga_jual').addClass('is-invalid');
-                    } else {
-                        $('.error-harga_jual').html('');
-                        $('#harga_jual').removeClass('is-invalid');
-                        $('#harga_jual').addClass('is-valid');
-                    }
-                    if (err.error_stok) {
-                        $('.error-stok').html(err.error_stok);
-                        $('#stok').addClass('is-invalid');
-                    } else {
-                        $('.error-stok').html('');
-                        $('#stok').removeClass('is-invalid');
-                        $('#stok').addClass('is-valid');
-                    }
-                    if (err.error_berat) {
-                        $('.error-berat').html(err.error_berat);
-                        $('#berat').addClass('is-invalid');
-                    } else {
-                        $('.error-berat').html('');
-                        $('#berat').removeClass('is-invalid');
-                        $('#berat').addClass('is-valid');
-                    }
-                    if (err.error_panjang) {
-                        $('.error-panjang').html(err.error_panjang);
-                        $('#panjang').addClass('is-invalid');
-                    } else {
-                        $('.error-panjang').html('');
-                        $('#panjang').removeClass('is-invalid');
-                        $('#panjang').addClass('is-valid');
-                    }
-                    if (err.error_lebar) {
-                        $('.error-lebar').html(err.error_lebar);
-                        $('#lebar').addClass('is-invalid');
-                    } else {
-                        $('.error-lebar').html('');
-                        $('#lebar').removeClass('is-invalid');
-                        $('#lebar').addClass('is-valid');
-                    }
-                    if (err.error_tinggi) {
-                        $('.error-tinggi').html(err.error_tinggi);
-                        $('#tinggi').addClass('is-invalid');
-                    } else {
-                        $('.error-tinggi').html('');
-                        $('#tinggi').removeClass('is-invalid');
-                        $('#tinggi').addClass('is-valid');
-                    }
-                    if (err.error_status_marketing) {
-                        $('.error-status_marketing').html(err.error_status_marketing);
-                        $('#status_marketing').addClass('is-invalid');
-                    } else {
-                        $('.error-status_marketing').html('');
-                        $('#status_marketing').removeClass('is-invalid');
-                        $('#status_marketing').addClass('is-valid');
-                    }
-                }
-                if (response.success) {
-                    $('#my-modal').modal('hide')
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: response.success,
-                    }).then((value) => {
-                        $('#tabel').DataTable().ajax.reload();
-                        Toast.fire({
-                            icon: 'success',
-                            title: response.success
-                        })
-                    })
-                }
-            },
-            error: function(e) {
-                alert('Error \n' + e.responseText);
-            }
-        });
-        return false
-    })
-
-
     $(document).ready(function() {
         $("#id_kategori").select2({
             theme: "bootstrap-5",
             tags: true,
-            dropdownParent: $('#my-modal')
         });
 
-        $("#id_gudang").select2({
+        $("#id_produk_bahan").select2({
             theme: "bootstrap-5",
-            dropdownParent: $('#my-modal')
+            dropdownParent: $('#modal-add-komponen')
+        });
+
+        $("#id_produk_jadi").select2({
+            theme: "bootstrap-5",
+            dropdownParent: $('#modal-add-set')
         });
 
         $('#harga_beli').mask('000.000.000', {
@@ -355,5 +355,32 @@
         $('#harga_jual').mask('000.000.000', {
             reverse: true
         });
+
+        // Alert
+        var op = <?= (!empty(session()->getFlashdata('pesan')) ? json_encode(session()->getFlashdata('pesan')) : '""'); ?>;
+        if (op != '') {
+            Toast.fire({
+                icon: 'success',
+                title: op
+            })
+        }
+    })
+
+    // Bahan Alert
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        background: '#EC7063',
+        color: '#fff',
+        iconColor: '#fff',
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
     })
 </script>
+
+<?= $this->endSection() ?>
