@@ -7,7 +7,7 @@
 
     <div class="d-flex mb-0">
         <div class="me-auto mb-1">
-            <h3 style="color: #566573;">List Produk Pemesanan</h3>
+            <h3 style="color: #566573;">Buat List Produk Pemesanan</h3>
         </div>
         <div class="me-2 mb-1">
             <a class="btn btn-sm btn-outline-dark" href="<?= site_url() ?>pemesanan">
@@ -30,7 +30,7 @@
                     <div class="col-md-8">
                         <div class="input-group mb-3">
                             <select class="form-select" id="id_produk">
-                                <option value="">Cari Produk</option>
+                                <option id="id_produk_default" value=""></option>
                                 <?php foreach ($produk as $pr) : ?>
                                     <option value="<?= $pr['id'] ?>"><?= $pr['nama'] ?></option>
                                 <?php endforeach ?>
@@ -69,18 +69,35 @@
                     Detail Pemesanan
                 </div>
                 <div class="card-body" style="background-color: #E6ECF0;">
-                    <form autocomplete="off" role="form" action="" method="post" class="login-form">
+                    <form id="form_pemesanan" autocomplete="off" action="<?= site_url() ?>simpan_pemesanan" method="post">
+                        <input type="hidden" name="id_pemesanan" value="<?= $pemesanan['id'] ?>">
                         <div class="mb-3">
                             <label for="no_pemesanan" class="form-label">Nomor Pemesanan</label>
                             <input disabled type="text" class="form-control" id="no_pemesanan" name="no_pemesanan" value="<?= $pemesanan['no_pemesanan'] ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="id_supplier" class="form-label">Supplier</label>
-                            <input disabled type="text" class="form-control" id="id_supplier" name="id_supplier" value="<?= $pemesanan['supplier'] ?>">
+                            <label for="supplier" class="form-label">Supplier</label>
+                            <select disabled class="form-select" id="supplier" name="supplier">
+                                <option value=""></option>
+                                <?php foreach ($supplier as $sup) : ?>
+                                    <option <?= ($sup['id'] == $pemesanan['id_supplier']) ? 'selected' : '' ?> value="<?= $sup['id'] ?>"><?= $sup['nama'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <input type="hidden" name="id_supplier" id="id_supplier">
                         </div>
                         <div class="mb-3">
                             <label for="tanggal" class="form-label">Tanggal</label>
                             <input disabled type="text" class="form-control" id="tanggal" name="tanggal" value="<?= $pemesanan['tanggal'] ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user" class="form-label">Admin</label>
+                            <select disabled class="form-select" id="user" name="user">
+                                <option value=""></option>
+                                <?php foreach ($user as $usr) : ?>
+                                    <option <?= ($usr['id'] == user()->id) ? 'selected' : '' ?> value="<?= $usr['id'] ?>"><?= $usr['nama'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <input type="hidden" name="id_user" id="id_user">
                         </div>
                     </form>
                 </div>
@@ -107,6 +124,14 @@
     $(document).ready(function() {
         $("#id_produk").select2({
             theme: "bootstrap-5",
+            placeholder: 'Cari Produk',
+            initSelection: function(element, callback) {}
+        });
+        $("#supplier").select2({
+            theme: "bootstrap-5",
+        });
+        $("#user").select2({
+            theme: "bootstrap-5",
         });
 
         $('#tanggal').datepicker({
@@ -114,6 +139,7 @@
         });
 
         load_list();
+        set_value_select2();
     })
 
     function load_list() {
@@ -130,6 +156,11 @@
                 alert('Error \n' + e.responseText);
             }
         });
+    }
+
+    function set_value_select2() {
+        $('#id_supplier').val($('#supplier').val());
+        $('#id_user').val($('#user').val());
     }
 
     $('#tambah_produk').click(function() {
@@ -154,6 +185,7 @@
                         )
                         load_list();
                         $('#qty').val('');
+                        $('#id_produk').val('').trigger('change');
                     } else {
                         alert('terjadi error tambah list produk')
                     }
@@ -172,7 +204,39 @@
     })
 
     $('#simpan_pemesanan').click(function() {
-        alert('simpan')
+        let id_pemesanan = '<?= $pemesanan['id'] ?>'
+        $.ajax({
+            type: "post",
+            url: "<?= base_url() ?>/check_list_produk",
+            data: 'id_pemesanan=' + id_pemesanan,
+            dataType: "json",
+            success: function(response) {
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Konfirmasi?',
+                        text: "Apakah yakin menyimpan pemesanan ini?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Lanjut!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#form_pemesanan').submit();
+                        }
+                    })
+                } else {
+                    Swal.fire(
+                        'Opss.',
+                        'Tidak ada produk dalam pemesanan. pilih minimal satu produk dulu!',
+                        'error'
+                    )
+                }
+            },
+            error: function(e) {
+                alert('Error \n' + e.responseText);
+            }
+        });
     })
 </script>
 

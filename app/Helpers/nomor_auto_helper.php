@@ -5,7 +5,7 @@ function nomor_pemesanan_auto($tgl)
 {
     $db = db_connect();
 
-    $quer = "SELECT max(right(no_pemesanan, 2)) AS kode FROM pemesanan WHERE DATE(tanggal) = '$tgl'";
+    $quer = "SELECT max(right(no_pemesanan, 2)) AS kode FROM pemesanan WHERE tanggal = '$tgl'";
     $query = $db->query($quer)->getRowArray();
 
     if ($query) {

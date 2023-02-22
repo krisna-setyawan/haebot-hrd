@@ -38,7 +38,7 @@ class Pemesanan extends Migration
             'id_produk'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'qty'                   => ['type' => 'int', 'unsigned' => true],
             'harga_satuan'          => ['type' => 'int', 'unsigned' => true],
-            'total_harga_produk'    => ['type' => 'int', 'unsigned' => true],
+            'total_harga'           => ['type' => 'int', 'unsigned' => true],
         ];
 
         $this->forge->addField($fields);

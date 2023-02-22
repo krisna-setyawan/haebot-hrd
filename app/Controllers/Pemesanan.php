@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\PemesananDetailModel;
 use App\Models\PemesananModel;
 use App\Models\SupplierModel;
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -43,7 +44,7 @@ class Pemesanan extends ResourcePresenter
                     ';
                 } else {
                     return '
-                    <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(' . $row->id . ')">
+                    <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(\'' . $row->no_pemesanan . '\')">
                         <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                     </a>';
                 }
@@ -55,15 +56,35 @@ class Pemesanan extends ResourcePresenter
     }
 
 
-    public function show($id = null)
+    public function show($no = null)
     {
+        if ($this->request->isAJAX()) {
+            $modelPemesanan = new PemesananModel();
+            $pemesanan = $modelPemesanan->getPemesanan($no);
+            $modelPemesananDetail = new PemesananDetailModel();
+            $pemesanan_detail = $modelPemesananDetail->getListProdukPemesanan($pemesanan['id']);
+
+
+            $data = [
+                'pemesanan' => $pemesanan,
+                'pemesanan_detail' => $pemesanan_detail,
+            ];
+
+            $json = [
+                'data' => view('pembelian/pemesanan/show', $data),
+            ];
+
+            echo json_encode($json);
+        } else {
+            return 'Tidak bisa load';
+        }
     }
 
 
     public function new()
     {
         if ($this->request->isAJAX()) {
-
+            date_default_timezone_set('Asia/Jakarta');
             $modelSupplier = new SupplierModel();
             $supplier = $modelSupplier->findAll();
 

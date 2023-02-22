@@ -19,7 +19,7 @@ class PemesananDetailModel extends Model
         'id_produk',
         'qty',
         'harga_satuan',
-        'total_harga_produk'
+        'total_harga'
     ];
 
     // Dates
@@ -54,6 +54,17 @@ class PemesananDetailModel extends Model
             ->where('pemesanan_detail.id_pemesanan', $id_pemesanan)
             ->get()
             ->getResultArray();
+
+        return $data;
+    }
+
+    function sumTotalHargaProduk($id_pemesanan)
+    {
+        $data =  $this->db->table($this->table)
+            ->selectSum('total_harga')
+            ->where('id_pemesanan', $id_pemesanan)
+            ->get()
+            ->getRowArray();
 
         return $data;
     }

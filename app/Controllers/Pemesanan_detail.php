@@ -6,10 +6,12 @@ use App\Models\PemesananDetailModel;
 use App\Models\PemesananModel;
 use App\Models\ProdukModel;
 use App\Models\SupplierModel;
+use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
 class Pemesanan_detail extends ResourcePresenter
 {
+    protected $helpers = ['user_admin_helper'];
 
     public function index()
     {
@@ -22,12 +24,15 @@ class Pemesanan_detail extends ResourcePresenter
         $supplier = $modelSupplier->findAll();
         $modelProduk = new ProdukModel();
         $produk = $modelProduk->findAll();
+        $modelUser = new UserModel();
+        $user = $modelUser->getAllUserWithKaryawanName();
 
         $pemesananModel = new PemesananModel();
         $data = [
             'pemesanan'             => $pemesananModel->getPemesanan($no_pemesanan),
             'supplier'              => $supplier,
             'produk'                => $produk,
+            'user'                  => $user
         ];
         return view('pembelian/pemesanan/detail', $data);
     }
@@ -90,7 +95,7 @@ class Pemesanan_detail extends ResourcePresenter
                 'id_produk'             => $this->request->getPost('id_produk'),
                 'qty'                   => $cek_produk['qty'] + $this->request->getPost('qty'),
                 'harga_satuan'          => $produk['harga_beli'],
-                'total_harga_produk'    => $cek_produk['total_harga_produk'] + ($produk['harga_beli'] * $this->request->getPost('qty')),
+                'total_harga'           => $cek_produk['total_harga'] + ($produk['harga_beli'] * $this->request->getPost('qty')),
             ];
             $modelPemesananDetail->save($data_update);
         } else {
@@ -99,7 +104,7 @@ class Pemesanan_detail extends ResourcePresenter
                 'id_produk'             => $this->request->getPost('id_produk'),
                 'qty'                   => $this->request->getPost('qty'),
                 'harga_satuan'          => $produk['harga_beli'],
-                'total_harga_produk'    => ($produk['harga_beli'] * $this->request->getPost('qty')),
+                'total_harga'           => ($produk['harga_beli'] * $this->request->getPost('qty')),
             ];
             $modelPemesananDetail->save($data);
         }
@@ -133,12 +138,55 @@ class Pemesanan_detail extends ResourcePresenter
     public function delete($id = null)
     {
         $id_pemesanan = $this->request->getPost('id_pemesanan');
+        $modelPemesanan = new PemesananModel();
+        $no_pemesanan = $modelPemesanan->find($id_pemesanan)['no_pemesanan'];
 
         $modelPemesananDetail = new PemesananDetailModel();
 
         $modelPemesananDetail->delete($id);
 
         session()->setFlashdata('pesan', 'Data berhasil dihapus.');
-        return redirect()->to('/list_pemesanan/' . $id_pemesanan);
+        return redirect()->to('/list_pemesanan/' . $no_pemesanan);
+    }
+
+
+
+    public function check_list_produk()
+    {
+        $id_pemesanan = $this->request->getVar('id_pemesanan');
+        $modelPemesananDetail = new PemesananDetailModel();
+        $produk = $modelPemesananDetail->where(['id_pemesanan' => $id_pemesanan])->findAll();
+
+        if ($produk) {
+            $json = ['ok' => 'ok'];
+        } else {
+            $json = ['null' => null];
+        }
+        echo json_encode($json);
+    }
+
+
+
+    public function simpan_pemesanan()
+    {
+        $id_pemesanan = $this->request->getVar('id_pemesanan');
+
+        $modelPemesanan = new PemesananModel();
+        $pemesanan = $modelPemesanan->find($id_pemesanan);
+
+        $modelPemesananDetail = new PemesananDetailModel();
+        $sum = $modelPemesananDetail->sumTotalHargaProduk($id_pemesanan);
+
+        $data_update = [
+            'id'                    => $pemesanan['id'],
+            'id_supplier'           => $this->request->getVar('id_supplier'),
+            'id_user'               => $this->request->getVar('id_user'),
+            'total_harga_produk'    => $sum['total_harga'],
+            'status'                => 'Plan'
+        ];
+        $modelPemesanan->save($data_update);
+
+        session()->setFlashdata('pesan', 'Data pemesanan berhasil disimpan.');
+        return redirect()->to('/pemesanan');
     }
 }

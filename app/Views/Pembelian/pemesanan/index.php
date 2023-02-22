@@ -64,6 +64,22 @@
 </div>
 <!-- Modal -->
 
+<!-- Modal -->
+<div class="modal fade" id="my-modal-show" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="judulModalShow">Detail Pemesanan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="isiShow">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
 
 
 <script>
@@ -146,7 +162,6 @@
                 if (res.data) {
                     $('#isiForm').html(res.data)
                     $('#my-modal').modal('toggle')
-                    $('#judulModal').html('Tambah Pemesanan')
                 }
             },
             error: function(e) {
@@ -156,25 +171,24 @@
     }
 
 
-    // function showModalDetail(id) {
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: '<?= site_url() ?>produk/' + id,
-    //         dataType: 'json',
-    //         success: function(res) {
-    //             if (res.data) {
-    //                 $('#isiForm').html(res.data)
-    //                 $('#my-modal').modal('toggle')
-    //                 $('#judulModal').html('Detail Produk')
-    //             } else {
-    //                 console.log(res)
-    //             }
-    //         },
-    //         error: function(e) {
-    //             alert('Error \n' + e.responseText);
-    //         }
-    //     })
-    // }
+    function showModalDetail(no) {
+        $.ajax({
+            type: 'GET',
+            url: '<?= site_url() ?>pemesanan/' + no,
+            dataType: 'json',
+            success: function(res) {
+                if (res.data) {
+                    $('#isiShow').html(res.data)
+                    $('#my-modal-show').modal('toggle')
+                } else {
+                    console.log(res)
+                }
+            },
+            error: function(e) {
+                alert('Error \n' + e.responseText);
+            }
+        })
+    }
 </script>
 
 <?= $this->endSection() ?>

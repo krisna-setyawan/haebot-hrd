@@ -146,4 +146,17 @@ class UserModel extends Model
 
         return $data;
     }
+
+
+    public function getKaryawanByIdUser($id)
+    {
+        $data =  $this->db->table($this->table)
+            ->select('users.id, karyawan.*')
+            ->join('karyawan', 'users.id_karyawan = karyawan.id')
+            ->where('users.id', $id)
+            ->get()
+            ->getRowArray();
+
+        return $data;
+    }
 }

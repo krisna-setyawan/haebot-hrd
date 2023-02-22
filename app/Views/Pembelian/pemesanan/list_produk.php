@@ -7,7 +7,7 @@ foreach ($produk_pemesanan as $pr) : ?>
         <td><?= $pr['produk'] ?></td>
         <td>Rp. <?= number_format($pr['harga_satuan'], 0, ',', '.') ?></td>
         <td><?= $pr['qty'] ?></td>
-        <td>Rp. <?= number_format($pr['total_harga_produk'], 0, ',', '.') ?></td>
+        <td>Rp. <?= number_format($pr['total_harga'], 0, ',', '.') ?></td>
         <td class="text-center">
 
             <form id="form_delete" method="POST" class="d-inline">

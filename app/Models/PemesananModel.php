@@ -51,8 +51,10 @@ class PemesananModel extends Model
     public function getPemesanan($no)
     {
         $data =  $this->db->table($this->table)
-            ->select('pemesanan.*, supplier.nama as supplier')
+            ->select('pemesanan.*, supplier.nama as supplier, karyawan.nama_lengkap as admin')
             ->join('supplier', 'pemesanan.id_supplier = supplier.id', 'left')
+            ->join('users', 'pemesanan.id_user = users.id', 'left')
+            ->join('karyawan', 'users.id_karyawan = karyawan.id', 'left')
             ->where('pemesanan.deleted_at', null)
             ->where('no_pemesanan', $no)
             ->get()
