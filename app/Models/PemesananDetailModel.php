@@ -4,27 +4,26 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PemesananModel extends Model
+class PemesananDetailModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'pemesanan';
+    protected $table            = 'pemesanan_detail';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_supplier',
-        'id_user',
-        'no_pemesanan',
-        'tanggal',
-        'total_harga_produk',
-        'status'
+        'id_pemesanan',
+        'id_produk',
+        'qty',
+        'harga_satuan',
+        'total_harga_produk'
     ];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -47,16 +46,14 @@ class PemesananModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-
-    public function getPemesanan($no)
+    function getListProdukPemesanan($id_pemesanan)
     {
         $data =  $this->db->table($this->table)
-            ->select('pemesanan.*, supplier.nama as supplier')
-            ->join('supplier', 'pemesanan.id_supplier = supplier.id', 'left')
-            ->where('pemesanan.deleted_at', null)
-            ->where('no_pemesanan', $no)
+            ->select('pemesanan_detail.*, produk.nama as produk, produk.sku as sku')
+            ->join('produk', 'pemesanan_detail.id_produk = produk.id', 'left')
+            ->where('pemesanan_detail.id_pemesanan', $id_pemesanan)
             ->get()
-            ->getRowArray();
+            ->getResultArray();
 
         return $data;
     }

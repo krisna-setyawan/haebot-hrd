@@ -102,7 +102,12 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     // ------------------------------------------------------------------------------------ TRANSAKSI
 
     // Pemesanan
-    $routes->resource('pemesanan', ['filter' => 'permission:Data Master']);
+    $routes->resource('pemesanan', ['filter' => 'permission:Pembelian']);
+    $routes->get('getdatapemesanan', 'Pemesanan::getDataPemesanan', ['filter' => 'permission:Pembelian']);
+    $routes->get('list_pemesanan/(:any)', 'Pemesanan_detail::List_pemesanan/$1', ['filter' => 'permission:Pembelian']);
+    $routes->post('produks_pemesanan', 'Pemesanan_detail::getListProdukPemesanan', ['filter' => 'permission:Pembelian']);
+    $routes->post('create_list_produk', 'Pemesanan_detail::create', ['filter' => 'permission:Pembelian']);
+    $routes->delete('pemesanan_detail/(:num) ', 'Pemesanan_detail::delete/$1', ['filter' => 'permission:Pembelian']);
 });
 
 /*
