@@ -92,31 +92,31 @@
         <div class="row mb-3">
             <div class="col-md-3">
                 <div class="fw-bold">
-                    &nbsp;&nbsp; Panjang
+                    &nbsp;&nbsp; Ukuran
                 </div>
             </div>
             <div class="col-md-9">
-                <?= $produk['panjang'] ?>
+                P : <?= $produk['panjang'] ?> &nbsp;&nbsp; L : <?= $produk['lebar'] ?> &nbsp;&nbsp; T : <?= $produk['tinggi'] ?>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-3">
                 <div class="fw-bold">
-                    &nbsp;&nbsp; Lebar
+                    &nbsp;&nbsp; Minimal Penjulan
                 </div>
             </div>
             <div class="col-md-9">
-                <?= $produk['lebar'] ?>
+                <?= $produk['minimal_penjualan'] ?>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-3">
                 <div class="fw-bold">
-                    &nbsp;&nbsp; Tinggi
+                    &nbsp;&nbsp; Kelipatan Penjualan
                 </div>
             </div>
             <div class="col-md-9">
-                <?= $produk['tinggi'] ?>
+                <?= $produk['kelipatan_penjualan'] ?>
             </div>
         </div>
         <div class="row mb-3">

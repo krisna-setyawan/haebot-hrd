@@ -276,6 +276,18 @@ class Produk extends ResourcePresenter
                         'required' => 'tinggi produk awal harus diisi.',
                     ]
                 ],
+                'minimal_penjualan' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'miniam penjualan harus diisi.',
+                    ]
+                ],
+                'kelipatan_penjualan' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'kelipatan penjualan harus diisi.',
+                    ]
+                ],
                 'status_marketing' => [
                     'rules' => 'required',
                     'errors' => [
@@ -303,6 +315,8 @@ class Produk extends ResourcePresenter
                     'error_panjang' => $validation->getError('panjang'),
                     'error_lebar' => $validation->getError('lebar'),
                     'error_tinggi' => $validation->getError('tinggi'),
+                    'error_minimal_penjualan' => $validation->getError('minimal_penjualan'),
+                    'error_kelipatan_penjualan' => $validation->getError('kelipatan_penjualan'),
                     'error_status_marketing' => $validation->getError('status_marketing'),
                 ];
 
@@ -346,6 +360,8 @@ class Produk extends ResourcePresenter
                     'panjang'               => $this->request->getPost('panjang'),
                     'lebar'                 => $this->request->getPost('lebar'),
                     'tinggi'                => $this->request->getPost('tinggi'),
+                    'minimal_penjualan'     => $this->request->getPost('minimal_penjualan'),
+                    'kelipatan_penjualan'   => $this->request->getPost('kelipatan_penjualan'),
                     'status_marketing'      => $this->request->getPost('status_marketing'),
                     'note'                  => ''
                 ];
@@ -572,6 +588,18 @@ class Produk extends ResourcePresenter
                     'required' => 'tinggi produk harus diisi.',
                 ]
             ],
+            'minimal_penjualan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'miniam penjualan harus diisi.',
+                ]
+            ],
+            'kelipatan_penjualan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'kelipatan penjualan harus diisi.',
+                ]
+            ],
             'status_marketing' => [
                 'rules' => 'required',
                 'errors' => [
@@ -615,6 +643,8 @@ class Produk extends ResourcePresenter
             'lebar'                 => $this->request->getPost('lebar'),
             'tinggi'                => $this->request->getPost('tinggi'),
             'status_marketing'      => $this->request->getPost('status_marketing'),
+            'minimal_penjualan'     => $this->request->getPost('minimal_penjualan'),
+            'kelipatan_penjualan'   => $this->request->getPost('kelipatan_penjualan'),
             'note'                  => ''
         ];
         $modelProduk->save($data);

@@ -106,29 +106,46 @@
                 <div class="row mb-2">
                     <label for="berat" class="col-sm-3 col-form-label">Berat</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control <?= (validation_show_error('berat')) ? 'is-invalid' : ''; ?>" id="berat" name="berat" value="<?= old('berat',  $produk['berat']); ?>">
+                        <input type="number" min="0" class="form-control <?= (validation_show_error('berat')) ? 'is-invalid' : ''; ?>" id="berat" name="berat" value="<?= old('berat',  $produk['berat']); ?>">
                         <div class="invalid-feedback"> <?= validation_show_error('berat'); ?></div>
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <label for="panjang" class="col-sm-3 col-form-label">Panjang</label>
-                    <div class="col-sm-9">
-                        <input type="number" class="form-control <?= (validation_show_error('panjang')) ? 'is-invalid' : ''; ?>" id="panjang" name="panjang" value="<?= old('panjang',  $produk['panjang']); ?>">
-                        <div class="invalid-feedback"> <?= validation_show_error('panjang'); ?></div>
+                    <label for="panjang" class="col-sm-3 col-form-label">Ukuran</label>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-text">P</span>
+                            <input type="number" min="0" class="form-control <?= (validation_show_error('panjang')) ? 'is-invalid' : ''; ?>" id="panjang" name="panjang" value="<?= old('panjang',  $produk['panjang']); ?>">
+                            <div class="invalid-feedback"> <?= validation_show_error('panjang'); ?></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-text">L</span>
+                            <input type="number" min="0" class="form-control <?= (validation_show_error('lebar')) ? 'is-invalid' : ''; ?>" id="lebar" name="lebar" value="<?= old('lebar',  $produk['lebar']); ?>">
+                            <div class="invalid-feedback"> <?= validation_show_error('lebar'); ?></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-text">T</span>
+                            <input type="number" min="0" class="form-control <?= (validation_show_error('tinggi')) ? 'is-invalid' : ''; ?>" id="tinggi" name="tinggi" value="<?= old('tinggi',  $produk['tinggi']); ?>">
+                            <div class="invalid-feedback"> <?= validation_show_error('tinggi'); ?></div>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <label for="lebar" class="col-sm-3 col-form-label">Lebar</label>
+                    <label for="minimal_penjualan" class="col-sm-3 col-form-label">Minimal Penjualan</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control <?= (validation_show_error('lebar')) ? 'is-invalid' : ''; ?>" id="lebar" name="lebar" value="<?= old('lebar',  $produk['lebar']); ?>">
-                        <div class="invalid-feedback"> <?= validation_show_error('lebar'); ?></div>
+                        <input type="number" min="0" class="form-control <?= (validation_show_error('minimal_penjualan')) ? 'is-invalid' : ''; ?>" id="minimal_penjualan" name="minimal_penjualan" value="<?= old('minimal_penjualan',  $produk['minimal_penjualan']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('minimal_penjualan'); ?></div>
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <label for="tinggi" class="col-sm-3 col-form-label">Tinggi</label>
+                    <label for="kelipatan_penjualan" class="col-sm-3 col-form-label">Kelipatan Penjualan</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control <?= (validation_show_error('tinggi')) ? 'is-invalid' : ''; ?>" id="tinggi" name="tinggi" value="<?= old('tinggi',  $produk['tinggi']); ?>">
-                        <div class="invalid-feedback"> <?= validation_show_error('tinggi'); ?></div>
+                        <input type="number" min="0" class="form-control <?= (validation_show_error('kelipatan_penjualan')) ? 'is-invalid' : ''; ?>" id="kelipatan_penjualan" name="kelipatan_penjualan" value="<?= old('kelipatan_penjualan',  $produk['kelipatan_penjualan']); ?>">
+                        <div class="invalid-feedback"> <?= validation_show_error('kelipatan_penjualan'); ?></div>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -146,7 +163,7 @@
                 <div class="row mb-2">
                     <label for="note" class="col-sm-3 col-form-label">Note</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control <?= (validation_show_error('note')) ? 'is-invalid' : ''; ?>" id="note" name="note" value="<?= old('note',  $produk['note']); ?>">
+                        <input type="text" class="form-control <?= (validation_show_error('note')) ? 'is-invalid' : ''; ?>" id="note" name="note" value="<?= old('note',  $produk['note']); ?>">
                         <div class="invalid-feedback"> <?= validation_show_error('note'); ?></div>
                     </div>
                 </div>
@@ -282,7 +299,7 @@
                     </div>
 
                     <label for="qty_bahan" class="form-label">Jumlah</label>
-                    <input type="number" class="form-control mb-3" id="qty_bahan" name="qty_bahan" placeholder="Jumlah produk">
+                    <input type="number" min="0" class="form-control mb-3" id="qty_bahan" name="qty_bahan" placeholder="Jumlah produk">
 
                     <hr>
 
@@ -319,7 +336,7 @@
                     </div>
 
                     <label for="qty_bahan" class="form-label">Jumlah</label>
-                    <input type="number" class="form-control mb-3" id="qty_bahan" name="qty_bahan" placeholder="Jumlah produk">
+                    <input type="number" min="0" class="form-control mb-3" id="qty_bahan" name="qty_bahan" placeholder="Jumlah produk">
 
                     <hr>
 

@@ -91,36 +91,53 @@
     <div class="row mb-2">
         <label for="stok" class="col-sm-3 col-form-label">Stok Awal</label>
         <div class="col-sm-9">
-            <input type="number" class="form-control" id="stok" name="stok">
+            <input type="number" min="0" class="form-control" id="stok" name="stok">
             <div class="invalid-feedback error-stok"></div>
         </div>
     </div>
     <div class="row mb-2">
         <label for="berat" class="col-sm-3 col-form-label">Berat</label>
         <div class="col-sm-9">
-            <input type="number" class="form-control" id="berat" name="berat">
+            <input type="number" min="0" class="form-control" id="berat" name="berat">
             <div class="invalid-feedback error-berat"></div>
         </div>
     </div>
     <div class="row mb-2">
-        <label for="panjang" class="col-sm-3 col-form-label">Panjang</label>
-        <div class="col-sm-9">
-            <input type="number" class="form-control" id="panjang" name="panjang">
-            <div class="invalid-feedback error-panjang"></div>
+        <label class="col-sm-3 col-form-label">Ukuran</label>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-text">P</span>
+                <input type="number" min="0" class="form-control" id="panjang" name="panjang">
+                <div class="invalid-feedback error-panjang"></div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-text">L</span>
+                <input type="number" min="0" class="form-control" id="lebar" name="lebar">
+                <div class="invalid-feedback error-lebar"></div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-text">T</span>
+                <input type="number" min="0" class="form-control" id="tinggi" name="tinggi">
+                <div class="invalid-feedback error-tinggi"></div>
+            </div>
         </div>
     </div>
     <div class="row mb-2">
-        <label for="lebar" class="col-sm-3 col-form-label">Lebar</label>
+        <label for="minimal_penjualan" class="col-sm-3 col-form-label">Minimal Penjualan</label>
         <div class="col-sm-9">
-            <input type="number" class="form-control" id="lebar" name="lebar">
-            <div class="invalid-feedback error-lebar"></div>
+            <input type="number" min="0" class="form-control" id="minimal_penjualan" name="minimal_penjualan">
+            <div class="invalid-feedback error-minimal_penjualan"></div>
         </div>
     </div>
     <div class="row mb-2">
-        <label for="tinggi" class="col-sm-3 col-form-label">Tinggi</label>
+        <label for="kelipatan_penjualan" class="col-sm-3 col-form-label">Kelipatan Penjualan</label>
         <div class="col-sm-9">
-            <input type="number" class="form-control" id="tinggi" name="tinggi">
-            <div class="invalid-feedback error-tinggi"></div>
+            <input type="number" min="0" class="form-control" id="kelipatan_penjualan" name="kelipatan_penjualan">
+            <div class="invalid-feedback error-kelipatan_penjualan"></div>
         </div>
     </div>
     <div class="row mb-3">
@@ -138,7 +155,7 @@
     <div class="row mb-2">
         <label for="note" class="col-sm-3 col-form-label">Note</label>
         <div class="col-sm-9">
-            <input type="number" class="form-control" id="note" name="note">
+            <input type="text" class="form-control" id="note" name="note">
             <div class="invalid-feedback error-note"></div>
         </div>
     </div>
@@ -290,6 +307,22 @@
                         $('.error-tinggi').html('');
                         $('#tinggi').removeClass('is-invalid');
                         $('#tinggi').addClass('is-valid');
+                    }
+                    if (err.error_minimal_penjualan) {
+                        $('.error-minimal_penjualan').html(err.error_minimal_penjualan);
+                        $('#minimal_penjualan').addClass('is-invalid');
+                    } else {
+                        $('.error-minimal_penjualan').html('');
+                        $('#minimal_penjualan').removeClass('is-invalid');
+                        $('#minimal_penjualan').addClass('is-valid');
+                    }
+                    if (err.error_kelipatan_penjualan) {
+                        $('.error-kelipatan_penjualan').html(err.error_kelipatan_penjualan);
+                        $('#kelipatan_penjualan').addClass('is-invalid');
+                    } else {
+                        $('.error-kelipatan_penjualan').html('');
+                        $('#kelipatan_penjualan').removeClass('is-invalid');
+                        $('#kelipatan_penjualan').addClass('is-valid');
                     }
                     if (err.error_status_marketing) {
                         $('.error-status_marketing').html(err.error_status_marketing);
