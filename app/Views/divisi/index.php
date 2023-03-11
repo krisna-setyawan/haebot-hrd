@@ -36,6 +36,11 @@
                         <td><?= $sp['nama'] ?></td>
                         <td><?= $sp['deskripsi'] ?></td>
                         <td class="text-center">
+                            
+                            <a title="List" class="px-2 py-0 btn btn-sm btn-outline-dark" href="<?= site_url() ?>list/<?= $sp['id'] ?>">
+                                <i class="fa-fw fa-solid fa-list"></i>
+                            </a>
+
                             <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $sp['id'] ?>)">
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
@@ -155,6 +160,8 @@
             }
         })
     }
+
+    
 
 
     function showModalDetail(id) {

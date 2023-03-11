@@ -49,6 +49,13 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     // Divisi
     $routes->get('divisi/redirect/(:any)', 'Divisi::redirect/$1', ['filter' => 'permission:SDM']);
     $routes->resource('divisi', ['filter' => 'permission:SDM']);
+
+    // $routes->resource('hrd', ['filter' => 'permission:SDM']);
+    //list
+    $routes->get('list/(:num)', 'DivisiList::index/$1', ['filter' => 'permission:SDM']);
+    $routes->get('getdatalist', 'Produk::getDataList', ['filter' => 'permission:SDM']);
+
+    
 });
 
 /*

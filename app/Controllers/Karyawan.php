@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\KaryawanModel;
 use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
+use \Hermawan\DataTables\DataTable;
 use Myth\Auth\Password;
 
 class Karyawan extends ResourceController
@@ -379,4 +380,9 @@ class Karyawan extends ResourceController
         session()->setFlashdata('pesan', 'Data berhasil dihapus.');
         return redirect()->to('/karyawan');
     }
+
+
+    
+
+
 }
