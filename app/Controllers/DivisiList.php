@@ -28,38 +28,38 @@ class DivisiList extends ResourceController
     }
 
 
-    public function getDataList($id_divisi=null)
-    {
-        if ($this->request->isAJAX()) {
+    // public function getDataList($id_divisi=null)
+    // {
+    //     if ($this->request->isAJAX()) {
 
-            $modelKaryawan = new KaryawanModel();
-            $modelDivisi = new DivisiModel();
-            $karyawan = $modelKaryawan->select('karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
-            ->join('divisi', 'divisi.id = karyawan.id_divisi')
-            ->where('divisi.id', $id_divisi)
-            ->findAll();
+    //         $modelKaryawan = new KaryawanModel();
+    //         $modelDivisi = new DivisiModel();
+    //         $karyawan = $modelKaryawan->select('karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
+    //         ->join('divisi', 'divisi.id = karyawan.id_divisi')
+    //         ->where('divisi.id', $id_divisi)
+    //         ->findAll();
                                 
 
-            return DataTable::of($data)
-                ->addNumbering('no')
-                ->add('aksi', function ($row) {
-                    return '
-                    <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(' . $row->id . ')">
-                        <i class="fa-fw fa-solid fa-magnifying-glass"></i>
-                    </a>
+    //         return DataTable::of($data)
+    //             ->addNumbering('no')
+    //             ->add('aksi', function ($row) {
+    //                 return '
+    //                 <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(' . $row->id . ')">
+    //                     <i class="fa-fw fa-solid fa-magnifying-glass"></i>
+    //                 </a>
 
-                    <form id="form_delete" method="POST" class="d-inline">
-                        ' . csrf_field() . '
-                        <input type="hidden" name="_method" value="DELETE">
-                    </form>
-                    <button onclick="confirm_delete(' . $row->id . ')" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
-                    ';
-                }, 'last')
-                ->toJson(true);
-        } else {
-            return "Tidak bisa load data.";
-        }
-    }
+    //                 <form id="form_delete" method="POST" class="d-inline">
+    //                     ' . csrf_field() . '
+    //                     <input type="hidden" name="_method" value="DELETE">
+    //                 </form>
+    //                 <button onclick="confirm_delete(' . $row->id . ')" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+    //                 ';
+    //             }, 'last')
+    //             ->toJson(true);
+    //     } else {
+    //         return "Tidak bisa load data.";
+    //     }
+    // }
 
     public function show($id = null)
     {

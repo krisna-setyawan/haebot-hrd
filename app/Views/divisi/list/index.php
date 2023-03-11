@@ -37,7 +37,34 @@
                 </tr>
             </thead>
             <tbody>
-            
+            <?php $no = 1 ?>
+                <?php foreach ($karyawan as $karyawan) : ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= $karyawan['nama_lengkap'] ?></td>
+                        <td><?= $karyawan['jabatan'] ?></td>
+                        <td><?= $karyawan['pendidikan'] ?></td>
+                        <td><?= $karyawan['no_telp'] ?></td>
+                        <td><?= $karyawan['email'] ?></td>
+                        <td class="text-center">
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="">
+                                <i class="fa-fw fa-solid fa-magnifying-glass"></i>
+                            </a>
+
+                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" onclick="">
+                                <i class="fa-fw fa-solid fa-pen"></i>
+                            </a>
+
+                            <form id="form_delete" method="POST" class="d-inline">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                            </form>
+                           
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tr>
+
             </tbody>
         </table>
     </div>
@@ -83,49 +110,7 @@
         }
     })
 
-    $(document).ready(function(id) {
-        $('#tabel').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '<?= site_url() ?>getdatalist'+id,
-            order: [],
-            columns: [
-                {
-                    data: 'no',
-                    orderable: false
-                },
-                {
-                    data: 'nama'
-                },
-                {
-                    data: 'jabatan'
-                },
-                {
-                    data: 'pendidikan'
-                },
-                {
-                    data: 'no_telp'
-                },
-                {
-                    data: 'email'
-                },
-                {
-                    data: 'aksi',
-                    orderable: false,
-                    className: 'text-center'
-                },
-            ]
-        });
-
-        // Alert
-        var op = <?= (!empty(session()->getFlashdata('pesan')) ? json_encode(session()->getFlashdata('pesan')) : '""'); ?>;
-        if (op != '') {
-            Toast.fire({
-                icon: 'success',
-                title: op
-            })
-        }
-    });
+    
 
 
     $('#tombolTambah').click(function(e) {

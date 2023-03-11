@@ -53,7 +53,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     // $routes->resource('hrd', ['filter' => 'permission:SDM']);
     //list
     $routes->get('list/(:num)', 'DivisiList::index/$1', ['filter' => 'permission:SDM']);
-    $routes->get('getdatalist', 'Produk::getDataList', ['filter' => 'permission:SDM']);
+    // $routes->get('getdatalist', 'Produk::getDataList', ['filter' => 'permission:SDM']);
 
     
 });
