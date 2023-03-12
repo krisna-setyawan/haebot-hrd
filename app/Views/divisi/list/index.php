@@ -47,19 +47,9 @@
                         <td><?= $karyawan['no_telp'] ?></td>
                         <td><?= $karyawan['email'] ?></td>
                         <td class="text-center">
-                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="">
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $karyawan['id'] ?? '' ?>)">
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
-
-                            <a title="Edit" class="px-2 py-0 btn btn-sm btn-outline-primary" onclick="">
-                                <i class="fa-fw fa-solid fa-pen"></i>
-                            </a>
-
-                            <form id="form_delete" method="POST" class="d-inline">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="_method" value="DELETE">
-                            </form>
-                           
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -110,7 +100,53 @@
         }
     })
 
-    
+    $($document).ready(function(){
+        $('#table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '<?= site_url() ?>getdatalist',
+            order: [],
+            columns: [{
+                    data: 'no',
+                    orderable: false
+                },
+                {
+                    data: 'nama_lengkap'
+                },
+                {
+                    data: 'jabatan'
+                },
+                {
+                    data: 'pendidikan'
+                },
+                {
+                    data: 'no_telp'
+                },
+                {
+                    data: 'email'
+                },
+                {
+                    data: 'aksi',
+                    orderable: false,
+                    className: 'text-center'
+                },
+            ]
+        })
+    });
+        
+
+    $(document).ready(function() {
+        $('#tabel').DataTable();
+
+        // Alert
+        var op = <?= (!empty(session()->getFlashdata('pesan')) ? json_encode(session()->getFlashdata('pesan')) : '""'); ?>;
+        if (op != '') {
+            Toast.fire({
+                icon: 'success',
+                title: op
+            })
+        }
+    });
 
 
     $('#tombolTambah').click(function(e) {
@@ -121,7 +157,7 @@
     function showModalTambah() {
         $.ajax({
             type: 'GET',
-            url: '<?= site_url() ?>karyawan/new',
+            url: '<?= site_url() ?>list/new',
             dataType: 'json',
             success: function(res) {
                 if (res.data) {
@@ -140,7 +176,7 @@
     function showModalDetail(id) {
         $.ajax({
             type: 'GET',
-            url: '<?= site_url() ?>karyawan/' + id,
+            url: '<?= site_url() ?>list/' + id,
             dataType: 'json',
             success: function(res) {
                 if (res.data) {
@@ -170,7 +206,7 @@
             confirmButtonText: 'Ya, hapus!'
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#form_delete').attr('action', '<?= site_url() ?>karyawan/' + id);
+                $('#form_delete').attr('action', '<?= site_url() ?>list/' + id);
                 $('#form_delete').submit();
             }
         })
