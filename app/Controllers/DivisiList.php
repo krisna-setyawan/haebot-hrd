@@ -1,29 +1,65 @@
 <?php
 
 namespace App\Controllers;
-
 use App\Models\KaryawanModel;
+use App\Models\DivisiModel;
 use App\Models\UserModel;
-use CodeIgniter\RESTful\ResourceController;
-use \Hermawan\DataTables\DataTable;
 use Myth\Auth\Password;
+use \Hermawan\DataTables\DataTable;
+use CodeIgniter\RESTful\ResourceController;
 
-class Karyawan extends ResourceController
+
+class DivisiList extends ResourceController
 {
-    protected $helpers = ['form'];
 
 
-    public function index()
+    public function index($id_divisi = null)
     {
         $modelKaryawan = new KaryawanModel();
-        $karyawan = $modelKaryawan->findAll();
-
+        $modelDivisi = new DivisiModel();
+        $karyawan = $modelKaryawan->select('karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
+            ->join('divisi', 'divisi.id = karyawan.id_divisi')
+            ->where('divisi.id', $id_divisi)
+            ->findAll();
         $data = [
             'karyawan' => $karyawan
         ];
-
-        return view('karyawan/index', $data);
+        return view('divisi/list/index', $data);
     }
+
+
+    // public function getDataList($id_divisi=null)
+    // {
+    //     if ($this->request->isAJAX()) {
+
+    //         $modelKaryawan = new KaryawanModel();
+    //         $modelDivisi = new DivisiModel();
+    //         $karyawan = $modelKaryawan->select('karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
+    //         ->join('divisi', 'divisi.id = karyawan.id_divisi')
+    //         ->where('divisi.id', $id_divisi)
+    //         ->findAll();
+                                
+
+    //         return DataTable::of($data)
+    //             ->addNumbering('no')
+    //             ->add('aksi', function ($row) {
+    //                 return '
+    //                 <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(' . $row->id . ')">
+    //                     <i class="fa-fw fa-solid fa-magnifying-glass"></i>
+    //                 </a>
+
+    //                 <form id="form_delete" method="POST" class="d-inline">
+    //                     ' . csrf_field() . '
+    //                     <input type="hidden" name="_method" value="DELETE">
+    //                 </form>
+    //                 <button onclick="confirm_delete(' . $row->id . ')" title="Hapus" type="button" class="px-2 py-0 btn btn-sm btn-outline-danger"><i class="fa-fw fa-solid fa-trash"></i></button>
+    //                 ';
+    //             }, 'last')
+    //             ->toJson(true);
+    //     } else {
+    //         return "Tidak bisa load data.";
+    //     }
+    // }
 
 
     public function show($id = null)
@@ -36,7 +72,7 @@ class Karyawan extends ResourceController
                 'karyawan' => $karyawan,
             ];
             $json = [
-                'data' => view('karyawan/show', $data),
+                'data' => view('divisi/list/show', $data),
             ];
 
             echo json_encode($json);
@@ -45,7 +81,7 @@ class Karyawan extends ResourceController
         }
     }
 
-
+    
     public function new()
     {
         if ($this->request->isAJAX()) {
@@ -58,7 +94,7 @@ class Karyawan extends ResourceController
             ];
 
             $json = [
-                'data'          => view('karyawan/add', $data),
+                'data'          => view('divisi/list/add', $data),
             ];
 
             echo json_encode($json);
@@ -67,7 +103,7 @@ class Karyawan extends ResourceController
         }
     }
 
-
+    
     public function create()
     {
         if ($this->request->isAJAX()) {
@@ -180,8 +216,8 @@ class Karyawan extends ResourceController
                 $modelUser = new UserModel();
 
                 $data1 = [
-                    'id_grup' => 1,
-                    'id_divisi' => 1,
+                    'id_grup' => 5,
+                    'id_divisi' => 5,
                     'nik' => $this->request->getPost('nik'),
                     'jabatan' => $this->request->getPost('jabatan'),
                     'nama_lengkap' => $this->request->getPost('nama_lengkap'),
@@ -218,171 +254,21 @@ class Karyawan extends ResourceController
         }
     }
 
-
+    
     public function edit($id = null)
     {
-        if ($this->request->isAJAX()) {
-            $modelKaryawan = new KaryawanModel();
-            $karyawan      = $modelKaryawan->find($id);
-
-            $data = [
-                'karyawan' => $karyawan,
-            ];
-            $json = [
-                'data' => view('karyawan/edit', $data),
-            ];
-
-            echo json_encode($json);
-        } else {
-            return 'Tidak bisa load';
-        }
+        //
     }
-
-
-    public function update($id = null)
-    {
-
-        $validasi = [
-            'nik'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'nik harus diisi',
-                ]
-            ],
-            'jabatan'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'jabatan harus diisi',
-                ]
-            ],
-            'nama_lengkap'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'nama lengkap harus diisi',
-                ]
-            ],
-            'alamat'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'alamat harus diisi',
-                ]
-            ],
-            'jenis_kelamin'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'jenis kelamin harus diisi',
-                ]
-            ],
-            'tempat_lahir'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'tempat lahir harus diisi',
-                ]
-            ],
-            'tanggal_lahir'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'tanggal lahir harus diisi',
-                ]
-            ],
-            'agama'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'agama harus diisi',
-                ]
-            ],
-            'pendidikan'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'pendidikan harus diisi',
-                ]
-            ],
-            'no_telp'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'no telepon harus diisi',
-                ]
-            ],
-            'email'  => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required' => 'email harus diisi',
-                ]
-            ],
-        ];
-
-        if (!$this->validate($validasi)) {
-            $validation = \Config\Services::validation();
-
-            $error = [
-                'error_nik' => $validation->getError('nik'),
-                'error_jabatan' => $validation->getError('jabatan'),
-                'error_nama_lengkap' => $validation->getError('nama_lengkap'),
-                'error_alamat' => $validation->getError('alamat'),
-                'error_jenis_kelamin' => $validation->getError('jenis_kelamin'),
-                'error_tempat_lahir' => $validation->getError('tempat_lahir'),
-                'error_tanggal_lahir' => $validation->getError('tanggal_lahir'),
-                'error_agama' => $validation->getError('agama'),
-                'error_pendidikan' => $validation->getError('pendidikan'),
-                'error_no_telp' => $validation->getError('no_telp'),
-                'error_email' => $validation->getError('email'),
-            ];
-
-            $json = [
-                'error' => $error
-            ];
-        } else {
-            $modelKaryawan = new KaryawanModel();
-
-            $data = [
-                'id' => $id,
-                'nik' => $this->request->getPost('nik'),
-                'jabatan' => $this->request->getPost('jabatan'),
-                'nama_lengkap' => $this->request->getPost('nama_lengkap'),
-                'alamat' => $this->request->getPost('alamat'),
-                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
-                'tempat_lahir' => $this->request->getPost('tempat_lahir'),
-                'tanggal_lahir' => $this->request->getPost('tanggal_lahir'),
-                'agama' => $this->request->getPost('agama'),
-                'pendidikan' => $this->request->getPost('pendidikan'),
-                'no_telp' => $this->request->getPost('no_telp'),
-                'email' => $this->request->getPost('email'),
-            ];
-            $modelKaryawan->save($data);
-
-            $json = [
-                'success' => 'Berhasil Update data karyawan'
-            ];
-        }
-        echo json_encode($json);
-    }
-
-
-    public function redirect($kode)
-    {
-        if ($kode == 'add') {
-            session()->setFlashdata('pesan', 'Berhasil menambah data Karyawan.');
-        } else {
-            session()->setFlashdata('pesan', 'Berhasil mengedit data Karyawan.');
-        }
-        return redirect()->to('/karyawan');
-    }
-
-
-    public function delete($id = null)
-    {
-        $modelKaryawan = new KaryawanModel();
-        $modelUser = new UserModel();
-
-        $modelKaryawan->delete($id);
-        $modelUser->where(['id_karyawan' => $id])->delete();
-
-        session()->setFlashdata('pesan', 'Data berhasil dihapus.');
-        return redirect()->to('/karyawan');
-    }
-
 
     
+    public function update($id = null)
+    {
+        //
+    }
 
-
+    
+    public function delete($id = null)
+    {
+        //
+    }
 }
