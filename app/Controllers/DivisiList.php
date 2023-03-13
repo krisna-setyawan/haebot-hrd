@@ -110,9 +110,8 @@ class DivisiList extends ResourceController
         if ($this->request->isAJAX()) {
             $modelKaryawan = new KaryawanModel();
             $modelDivisi = new DivisiModel();
-            $idDivisi = $this->request->getVar('id_divisi');
             $data = [
-                'id_divisi' => $idDivisi,
+                'id_karyawan' => $modelKaryawan->getInsertID(),
             ];
             return json_encode($data);
         } else {
