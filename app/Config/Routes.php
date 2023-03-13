@@ -50,13 +50,13 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     $routes->get('divisi/redirect/(:any)', 'Divisi::redirect/$1', ['filter' => 'permission:SDM']);
     $routes->resource('divisi', ['filter' => 'permission:SDM']);
 
-    // $routes->resource('hrd', ['filter' => 'permission:SDM']);
     //list
     $routes->get('list/(:num)', 'DivisiList::index/$1', ['filter' => 'permission:SDM']);
-    $routes->get('list/(:num)', 'DivisiList::show/$1', ['filter' => 'permission:SDM']);    
+    $routes->get('detail-karyawan/(:num)', 'DivisiList::show/$1', ['filter' => 'permission:SDM']);
+    $routes->post('list/create', 'DivisiList::create',['filter' => 'permission:SDM']);
     $routes->post('list', 'DivisiList::create', ['filter' => 'permission:SDM']);
     $routes->get('list/new', 'DivisiList::new', ['filter' => 'permission:SDM']);
-    // $routes->get('getdatalist/(:num)', 'DivisiList::getDataList/$1', ['filter' => 'permission:SDM']);
+    $routes->get('getdatalist/(:num)', 'DivisiList::getDataList/$1', ['filter' => 'permission:SDM']);
 
     
 });

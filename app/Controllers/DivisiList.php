@@ -17,7 +17,8 @@ class DivisiList extends ResourceController
     {
         $modelKaryawan = new KaryawanModel();
         $modelDivisi = new DivisiModel();
-        $karyawan = $modelKaryawan->select('karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
+        $karyawan = $modelKaryawan
+            ->select('karyawan.id ,karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
             ->join('divisi', 'divisi.id = karyawan.id_divisi')
             ->where('divisi.id', $id_divisi)
             ->findAll();
@@ -34,7 +35,7 @@ class DivisiList extends ResourceController
 
     //         $modelKaryawan = new KaryawanModel();
     //         $modelDivisi = new DivisiModel();
-    //         $karyawan = $modelKaryawan->select('karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
+    //         $karyawan = $modelKaryawan->select('karyawan.id, karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
     //         ->join('divisi', 'divisi.id = karyawan.id_divisi')
     //         ->where('divisi.id', $id_divisi)
     //         ->findAll();
@@ -87,7 +88,7 @@ class DivisiList extends ResourceController
         if ($this->request->isAJAX()) {
 
             $modelKaryawan = new KaryawanModel();
-            $karyawan = $modelKaryawan->findAll();
+            $karyawan = $modelKaryawan->where(['id_divisi' => null])->findAll();
 
             $data = [
                 'karyawan'        => $karyawan,
@@ -107,148 +108,13 @@ class DivisiList extends ResourceController
     public function create()
     {
         if ($this->request->isAJAX()) {
-
-            $validasi = [
-                'nik'  => [
-                    'rules'     => 'required|is_unique[karyawan.nik]',
-                    'errors'    => [
-                        'required' => 'nik harus diisi',
-                    ]
-                ],
-                'jabatan'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'jabatan harus diisi',
-                    ]
-                ],
-                'nama_lengkap'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'nama lengkap harus diisi',
-                    ]
-                ],
-                'alamat'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'alamat harus diisi',
-                    ]
-                ],
-                'jenis_kelamin'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'jenis kelamin harus diisi',
-                    ]
-                ],
-                'tempat_lahir'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'tempat lahir harus diisi',
-                    ]
-                ],
-                'tanggal_lahir'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'tanggal lahir harus diisi',
-                    ]
-                ],
-                'agama'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'agama harus diisi',
-                    ]
-                ],
-                'pendidikan'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'pendidikan harus diisi',
-                    ]
-                ],
-                'no_telp'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'no telepon harus diisi',
-                    ]
-                ],
-                'email'  => [
-                    'rules'     => 'required|valid_email|is_unique[karyawan.email]',
-                    'errors'    => [
-                        'required' => 'email harus diisi',
-                    ]
-                ],
-                'username'  => [
-                    'rules'     => 'required|alpha_numeric_punct|min_length[3]|max_length[30]|is_unique[users.username]',
-                    'errors'    => [
-                        'required' => 'username harus diisi',
-                    ]
-                ],
-                'password'  => [
-                    'rules'     => 'required',
-                    'errors'    => [
-                        'required' => 'password harus diisi',
-                    ]
-                ],
+            $modelKaryawan = new KaryawanModel();
+            $modelDivisi = new DivisiModel();
+            $idDivisi = $this->request->getVar('id_divisi');
+            $data = [
+                'id_divisi' => $idDivisi,
             ];
-
-            if (!$this->validate($validasi)) {
-                $validation = \Config\Services::validation();
-
-                $error = [
-                    'error_nik' => $validation->getError('nik'),
-                    'error_nama_lengkap' => $validation->getError('nama_lengkap'),
-                    'error_jabatan' => $validation->getError('jabatan'),
-                    'error_alamat' => $validation->getError('alamat'),
-                    'error_jenis_kelamin' => $validation->getError('jenis_kelamin'),
-                    'error_tempat_lahir' => $validation->getError('tempat_lahir'),
-                    'error_tanggal_lahir' => $validation->getError('tanggal_lahir'),
-                    'error_agama' => $validation->getError('agama'),
-                    'error_pendidikan' => $validation->getError('pendidikan'),
-                    'error_no_telp' => $validation->getError('no_telp'),
-                    'error_email' => $validation->getError('email'),
-                    'error_username' => $validation->getError('username'),
-                    'error_password' => $validation->getError('password'),
-                ];
-
-                $json = [
-                    'error' => $error
-                ];
-            } else {
-                $modelKaryawan = new KaryawanModel();
-                $modelUser = new UserModel();
-
-                $data1 = [
-                    'id_grup' => 5,
-                    'id_divisi' => 5,
-                    'nik' => $this->request->getPost('nik'),
-                    'jabatan' => $this->request->getPost('jabatan'),
-                    'nama_lengkap' => $this->request->getPost('nama_lengkap'),
-                    'alamat' => $this->request->getPost('alamat'),
-                    'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
-                    'tempat_lahir' => $this->request->getPost('tempat_lahir'),
-                    'tanggal_lahir' => $this->request->getPost('tanggal_lahir'),
-                    'agama' => $this->request->getPost('agama'),
-                    'pendidikan' => $this->request->getPost('pendidikan'),
-                    'no_telp' => $this->request->getPost('no_telp'),
-                    'email' => $this->request->getPost('email'),
-                ];
-                $modelKaryawan->save($data1);
-
-
-                $data2 = [
-                    'id_karyawan' => $modelKaryawan->getInsertID(),
-                    'name' => $this->request->getPost('nama_lengkap'),
-                    'email' => $this->request->getPost('email'),
-                    'username' => $this->request->getPost('username'),
-                    'password_hash' => Password::hash($this->request->getPost('password'),),
-                    'active' => 1
-                ];
-                $modelUser->save($data2);
-
-                $json = [
-                    'success' => 'Berhasil menambah data karyawan'
-                ];
-            }
-
-            echo json_encode($json);
+            return json_encode($data);
         } else {
             return 'Tidak bisa load';
         }

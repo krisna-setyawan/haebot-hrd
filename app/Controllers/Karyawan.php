@@ -180,8 +180,8 @@ class Karyawan extends ResourceController
                 $modelUser = new UserModel();
 
                 $data1 = [
-                    'id_grup' => 1,
-                    'id_divisi' => 1,
+                    'id_grup' => null,
+                    'id_divisi' => null,
                     'nik' => $this->request->getPost('nik'),
                     'jabatan' => $this->request->getPost('jabatan'),
                     'nama_lengkap' => $this->request->getPost('nama_lengkap'),

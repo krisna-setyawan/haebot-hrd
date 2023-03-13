@@ -47,7 +47,7 @@
                         <td><?= $karyawan['no_telp'] ?></td>
                         <td><?= $karyawan['email'] ?></td>
                         <td class="text-center">
-                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $karyawan['id'] ?? '' ?>)">
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $karyawan['id']?>)">
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
                         </td>
@@ -100,39 +100,39 @@
         }
     })
 
-    $($document).ready(function(){
-        $('#table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '<?= site_url() ?>getdatalist',
-            order: [],
-            columns: [{
-                    data: 'no',
-                    orderable: false
-                },
-                {
-                    data: 'nama_lengkap'
-                },
-                {
-                    data: 'jabatan'
-                },
-                {
-                    data: 'pendidikan'
-                },
-                {
-                    data: 'no_telp'
-                },
-                {
-                    data: 'email'
-                },
-                {
-                    data: 'aksi',
-                    orderable: false,
-                    className: 'text-center'
-                },
-            ]
-        })
-    });
+    // $($document).ready(function(id){
+    //     $('#table').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax: '<?= site_url() ?>getdatalist'+id,
+    //         order: [],
+    //         columns: [{
+    //                 data: 'no',
+    //                 orderable: false
+    //             },
+    //             {
+    //                 data: 'nama_lengkap'
+    //             },
+    //             {
+    //                 data: 'jabatan'
+    //             },
+    //             {
+    //                 data: 'pendidikan'
+    //             },
+    //             {
+    //                 data: 'no_telp'
+    //             },
+    //             {
+    //                 data: 'email'
+    //             },
+    //             {
+    //                 data: 'aksi',
+    //                 orderable: false,
+    //                 className: 'text-center'
+    //             },
+    //         ]
+    //     })
+    // });
         
 
     $(document).ready(function() {
@@ -176,7 +176,7 @@
     function showModalDetail(id) {
         $.ajax({
             type: 'GET',
-            url: '<?= site_url() ?>list/' + id,
+            url: '<?= site_url() ?>detail-karyawan/' + id,
             dataType: 'json',
             success: function(res) {
                 if (res.data) {
