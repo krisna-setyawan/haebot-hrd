@@ -53,7 +53,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], function ($routes) {
     //list
     $routes->get('list/(:num)', 'DivisiList::index/$1', ['filter' => 'permission:SDM']);
     $routes->get('detail-karyawan/(:num)', 'DivisiList::show/$1', ['filter' => 'permission:SDM']);
-    $routes->post('insert-list/(:num)', 'DivisiList::create/$1', ['filter' => 'permission:SDM']);
+    $routes->get('insert-list/(:num)', 'DivisiList::create/$1', ['filter' => 'permission:SDM']);
     $routes->get('list/new', 'DivisiList::new', ['filter' => 'permission:SDM']);
     $routes->get('getdatalist/(:num)', 'DivisiList::getDataList/$1', ['filter' => 'permission:SDM']);
 

@@ -206,7 +206,6 @@ class Karyawan extends ResourceController
                     'active' => 1
                 ];
                 $modelUser->save($data2);
-
                 $json = [
                     'success' => 'Berhasil menambah data karyawan'
                 ];

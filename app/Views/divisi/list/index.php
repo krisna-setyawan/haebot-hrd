@@ -47,7 +47,7 @@
                         <td><?= $karyawan['no_telp'] ?></td>
                         <td><?= $karyawan['email'] ?></td>
                         <td class="text-center">
-                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail(<?= $karyawan['id']?>)">
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="showModalDetail()">
                                 <i class="fa-fw fa-solid fa-magnifying-glass"></i>
                             </a>
                         </td>
@@ -84,6 +84,7 @@
 
 
 <script>
+
     // Bahan Alert
     const Toast = Swal.mixin({
         toast: true,

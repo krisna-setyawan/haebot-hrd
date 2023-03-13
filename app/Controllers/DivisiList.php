@@ -18,10 +18,10 @@ class DivisiList extends ResourceController
         $modelKaryawan = new KaryawanModel();
         $modelDivisi = new DivisiModel();
         $karyawan = $modelKaryawan
-            ->select('karyawan.id ,karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
+            ->select('karyawan.id_divisi ,karyawan.nama_lengkap, karyawan.jabatan, karyawan.pendidikan, karyawan.no_telp, karyawan.email')
             ->join('divisi', 'divisi.id = karyawan.id_divisi')
             ->where('divisi.id', $id_divisi)
-            ->findAll();
+            ->findAll();    
         $data = [
             'karyawan' => $karyawan
         ];
@@ -105,18 +105,20 @@ class DivisiList extends ResourceController
     }
 
     
-    public function create()
+    public function create($id_divisi)
     {
-        if ($this->request->isAJAX()) {
+        if ($this->request->isAAJAX()){
             $modelKaryawan = new KaryawanModel();
             $modelDivisi = new DivisiModel();
+
             $data = [
-                'id_karyawan' => $modelKaryawan->getInsertID(),
+                'id_divisi' => $modelDivisi->getInsertID(),
             ];
-            return json_encode($data);
-        } else {
-            return 'Tidak bisa load';
-        }
+            $modelKaryawan->save($data);
+            $json = [
+                'success' => 'Berhasil menambah data karyawan'
+            ];
+         }
     }
 
     

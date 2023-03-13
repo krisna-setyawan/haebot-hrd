@@ -22,11 +22,9 @@
                         <td><?= $karyawan['no_telp'] ?></td>
                         <td><?= $karyawan['email'] ?></td>
                         <td class="text-center">
-                        <div>
-                            <button class="btn btn-sm btn-secondary mb-2 py-0" data-bs-toggle="modal" data-bs-target="#modal-add-list">
+                            <a title="Detail" class="px-2 py-0 btn btn-sm btn-outline-dark" onclick="insertList(<?= $karyawan['id_divisi']?>)">
                                 <i class="fa-fw fa-solid fa-plus"></i>
-                            </button>
-                        </div>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -38,10 +36,10 @@
 
 <script>
 
-function insertList(id) {
+function insertList(id_divisi) {
         $.ajax({
             type: 'GET',
-            url: '<?= site_url() ?>detail-karyawan/' + id,
+            url: '<?= site_url() ?>insert-list/' + id_divisi,
             dataType: 'json',
             success: function(res) {
                 if (res.data) {
